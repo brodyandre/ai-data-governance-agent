@@ -2,7 +2,7 @@
 
 Este documento define o contrato conceitual da resposta estruturada produzida pelo **AI Data Governance Agent**.
 
-A implementação final utilizará **Pydantic** para validar e garantir a consistência deste contrato.
+A implementação utiliza **Pydantic** para validar e garantir a consistência deste contrato.
 
 O objetivo é assegurar que toda análise produzida pelo agente seja:
 
@@ -38,7 +38,7 @@ O objetivo é assegurar que toda análise produzida pelo agente seja:
 - [Comportamento com evidência insuficiente](#evidencia-insuficiente)
 - [Supervisão humana](#supervisao-humana)
 - [Exemplo completo](#exemplo)
-- [Responsabilidades futuras](#responsabilidades)
+- [Implementação DG-104](#responsabilidades)
 
 ---
 
@@ -362,7 +362,9 @@ Consumidores, equipes ou sistemas downstream possivelmente afetados.
 
 Indicação conceitual da relevância ou materialidade do impacto.
 
-A definição formal poderá ser refinada na implementação do modelo correspondente.
+Na `DG-104`, o campo é representado como `str | None`.
+
+Não é introduzido um enum específico nesta etapa porque o contrato ainda não define um conjunto canônico de níveis de materialidade. Essa representação poderá ser refinada posteriormente caso o domínio estabeleça uma taxonomia formal.
 
 ---
 
@@ -408,7 +410,7 @@ RootCauseHypothesis
      └── status
 ```
 
-### Estados iniciais planejados
+### Estados formalizados
 
 ```text
 suspected
@@ -417,7 +419,7 @@ confirmed
 rejected
 ```
 
-Esses estados serão formalizados durante a implementação da `DG-104`.
+Esses estados são representados pelo enum `HypothesisStatus`, formalizado na `DG-104` e documentado em [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md).
 
 ---
 
@@ -928,6 +930,7 @@ Decisão
   "evidence": [
     {
       "evidence_id": "EV-001",
+      "evidence_type": "reconciliation_result",
       "source": "pipeline-report"
     }
   ],
@@ -997,15 +1000,15 @@ Importante: a hipótese não foi marcada como `confirmed`.
 
 <a id="responsabilidades"></a>
 
-## 🔄 Responsabilidades futuras
+## 🔄 Implementação DG-104
 
-A implementação formal dos modelos de resposta está planejada para:
+A implementação formal dos modelos de resposta é realizada na tarefa:
 
 ```text
 DG-104 — Modelos AgentResponse
 ```
 
-A tarefa deverá contemplar estruturas como:
+A tarefa contempla as seguintes estruturas:
 
 ```text
 BusinessImpact
@@ -1023,7 +1026,8 @@ DOMAIN_ENUMS
       ├── IncidentClassification
       ├── Severity
       ├── BusinessImpactStatus
-      └── ActionPriority
+      ├── ActionPriority
+      └── HypothesisStatus
                 │
                 ▼
         AgentResponse models
@@ -1031,7 +1035,7 @@ DOMAIN_ENUMS
 
 ---
 
-## 📌 Requisitos previstos para DG-104
+## 📌 Requisitos da DG-104
 
 A implementação deverá garantir:
 
