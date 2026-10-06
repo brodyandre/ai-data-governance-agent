@@ -786,7 +786,7 @@ Objetivo: disponibilizar o fluxo por meio de um contrato HTTP estável.
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Endpoint esperado
 

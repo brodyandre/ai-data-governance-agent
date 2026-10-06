@@ -2,10 +2,14 @@
 
 from typing import Literal
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, ConfigDict
 
 from ai_data_governance_agent import __version__
+from ai_data_governance_agent.domain.incident import IncidentInput
+from ai_data_governance_agent.domain.response import AgentResponse
+from ai_data_governance_agent.providers import ModelProvider
+from ai_data_governance_agent.workflow import run_agent
 
 SERVICE_NAME = "ai-data-governance-agent"
 
@@ -20,7 +24,9 @@ class HealthResponse(BaseModel):
     version: str
 
 
-def create_app() -> FastAPI:
+def create_app(
+    provider: ModelProvider | None = None,
+) -> FastAPI:
     """Create and configure the FastAPI application."""
     application = FastAPI(
         title="AI Data Governance Agent",
@@ -41,6 +47,26 @@ def create_app() -> FastAPI:
             status="ok",
             service=SERVICE_NAME,
             version=__version__,
+        )
+
+    @application.post(
+        "/api/v1/incidents/analyze",
+        response_model=AgentResponse,
+        tags=["incidents"],
+    )
+    def analyze_incident(
+        incident: IncidentInput,
+    ) -> AgentResponse:
+        """Analyze a validated data incident through the agent workflow."""
+        if provider is None:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="model provider is not configured",
+            )
+
+        return run_agent(
+            incident,
+            provider,
         )
 
     return application
