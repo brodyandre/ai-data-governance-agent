@@ -14,28 +14,211 @@
   </head>
 
   <body>
-    <main class="container">
-      <section class="hero">
-        <p class="eyebrow">Data Governance + AI</p>
+    <main
+      class="container"
+      data-api-base-url="<%= apiBaseUrl %>"
+    >
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">
+            Data Governance + AI
+          </p>
 
-        <h1>AI Data Governance Agent</h1>
+          <h1>AI Data Governance Agent</h1>
 
-        <p>
-          Interface web para análise estruturada
-          de incidentes de dados.
-        </p>
-
-        <div
-          class="status"
-          data-api-base-url="<%= apiBaseUrl %>"
-        >
-          <span>Backend configurado:</span>
-          <code><%= apiBaseUrl %></code>
+          <p class="page-description">
+            Registre um incidente de dados e envie
+            as evidências disponíveis para análise
+            estruturada.
+          </p>
         </div>
 
-        <p class="next-step">
-          A entrada e análise de incidentes será
-          implementada nas próximas etapas.
+        <div class="backend-status">
+          <span>Backend</span>
+          <code><%= apiBaseUrl %></code>
+        </div>
+      </header>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-label">
+              Incident intake
+            </p>
+
+            <h2>Novo incidente</h2>
+          </div>
+
+          <button
+            id="load-demo"
+            class="button secondary"
+            type="button"
+          >
+            Carregar cenário DE-101
+          </button>
+        </div>
+
+        <form id="incident-form">
+          <div class="form-grid">
+            <label>
+              ID do incidente
+              <input
+                id="incident-id"
+                name="incident_id"
+                type="text"
+                placeholder="INC-001"
+                required
+              />
+            </label>
+
+            <label>
+              Sistema de origem
+              <input
+                id="source-system"
+                name="source_system"
+                type="text"
+                placeholder="orders-lakehouse"
+                required
+              />
+            </label>
+
+            <label class="full-width">
+              Título
+              <input
+                id="incident-title"
+                name="title"
+                type="text"
+                placeholder="Descreva o incidente em uma frase"
+                required
+              />
+            </label>
+
+            <label class="full-width">
+              Descrição
+              <textarea
+                id="incident-description"
+                name="description"
+                rows="4"
+                placeholder="Contexto técnico do incidente"
+                required
+              ></textarea>
+            </label>
+
+            <label>
+              Detectado em
+              <input
+                id="detected-at"
+                name="detected_at"
+                type="datetime-local"
+                required
+              />
+            </label>
+
+            <label>
+              Severidade inicial
+              <select
+                id="initial-severity"
+                name="initial_severity"
+              >
+                <option value="">
+                  Não informada
+                </option>
+                <option value="low">
+                  Low
+                </option>
+                <option value="medium">
+                  Medium
+                </option>
+                <option value="high">
+                  High
+                </option>
+                <option value="critical">
+                  Critical
+                </option>
+              </select>
+            </label>
+
+            <label class="full-width">
+              Datasets afetados
+              <input
+                id="affected-datasets"
+                name="affected_datasets"
+                type="text"
+                placeholder="orders, order_items, fct_sales"
+              />
+              <small>
+                Separe vários datasets por vírgula.
+              </small>
+            </label>
+
+            <label class="full-width">
+              Contexto de negócio
+              <textarea
+                id="business-context"
+                name="business_context"
+                rows="3"
+                placeholder="Explique por que esse dado é relevante para o negócio"
+              ></textarea>
+            </label>
+
+            <label class="full-width">
+              Evidências
+              <textarea
+                id="incident-evidence"
+                name="evidence"
+                rows="14"
+                spellcheck="false"
+                required
+              >[]</textarea>
+              <small>
+                Informe um array JSON de evidências.
+              </small>
+            </label>
+
+            <label class="full-width">
+              Tags
+              <input
+                id="incident-tags"
+                name="tags"
+                type="text"
+                placeholder="data-quality, reconciliation"
+              />
+              <small>
+                Separe várias tags por vírgula.
+              </small>
+            </label>
+          </div>
+
+          <div
+            id="form-message"
+            class="form-message"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <div class="form-actions">
+            <button
+              id="reset-form"
+              class="button secondary"
+              type="reset"
+            >
+              Limpar
+            </button>
+
+            <button
+              id="submit-button"
+              class="button primary"
+              type="submit"
+            >
+              Enviar para análise
+            </button>
+          </div>
+        </form>
+
+        <p class="scope-note">
+          Nesta etapa o envio é realizado de forma
+          funcional. A visualização detalhada do
+          resultado será implementada na DG-803.
         </p>
       </section>
     </main>

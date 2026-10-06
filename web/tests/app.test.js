@@ -3,51 +3,270 @@ const assert = require("node:assert/strict");
 
 const request = require("supertest");
 
-const { createApp } = require("../src/app");
+const {
+  ANALYZE_PATH,
+  createApp,
+} = require("../src/app");
 
-test("GET / renders the web bootstrap", async () => {
-  const app = createApp({
-    apiBaseUrl: "http://api.example.test",
-  });
+function makeIncidentPayload() {
+  return {
+    incident_id: "INC-WEB-001",
+    title: "Invalid records detected",
+    description:
+      "A data-quality validation identified invalid records.",
+    source_system: "orders-lakehouse",
+    detected_at:
+      "2026-10-06T22:30:00.000Z",
+    evidence: [
+      {
+        evidence_id: "EV-001",
+        evidence_type:
+          "data_quality_check",
+        source: "quality-report",
+        value: {
+          invalid_rows: 30,
+        },
+      },
+    ],
+  };
+}
 
-  const response = await request(app)
-    .get("/")
-    .expect(200);
+test(
+  "GET / renders the web bootstrap",
+  async () => {
+    const app = createApp({
+      apiBaseUrl:
+        "http://api.example.test",
+    });
 
-  assert.match(
-    response.text,
-    /AI Data Governance Agent/
-  );
+    const response = await request(app)
+      .get("/")
+      .expect(200);
 
-  assert.match(
-    response.text,
-    /http:\/\/api\.example\.test/
-  );
-});
+    assert.match(
+      response.text,
+      /AI Data Governance Agent/
+    );
 
-test("GET /health returns web service health", async () => {
-  const app = createApp();
+    assert.match(
+      response.text,
+      /http:\/\/api\.example\.test/
+    );
+  }
+);
 
-  const response = await request(app)
-    .get("/health")
-    .expect("Content-Type", /json/)
-    .expect(200);
+test(
+  "GET /health returns web service health",
+  async () => {
+    const app = createApp();
 
-  assert.deepEqual(response.body, {
-    status: "ok",
-    service: "ai-data-governance-agent-web",
-  });
-});
+    const response = await request(app)
+      .get("/health")
+      .expect("Content-Type", /json/)
+      .expect(200);
 
-test("default backend configuration targets local API", async () => {
-  const app = createApp();
+    assert.deepEqual(response.body, {
+      status: "ok",
+      service:
+        "ai-data-governance-agent-web",
+    });
+  }
+);
 
-  const response = await request(app)
-    .get("/")
-    .expect(200);
+test(
+  "default backend configuration targets local API",
+  async () => {
+    const app = createApp();
 
-  assert.match(
-    response.text,
-    /http:\/\/127\.0\.0\.1:8000/
-  );
-});
+    const response = await request(app)
+      .get("/")
+      .expect(200);
+
+    assert.match(
+      response.text,
+      /http:\/\/127\.0\.0\.1:8000/
+    );
+  }
+);
+
+test(
+  "POST /api/analyze forwards incident to FastAPI",
+  async () => {
+    const payload = makeIncidentPayload();
+
+    let receivedUrl;
+    let receivedOptions;
+
+    const fetchImpl = async (
+      url,
+      options
+    ) => {
+      receivedUrl = url;
+      receivedOptions = options;
+
+      return new Response(
+        JSON.stringify({
+          incident_id:
+            payload.incident_id,
+          classification:
+            "data_quality",
+          severity: "medium",
+        }),
+        {
+          status: 200,
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+        }
+      );
+    };
+
+    const app = createApp({
+      apiBaseUrl:
+        "http://api.example.test",
+      fetchImpl,
+    });
+
+    const response = await request(app)
+      .post("/api/analyze")
+      .send(payload)
+      .expect(200);
+
+    assert.equal(
+      receivedUrl,
+      `http://api.example.test${ANALYZE_PATH}`
+    );
+
+    assert.equal(
+      receivedOptions.method,
+      "POST"
+    );
+
+    assert.deepEqual(
+      JSON.parse(receivedOptions.body),
+      payload
+    );
+
+    assert.equal(
+      response.body.incident_id,
+      "INC-WEB-001"
+    );
+  }
+);
+
+test(
+  "POST /api/analyze preserves FastAPI errors",
+  async () => {
+    const fetchImpl = async () =>
+      new Response(
+        JSON.stringify({
+          code:
+            "provider_not_configured",
+          message:
+            "model provider is not configured",
+          details: [],
+        }),
+        {
+          status: 503,
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+        }
+      );
+
+    const app = createApp({
+      fetchImpl,
+    });
+
+    const response = await request(app)
+      .post("/api/analyze")
+      .send(makeIncidentPayload())
+      .expect(503);
+
+    assert.equal(
+      response.body.code,
+      "provider_not_configured"
+    );
+  }
+);
+
+test(
+  "POST /api/analyze reports unavailable API safely",
+  async () => {
+    const fetchImpl = async () => {
+      throw new Error(
+        "connection refused"
+      );
+    };
+
+    const app = createApp({
+      fetchImpl,
+    });
+
+    const response = await request(app)
+      .post("/api/analyze")
+      .send(makeIncidentPayload())
+      .expect(502);
+
+    assert.deepEqual(response.body, {
+      code: "api_unavailable",
+      message:
+        "analysis API is unavailable",
+      details: [],
+    });
+  }
+);
+
+test(
+  "GET / renders incident input controls",
+  async () => {
+    const app = createApp();
+
+    const response = await request(app)
+      .get("/")
+      .expect(200);
+
+    assert.match(
+      response.text,
+      /id="incident-form"/
+    );
+
+    assert.match(
+      response.text,
+      /id="incident-id"/
+    );
+
+    assert.match(
+      response.text,
+      /id="incident-evidence"/
+    );
+
+    assert.match(
+      response.text,
+      /id="submit-button"/
+    );
+  }
+);
+
+test(
+  "GET / exposes DE-101 demo loader",
+  async () => {
+    const app = createApp();
+
+    const response = await request(app)
+      .get("/")
+      .expect(200);
+
+    assert.match(
+      response.text,
+      /id="load-demo"/
+    );
+
+    assert.match(
+      response.text,
+      /Carregar cenário DE-101/
+    );
+  }
+);

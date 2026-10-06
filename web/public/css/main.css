@@ -7,6 +7,8 @@
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+  background: #080d18;
+  color: #f4f7fb;
 }
 
 * {
@@ -16,60 +18,259 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #0b1020;
-  color: #f4f7fb;
+  background:
+    radial-gradient(
+      circle at top left,
+      #17233d 0,
+      #080d18 42%
+    );
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
 .container {
-  width: min(960px, calc(100% - 2rem));
+  width:
+    min(
+      1080px,
+      calc(100% - 2rem)
+    );
   margin: 0 auto;
+  padding: 4rem 0;
 }
 
-.hero {
-  min-height: 100vh;
+.page-header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
 }
 
-.eyebrow {
-  margin: 0 0 0.75rem;
-  font-size: 0.85rem;
+.eyebrow,
+.section-label {
+  margin: 0 0 0.6rem;
+  color: #8fa8cc;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #9fb4d0;
+}
+
+h1,
+h2 {
+  margin: 0;
 }
 
 h1 {
-  margin: 0;
-  font-size: clamp(2.25rem, 6vw, 4rem);
-  line-height: 1.05;
+  font-size:
+    clamp(
+      2.2rem,
+      5vw,
+      3.8rem
+    );
 }
 
-.hero > p {
-  max-width: 680px;
+h2 {
+  font-size: 1.5rem;
+}
+
+.page-description {
+  max-width: 700px;
+  margin: 1rem 0 0;
+  color: #bac7da;
   line-height: 1.7;
 }
 
-.status {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  border: 1px solid #33415c;
+.backend-status {
+  min-width: 260px;
+  padding: 0.9rem 1rem;
+  border: 1px solid #283956;
   border-radius: 0.75rem;
-  background: #11182b;
+  background: #0f1728;
 }
 
-.status span {
+.backend-status span {
   display: block;
-  margin-bottom: 0.4rem;
-  color: #9fb4d0;
+  margin-bottom: 0.35rem;
+  color: #8fa8cc;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
-code {
+.backend-status code {
   overflow-wrap: anywhere;
+  font-size: 0.85rem;
 }
 
-.next-step {
-  color: #9fb4d0;
+.panel {
+  padding: 2rem;
+  border: 1px solid #263653;
+  border-radius: 1rem;
+  background:
+    rgba(
+      14,
+      22,
+      38,
+      0.92
+    );
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content:
+    space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: #dce5f3;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #354966;
+  border-radius: 0.6rem;
+  padding: 0.8rem 0.9rem;
+  background: #09111f;
+  color: #f4f7fb;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #7ba7e7;
+  box-shadow:
+    0 0 0 3px
+    rgba(123, 167, 231, 0.15);
+}
+
+textarea {
+  resize: vertical;
+}
+
+#incident-evidence {
+  font-family:
+    "Cascadia Code",
+    "Fira Code",
+    monospace;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+small {
+  color: #8295b1;
+  font-weight: 400;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+}
+
+.button {
+  border: 0;
+  border-radius: 0.6rem;
+  padding: 0.8rem 1.1rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.primary {
+  background: #6c9de2;
+  color: #06101e;
+}
+
+.secondary {
+  border: 1px solid #354966;
+  background: #121d30;
+  color: #dce5f3;
+}
+
+.form-message {
+  min-height: 1.5rem;
+  margin-top: 1.2rem;
+  padding: 0;
+  line-height: 1.5;
+}
+
+.form-message.info {
+  color: #a8c7f2;
+}
+
+.form-message.success {
+  color: #8fdbb6;
+}
+
+.form-message.error {
+  color: #ffaaa5;
+}
+
+.scope-note {
+  margin: 1.5rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid #263653;
+  color: #8295b1;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .container {
+    padding: 2rem 0;
+  }
+
+  .page-header,
+  .panel-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .button {
+    width: 100%;
+  }
 }
