@@ -9,6 +9,7 @@ from ai_data_governance_agent.domain.enums import (
     Severity,
 )
 from ai_data_governance_agent.domain.evidence import Evidence
+from ai_data_governance_agent.domain.incident import IncidentInput
 
 __all__ = [
     "ActionPriority",
@@ -17,5 +18,6 @@ __all__ = [
     "EvidenceReliability",
     "EvidenceType",
     "IncidentClassification",
+    "IncidentInput",
     "Severity",
 ]
