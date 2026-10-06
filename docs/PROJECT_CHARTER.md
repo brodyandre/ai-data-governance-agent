@@ -1,286 +1,601 @@
-# AI Data Governance Agent — Project Charter
+# 🎯 AI Data Governance Agent — Project Charter
 
-## 1. Project Overview
+Este documento define a visão, o problema, os objetivos, o escopo e os critérios de sucesso do **AI Data Governance Agent**.
 
-The AI Data Governance Agent is the individual Challenge project for the Alura/ONE
-"Imersão de Agentes de IA para Negócios".
+O projeto está sendo desenvolvido como Challenge individual da **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**.
 
-Official delivery deadline: 2026-11-08.
+---
 
-Internal code freeze: 2026-11-06.
+## 📑 Sumário
 
-The project demonstrates the application of AI agents to Data Engineering, Data Quality,
-Data Governance, business impact analysis, evidence traceability, and human oversight.
+- [Visão do projeto](#visao)
+- [Problema](#problema)
+- [Usuários](#usuarios)
+- [Objetivo](#objetivo)
+- [Posicionamento](#posicionamento)
+- [Escopo do MVP](#escopo)
+- [Fora do escopo](#fora-escopo)
+- [Ferramentas iniciais](#ferramentas)
+- [Resposta estruturada](#resposta)
+- [Supervisão humana](#supervisao)
+- [Princípios de evidência](#evidencia)
+- [Projetos de referência](#referencias)
+- [Métricas de avaliação](#metricas)
+- [Princípios de desenvolvimento](#desenvolvimento)
+- [Critérios de sucesso](#sucesso)
+- [Princípio de entrega](#entrega)
 
-## 2. Problem Statement
+---
 
-Data incidents are often investigated through fragmented technical evidence such as
-pipeline reports, validation outputs, logs, data quality checks, documentation, and
-business rules.
+<a id="visao"></a>
 
-This fragmentation can make incident triage slower and can produce inconsistent
-assessments of:
+## 🌐 1. Visão do projeto
 
-- incident severity;
-- affected datasets;
-- business impact;
-- possible root causes;
-- relevant governance controls;
-- recommended remediation actions.
+O **AI Data Governance Agent** é uma solução de Inteligência Artificial aplicada à investigação de incidentes de dados.
 
-The AI Data Governance Agent will assist analysts and data engineering teams by
-organizing available evidence and producing a structured incident assessment.
+Seu propósito é auxiliar profissionais de dados na organização de evidências, avaliação de problemas de Data Quality, análise de possíveis impactos de negócio e identificação de controles de governança relevantes.
 
-The agent must not replace accountable human decision-making for critical incidents.
+O projeto busca demonstrar a aplicação integrada de:
 
-## 3. Primary User
+- Engenharia de Dados;
+- Inteligência Artificial;
+- Data Quality;
+- Data Governance;
+- DataOps;
+- rastreabilidade;
+- explicabilidade;
+- supervisão humana.
 
-The primary user is a data professional responsible for investigating or reviewing
-data incidents, including roles such as:
+### Datas principais
+
+| Marco | Data |
+|---|---|
+| Code freeze interno | **06/11/2026** |
+| Entrega oficial do Challenge | **08/11/2026** |
+
+---
+
+<a id="problema"></a>
+
+## 🔎 2. Problema
+
+Incidentes de dados frequentemente são investigados a partir de informações distribuídas entre diferentes fontes, como:
+
+- relatórios de pipelines;
+- resultados de validações;
+- logs;
+- verificações de Data Quality;
+- diferenças de reconciliação;
+- regras de negócio;
+- políticas de governança;
+- observações de analistas.
+
+Essa fragmentação pode tornar a investigação mais lenta e gerar avaliações inconsistentes sobre:
+
+- severidade do incidente;
+- datasets afetados;
+- impacto no negócio;
+- possíveis causas;
+- controles de governança;
+- prioridade de remediação.
+
+O **AI Data Governance Agent** busca reduzir essa fragmentação organizando evidências e produzindo uma análise estruturada e rastreável.
+
+O sistema possui caráter consultivo e não substitui a tomada de decisão humana em situações críticas.
+
+---
+
+<a id="usuarios"></a>
+
+## 👥 3. Usuários
+
+O público principal é formado por profissionais responsáveis pela investigação, análise ou governança de incidentes de dados.
+
+Perfis representativos incluem:
 
 - Data Engineer;
 - Analytics Engineer;
 - Data Quality Analyst;
 - Data Governance Analyst;
-- Data Platform Engineer.
+- Data Platform Engineer;
+- profissionais responsáveis por observabilidade e confiabilidade de dados.
 
-## 4. Project Objective
+A solução deve ser compreensível tanto para profissionais técnicos quanto para responsáveis por decisões de negócio e governança.
 
-Build an AI-assisted incident analysis workflow capable of:
+---
 
-1. receiving a structured data incident;
-2. analyzing available data quality signals;
-3. collecting and referencing supporting evidence;
-4. assessing possible business impact;
-5. retrieving applicable governance policies or controls;
-6. generating root-cause hypotheses;
-7. recommending remediation actions;
-8. estimating confidence;
-9. identifying when human review is required;
-10. returning a structured and traceable response.
+<a id="objetivo"></a>
 
-## 5. Positioning
+## 🚀 4. Objetivo
 
-The project is designed to reinforce professional positioning in:
+Construir um fluxo assistido por IA capaz de:
 
-- Data Engineering;
-- AI applied to business;
+1. receber um incidente de dados estruturado;
+2. validar as informações de entrada;
+3. organizar as evidências disponíveis;
+4. analisar sinais de qualidade de dados;
+5. avaliar possíveis impactos de negócio;
+6. identificar políticas ou controles de governança aplicáveis;
+7. produzir hipóteses de causa raiz;
+8. recomendar ações de investigação ou remediação;
+9. estimar o nível de confiança da análise;
+10. identificar quando revisão humana é obrigatória;
+11. retornar uma resposta estruturada, explicável e rastreável.
+
+---
+
+<a id="posicionamento"></a>
+
+## 🧭 5. Posicionamento
+
+O projeto foi concebido para reforçar competências relacionadas a:
+
+- Engenharia de Dados;
+- IA aplicada a negócios;
+- arquitetura de agentes;
 - Data Quality;
 - Data Governance;
 - DataOps;
-- AI safety and human oversight.
+- APIs;
+- avaliação de sistemas de IA;
+- testes automatizados;
+- segurança e guardrails;
+- human-in-the-loop.
 
-## 6. MVP Scope
+O foco está em demonstrar **qualidade de engenharia e capacidade de resolver um problema real**, e não simplesmente acumular tecnologias.
 
-The MVP must include:
+---
 
-- Python 3.12 backend;
-- FastAPI API;
-- Pydantic input and output contracts;
-- LangGraph orchestration;
-- deterministic or controlled tool execution;
-- FakeProvider for tests and CI;
-- optional real LLM provider for controlled demonstrations;
-- four initial agent tools:
-  - quality_analyzer;
-  - business_impact_analyzer;
-  - policy_retriever;
-  - evidence_collector;
-- structured incident response;
-- evidence traceability;
-- insufficient-evidence handling;
-- human-review decision;
-- automated tests;
-- evaluation metrics;
-- GitHub Actions CI;
-- simple web demonstration interface using Node.js, Express, EJS, and vanilla JavaScript.
+<a id="escopo"></a>
 
-## 7. Out of Scope Before Challenge Delivery
+## 📦 6. Escopo do MVP
 
-The following are intentionally excluded from the pre-delivery scope unless a critical
-requirement emerges:
+O MVP deverá incluir:
+
+### Backend
+
+- Python 3.12;
+- FastAPI;
+- Pydantic;
+- LangGraph.
+
+### Domínio
+
+- contratos estruturados de entrada;
+- modelo de evidências;
+- classificação de incidente;
+- severidade;
+- impacto de negócio;
+- hipóteses de causa raiz;
+- recomendações;
+- controles de governança;
+- resposta estruturada.
+
+### Ferramentas
+
+Quatro capacidades iniciais:
+
+```text
+quality_analyzer
+business_impact_analyzer
+policy_retriever
+evidence_collector
+```
+
+### Inteligência Artificial
+
+- abstração de provider;
+- comportamento determinístico para testes;
+- integração opcional com modelo real;
+- CI independente de credenciais externas.
+
+### Governança
+
+- rastreabilidade de evidências;
+- tratamento de evidência insuficiente;
+- separação entre fatos e hipóteses;
+- confidence;
+- revisão humana;
+- guardrails.
+
+### Qualidade
+
+- pytest;
+- pytest-cov;
+- Ruff;
+- GitHub Actions;
+- testes unitários;
+- testes de integração;
+- avaliação objetiva.
+
+### Interface
+
+Interface de demonstração utilizando:
+
+```text
+Node.js
+Express
+EJS
+Vanilla JavaScript
+```
+
+---
+
+<a id="fora-escopo"></a>
+
+## 🧊 7. Fora do escopo antes da entrega
+
+As seguintes tecnologias ou capacidades permanecem fora do MVP salvo necessidade explícita:
 
 - Kubernetes;
-- multi-agent architecture;
-- mandatory cloud deployment;
-- complex relational or NoSQL databases;
+- arquitetura multi-agent;
+- infraestrutura cloud obrigatória;
+- bancos relacionais complexos;
+- bancos NoSQL complexos;
 - Qdrant;
 - Redis;
-- Airflow inside the Challenge runtime;
-- Spark inside the Challenge runtime;
+- execução de Airflow no runtime do Challenge;
+- execução de Spark no runtime do Challenge;
 - React;
 - Next.js;
-- autonomous remediation of production systems;
-- automatic execution of destructive actions;
-- complex authentication or enterprise IAM;
-- unnecessary infrastructure complexity.
+- autenticação corporativa complexa;
+- IAM empresarial;
+- remediação autônoma de produção;
+- execução automática de ações destrutivas;
+- arquitetura distribuída sem benefício demonstrável.
 
-## 8. Initial Agent Tools
+Essas decisões reduzem risco de implementação e ajudam a manter foco no problema principal.
 
-### quality_analyzer
+---
 
-Purpose:
+<a id="ferramentas"></a>
 
-Analyze data quality evidence and identify signals such as invalid records,
-missing relationships, validation failures, reconciliation differences, and other
-quality problems.
+## 🛠️ 8. Ferramentas iniciais
 
-### business_impact_analyzer
+### `quality_analyzer`
 
-Purpose:
+Responsável por analisar evidências relacionadas à qualidade dos dados.
 
-Translate technical findings into potential business consequences and affected
-business processes.
+Exemplos:
 
-### policy_retriever
+- registros inválidos;
+- relacionamentos ausentes;
+- diferenças de reconciliação;
+- falhas de validação;
+- problemas de integridade;
+- divergências de volume.
 
-Purpose:
+---
 
-Retrieve relevant governance rules, controls, or policies that apply to the incident.
+### `business_impact_analyzer`
 
-### evidence_collector
+Responsável por traduzir descobertas técnicas em possíveis consequências de negócio.
 
-Purpose:
+Deve diferenciar claramente:
 
-Collect, normalize, and reference the evidence used by the agent so that conclusions
-remain traceable.
+- impacto confirmado;
+- impacto potencial;
+- impacto desconhecido.
 
-## 9. Expected Structured Output
+---
 
-The target response contract should contain approximately:
+### `policy_retriever`
 
-- incident_id;
-- classification;
-- severity;
-- executive_summary;
-- evidence;
-- business_impact;
-- root_cause_hypotheses;
-- recommended_actions;
-- governance_controls;
-- confidence;
-- human_review_required.
+Responsável por identificar políticas, regras ou controles de governança relacionados ao incidente.
 
-The final schema will be defined separately in the project contracts.
+A implementação inicial deverá permanecer simples, previsível e testável.
 
-## 10. Human Oversight
+---
 
-The agent is advisory.
+### `evidence_collector`
 
-Human review must be required when conditions such as the following are present:
+Responsável por coletar, normalizar e organizar as evidências utilizadas durante a análise.
 
-- critical or high-risk incident;
-- low confidence;
-- insufficient evidence;
-- conflicting evidence;
-- potential regulatory or governance impact;
-- destructive or irreversible recommended action;
-- material business impact.
+Sua função é preservar a rastreabilidade entre:
 
-The agent must not automatically execute critical remediation actions.
+```text
+Evidência
+   ↓
+Finding
+   ↓
+Hipótese
+   ↓
+Recomendação
+```
 
-## 11. Evidence and Grounding Principles
+---
 
-The system should distinguish among:
+<a id="resposta"></a>
 
-- observed evidence;
-- deterministic tool results;
-- model-generated hypotheses;
-- recommendations.
+## 📑 9. Resposta estruturada
 
-The agent should not present unsupported hypotheses as verified facts.
+O contrato final deverá representar informações como:
 
-When available evidence is insufficient, the system should explicitly communicate that
-limitation rather than invent supporting information.
+```text
+incident_id
+classification
+severity
+executive_summary
+evidence
+business_impact
+root_cause_hypotheses
+recommended_actions
+governance_controls
+confidence
+human_review_required
+human_review_reasons
+```
 
-## 12. Reference Repositories
+Os detalhes formais são mantidos nos contratos localizados em:
 
-Existing repositories may provide patterns, examples, or test cases but will remain
-independent projects.
+```text
+docs/contracts/
+```
 
-### aws-lakehouse-engineering-lab
+A resposta deve ser serializável, validável e adequada tanto para API quanto para interface web.
 
-Primary source of Data Quality and incident scenarios, especially DE-101 and DE-102.
+---
 
-### databricks-lakehouse-data-engineering-lab
+<a id="supervisao"></a>
 
-Reference for Data Engineering and lakehouse architecture patterns.
+## 👤 10. Supervisão humana
 
-### agente-ia-manuais-rh-rag
+O agente possui caráter **consultivo**.
 
-Reference for FastAPI, guardrails, source traceability, and insufficient-evidence
-responses.
+A revisão humana deve ser obrigatória quando houver condições de maior risco.
 
-### edudocs-ai-agent-oci
+Exemplos:
 
-Reference for LangGraph, FakeProvider, automated evaluation, metrics, and safety.
+- severidade crítica;
+- impacto material de negócio;
+- baixa confidence;
+- evidência insuficiente;
+- evidências conflitantes;
+- exposição regulatória;
+- problema de governança;
+- problema de privacidade;
+- recomendação destrutiva;
+- ação irreversível;
+- causa raiz altamente incerta.
 
-### growth_equestre_hackathon_2026
+O agente não deve executar automaticamente ações críticas de remediação.
 
-Reference for Node.js, EJS, and demonstration-oriented user experience.
+### Princípio
 
-These repositories must not be transformed into the Challenge repository.
+```text
+Maior risco
+    ↓
+Maior necessidade de supervisão humana
+```
 
-## 13. Evaluation Metrics
+---
 
-Initial evaluation metrics:
+<a id="evidencia"></a>
 
-- schema_valid_rate;
-- severity_accuracy;
-- evidence_traceability_rate;
-- unsupported_rejection_rate;
-- human_review_accuracy;
-- tool_execution_success_rate;
-- response_latency;
-- test_pass_rate.
+## 🧾 11. Princípios de evidência e grounding
 
-Exact calculation rules and evaluation datasets will be defined in
-`docs/evaluation/`.
+O sistema deve distinguir explicitamente entre:
 
-## 14. Development Principles
+- evidência observada;
+- resultado de ferramenta determinística;
+- hipótese;
+- recomendação.
 
-Development should follow this loop:
+Uma hipótese gerada durante a análise não pode ser apresentada como fato confirmado sem evidência adequada.
 
-1. plan the change;
-2. define the acceptance criteria;
-3. create a small implementation task;
-4. implement;
-5. run pytest;
-6. run Ruff;
-7. review the result;
-8. commit;
-9. proceed to the next task.
+Quando a evidência for insuficiente, o sistema deverá declarar a limitação explicitamente.
 
-Codex tasks must be classified as:
+### Comportamento esperado
 
-- LIGHT;
-- MEDIUM;
-- HIGH.
+```text
+Evidência suficiente
+      ↓
+Conclusão sustentada
 
-Whenever possible, Codex work should remain LIGHT or MEDIUM with narrowly defined
-scope.
+Evidência parcial
+      ↓
+Conclusão qualificada
 
-## 15. Definition of MVP Success
+Evidência insuficiente
+      ↓
+Limitação explícita
+      +
+Revisão humana quando aplicável
+```
 
-The MVP will be considered successful when:
+### Princípio de rastreabilidade
 
-- a valid incident can be submitted to the system;
-- the workflow invokes the required analysis tools;
-- the result conforms to the response schema;
-- supporting evidence is traceable;
-- unsupported conclusions are rejected or qualified;
-- critical situations trigger human review;
-- deterministic test scenarios run without a real LLM;
-- automated tests pass;
-- Ruff passes;
-- CI passes;
-- at least one representative Data Quality incident can be demonstrated end to end;
-- the project can be explained clearly as a business-oriented AI governance solution.
+Conclusões importantes devem ser associáveis às evidências utilizadas.
 
-## 16. Delivery Principle
+Isso permite responder:
 
-The Challenge will prioritize a reliable, explainable, testable, and demonstrable
-system over architectural complexity.
+- de onde veio esta informação?
+- qual evidência sustenta esta conclusão?
+- esta informação é observada ou inferida?
+- qual o grau de confiança?
+- por que revisão humana foi exigida?
 
-Professional quality will be demonstrated through disciplined engineering decisions,
-not through the number of technologies used.
+---
+
+<a id="referencias"></a>
+
+## 🔗 12. Projetos de referência
+
+Outros repositórios do portfólio poderão fornecer padrões técnicos, cenários ou exemplos.
+
+Eles permanecem projetos independentes.
+
+### `aws-lakehouse-engineering-lab`
+
+Referência principal para:
+
+- incidentes de Data Quality;
+- cenários DE-101;
+- cenários DE-102;
+- investigação de divergências;
+- evidências de pipeline.
+
+### `databricks-lakehouse-data-engineering-lab`
+
+Referência para:
+
+- Engenharia de Dados;
+- arquitetura lakehouse;
+- Databricks;
+- padrões de pipelines.
+
+### `agente-ia-manuais-rh-rag`
+
+Referência para:
+
+- FastAPI;
+- RAG;
+- guardrails;
+- rastreabilidade de fontes;
+- comportamento com evidência insuficiente.
+
+### `edudocs-ai-agent-oci`
+
+Referência para:
+
+- LangGraph;
+- abstração de provider;
+- avaliação;
+- métricas;
+- comportamento determinístico.
+
+### `growth_equestre_hackathon_2026`
+
+Referência para:
+
+- Node.js;
+- Express;
+- EJS;
+- experiência de demonstração.
+
+Nenhum desses repositórios deverá ser transformado diretamente no projeto atual.
+
+---
+
+<a id="metricas"></a>
+
+## 📊 13. Métricas de avaliação
+
+As métricas inicialmente planejadas são:
+
+| Métrica | Objetivo |
+|---|---|
+| `schema_valid_rate` | Conformidade das respostas com o schema |
+| `severity_accuracy` | Precisão da classificação de severidade |
+| `evidence_traceability_rate` | Rastreabilidade das conclusões |
+| `unsupported_rejection_rate` | Rejeição de afirmações sem suporte |
+| `human_review_accuracy` | Precisão das decisões de revisão humana |
+| `tool_execution_success_rate` | Sucesso das ferramentas |
+| `response_latency` | Tempo de resposta |
+| `test_pass_rate` | Estabilidade da suíte de testes |
+
+As definições exatas serão mantidas em:
+
+```text
+docs/evaluation/
+```
+
+---
+
+<a id="desenvolvimento"></a>
+
+## ⚙️ 14. Princípios de desenvolvimento
+
+O desenvolvimento segue um processo incremental:
+
+```text
+Planejar
+   ↓
+Definir contrato
+   ↓
+Definir critérios de aceite
+   ↓
+Implementar
+   ↓
+Testar
+   ↓
+Executar quality gates
+   ↓
+Revisar
+   ↓
+Versionar
+```
+
+### Diretrizes
+
+As tarefas devem, sempre que possível:
+
+- possuir escopo pequeno;
+- ter comportamento previsível;
+- ter testes automatizados;
+- evitar acoplamento desnecessário;
+- preservar rastreabilidade;
+- manter CI determinística;
+- evitar dependência obrigatória de serviços externos.
+
+Tarefas grandes devem ser divididas antes da implementação quando isso reduzir risco.
+
+---
+
+<a id="sucesso"></a>
+
+## ✅ 15. Critérios de sucesso do MVP
+
+O MVP será considerado bem-sucedido quando:
+
+- um incidente válido puder ser submetido ao sistema;
+- os contratos forem validados corretamente;
+- as ferramentas necessárias forem executadas;
+- a resposta final respeitar o schema;
+- evidências puderem ser rastreadas;
+- conclusões sem suporte forem rejeitadas ou qualificadas;
+- situações críticas exigirem revisão humana;
+- cenários determinísticos funcionarem sem modelo externo;
+- testes automatizados forem aprovados;
+- Ruff for aprovado;
+- CI estiver aprovada;
+- pelo menos um incidente representativo puder ser demonstrado de ponta a ponta;
+- a solução puder ser explicada claramente em termos técnicos e de negócio.
+
+---
+
+<a id="entrega"></a>
+
+## 🏁 16. Princípio de entrega
+
+O projeto prioriza:
+
+```text
+Confiabilidade
+      +
+Explicabilidade
+      +
+Testabilidade
+      +
+Rastreabilidade
+      +
+Demonstrabilidade
+```
+
+sobre complexidade arquitetural sem benefício concreto.
+
+Qualidade profissional será demonstrada por:
+
+- decisões claras;
+- arquitetura coerente;
+- contratos explícitos;
+- testes;
+- CI;
+- documentação;
+- métricas;
+- rastreabilidade;
+- governança.
+
+---
+
+> 🎯 O objetivo do **AI Data Governance Agent** não é substituir especialistas, mas oferecer uma camada estruturada de análise que transforme evidências fragmentadas em informações rastreáveis e úteis para tomada de decisão.

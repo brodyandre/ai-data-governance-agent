@@ -1,54 +1,106 @@
-# Evidence Model Contract
+# 🧾 Contrato do Modelo de Evidência — Evidence
 
-## Purpose
+Este documento define o contrato técnico do modelo de domínio `Evidence` utilizado pelo **AI Data Governance Agent**.
 
-This document defines the technical contract for the `Evidence` domain model used by the AI Data Governance Agent.
+A implementação correspondente está planejada na tarefa:
 
-The implementation is tracked by backlog item:
+```text
+DG-102 — Modelo Evidence
+```
 
-`DG-102 — Evidence model`
+O modelo será posteriormente implementado utilizando **Pydantic 2**.
 
-The model will later be implemented with Pydantic 2.
+Este contrato refina a definição conceitual inicialmente apresentada em:
 
-This contract refines the conceptual evidence definition originally documented in:
+➡️ [`INCIDENT_INPUT.md`](INCIDENT_INPUT.md)
 
-`docs/contracts/INCIDENT_INPUT.md`
+e depende dos enums definidos em:
 
-and depends on the enum definitions documented in:
-
-`docs/contracts/DOMAIN_ENUMS.md`
-
----
-
-## Objective
-
-The Evidence model represents one traceable piece of technical, analytical, business, or governance information associated with an incident.
-
-Examples include:
-
-- Data Quality validation results;
-- pipeline reports;
-- reconciliation results;
-- logs;
-- business rules;
-- governance policies;
-- analyst observations;
-- metrics;
-- dataset samples.
-
-Evidence is a core traceability primitive of the project.
-
-Later components must be able to reference an evidence item through its stable `evidence_id`.
+➡️ [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md)
 
 ---
 
-## Model Name
+## 📑 Sumário
 
-Python class:
+- [Objetivo](#objetivo)
+- [Nome do modelo](#nome-modelo)
+- [Estrutura](#estrutura)
+- [Campos](#campos)
+- [evidence_id](#evidence-id)
+- [evidence_type](#evidence-type)
+- [source](#source)
+- [description](#description)
+- [value](#value)
+- [collected_at](#collected-at)
+- [reliability](#reliability)
+- [metadata](#metadata)
+- [Evidência mínima válida](#minima-valida)
+- [Exemplo completo](#exemplo-completo)
+- [Campos extras](#campos-extras)
+- [Normalização de strings](#normalizacao)
+- [Validação de enums](#validacao-enums)
+- [Serialização](#serializacao)
+- [IDs duplicados](#ids-duplicados)
+- [Falhas de validação](#falhas-validacao)
+- [Testes obrigatórios](#testes)
+- [Limites de escopo](#limites)
+- [Dependências](#dependencias)
+- [Critérios de aceite](#criterios)
+- [Responsabilidades adiadas](#adiadas)
 
-`Evidence`
+---
 
-Planned implementation:
+<a id="objetivo"></a>
+
+## 🎯 Objetivo
+
+O modelo `Evidence` representa uma unidade individual e rastreável de informação técnica, analítica, de negócio ou de governança associada a um incidente.
+
+Exemplos de evidências:
+
+- resultado de validação de Data Quality;
+- relatório de pipeline;
+- resultado de reconciliação;
+- log;
+- regra de negócio;
+- política de governança;
+- observação de analista;
+- métrica;
+- amostra de dataset.
+
+A evidência é um dos elementos centrais de rastreabilidade do projeto.
+
+Componentes posteriores deverão ser capazes de referenciar uma evidência por meio de um identificador estável:
+
+```text
+evidence_id
+```
+
+### Princípio
+
+```text
+Evidência
+   │
+   ├── possui origem
+   ├── possui tipo
+   ├── pode possuir valor
+   ├── pode possuir confiabilidade
+   └── pode ser referenciada por outras estruturas
+```
+
+---
+
+<a id="nome-modelo"></a>
+
+## 🐍 Nome do modelo
+
+Classe Python planejada:
+
+```text
+Evidence
+```
+
+Estrutura prevista:
 
 ```text
 src/
@@ -59,7 +111,7 @@ src/
         └── evidence.py
 ```
 
-Planned tests:
+Testes previstos:
 
 ```text
 tests/
@@ -70,53 +122,87 @@ tests/
 
 ---
 
-## Fields
+<a id="estrutura"></a>
 
-The Evidence model must support the following fields.
+## 🏗️ Estrutura
 
-| Field | Type | Required |
-| --- | --- | --- |
-| `evidence_id` | string | yes |
-| `evidence_type` | `EvidenceType` | yes |
-| `source` | string | yes |
-| `description` | string or null | no |
-| `value` | JSON-compatible value or null | no |
-| `collected_at` | datetime or null | no |
-| `reliability` | `EvidenceReliability` or null | no |
-| `metadata` | JSON-compatible object | no |
+Visão conceitual:
+
+```text
+Evidence
+   │
+   ├── evidence_id
+   ├── evidence_type
+   ├── source
+   ├── description
+   ├── value
+   ├── collected_at
+   ├── reliability
+   └── metadata
+```
+
+O modelo deve validar apenas uma evidência por vez.
+
+Responsabilidades que dependem de uma coleção de evidências pertencem a camadas posteriores.
 
 ---
 
-## evidence_id
+<a id="campos"></a>
 
-Type:
+## 📦 Campos
 
-`str`
+O modelo deverá suportar os seguintes campos:
 
-Required:
+| Campo | Tipo | Obrigatório |
+|---|---|---|
+| `evidence_id` | `str` | Sim |
+| `evidence_type` | `EvidenceType` | Sim |
+| `source` | `str` | Sim |
+| `description` | `str \| None` | Não |
+| `value` | valor JSON-compatible ou `None` | Não |
+| `collected_at` | `datetime \| None` | Não |
+| `reliability` | `EvidenceReliability \| None` | Não |
+| `metadata` | objeto JSON-compatible | Não |
 
-Yes.
+---
 
-Purpose:
+<a id="evidence-id"></a>
 
-Provide a stable identifier that other domain objects can use to reference this evidence item.
+## 🆔 `evidence_id`
 
-Example:
+### Tipo
+
+```text
+str
+```
+
+### Obrigatório
+
+**Sim**
+
+### Objetivo
+
+Fornecer um identificador estável que permita que outros objetos do domínio façam referência a essa evidência.
+
+Exemplo:
 
 ```text
 EV-001
 ```
 
-Rules:
+### Regras
 
-- must be present;
-- must contain non-whitespace text;
-- leading and trailing whitespace should be removed;
-- identifiers are case-sensitive;
-- identifiers must not be automatically rewritten;
-- uniqueness is not enforced inside a single Evidence instance.
+O campo:
 
-Examples of valid identifiers:
+- deve estar presente;
+- deve conter texto diferente de espaços em branco;
+- deve ter espaços iniciais removidos;
+- deve ter espaços finais removidos;
+- é case-sensitive;
+- não deve ser reescrito automaticamente;
+- não precisa ser único no nível de uma instância individual de `Evidence`.
+
+### Exemplos válidos
 
 ```text
 EV-001
@@ -124,7 +210,7 @@ DQ-CHECK-17
 PIPELINE-REPORT-2026-10-06
 ```
 
-Examples of invalid identifiers:
+### Exemplos inválidos
 
 ```text
 ""
@@ -132,50 +218,95 @@ Examples of invalid identifiers:
 null
 ```
 
-Duplicate evidence identifiers are not detected by the Evidence model itself.
+### Normalização permitida
 
-Duplicate detection belongs to a collection-level or incident-level validation step.
+Entrada:
 
-This allows `DG-102` to remain focused on validating one evidence item.
+```text
+"  EV-001  "
+```
+
+Resultado:
+
+```text
+"EV-001"
+```
+
+### Normalização proibida
+
+Entrada:
+
+```text
+"ev-001"
+```
+
+não deve ser automaticamente convertida para:
+
+```text
+"EV-001"
+```
+
+O conteúdo semântico do identificador deve ser preservado.
+
+### Unicidade
+
+O modelo `Evidence` não deve detectar sozinho IDs duplicados.
+
+Esse tipo de validação exige acesso a uma coleção.
+
+Exemplo:
+
+```text
+Evidence A → EV-001
+Evidence B → EV-001
+```
+
+A duplicidade deverá ser tratada no nível de:
+
+- `IncidentInput`;
+- coleção de evidências;
+- ou ferramenta responsável pela organização das evidências.
 
 ---
 
-## evidence_type
+<a id="evidence-type"></a>
 
-Type:
+## 🏷️ `evidence_type`
 
-`EvidenceType`
+### Tipo
 
-Required:
+```text
+EvidenceType
+```
 
-Yes.
+### Obrigatório
 
-Purpose:
+**Sim**
 
-Identify the semantic type of the evidence.
+### Objetivo
 
-Allowed serialized values are defined by:
+Representar o tipo semântico da evidência.
 
-`docs/contracts/DOMAIN_ENUMS.md`
+Os valores permitidos são definidos em:
 
-Current values:
+➡️ [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md)
 
-- `data_quality_check`;
-- `pipeline_report`;
-- `validation_result`;
-- `reconciliation_result`;
-- `log`;
-- `business_rule`;
-- `governance_policy`;
-- `analyst_observation`;
-- `metric`;
-- `dataset_sample`.
+### Valores atuais
 
-Unsupported evidence types must be rejected.
+```text
+data_quality_check
+pipeline_report
+validation_result
+reconciliation_result
+log
+business_rule
+governance_policy
+analyst_observation
+metric
+dataset_sample
+```
 
-The model must not silently convert unsupported values into another evidence type.
-
-Examples:
+### Exemplos válidos
 
 ```text
 reconciliation_result
@@ -183,9 +314,7 @@ pipeline_report
 metric
 ```
 
-are valid.
-
-Examples:
+### Exemplos inválidos
 
 ```text
 reconciliation
@@ -194,25 +323,43 @@ DataQuality
 unknown_type
 ```
 
-are invalid.
+Valores não suportados devem ser rejeitados.
+
+O sistema não deve converter silenciosamente uma entrada inválida para outro tipo.
 
 ---
 
-## source
+<a id="source"></a>
 
-Type:
+## 🔗 `source`
 
-`str`
+### Tipo
 
-Required:
+```text
+str
+```
 
-Yes.
+### Obrigatório
 
-Purpose:
+**Sim**
 
-Identify the system, process, document, report, user, component, or other origin that produced the evidence.
+### Objetivo
 
-Examples:
+Identificar a origem da evidência.
+
+A origem pode representar:
+
+- sistema;
+- pipeline;
+- documento;
+- relatório;
+- usuário;
+- componente;
+- processo automatizado;
+- catálogo;
+- mecanismo de validação.
+
+### Exemplos
 
 ```text
 pipeline-report
@@ -222,14 +369,17 @@ governance-policy-catalog
 data-engineer-observation
 ```
 
-Rules:
+### Regras
 
-- must be present;
-- must contain non-whitespace text;
-- leading and trailing whitespace should be removed;
-- the original semantic value must otherwise be preserved.
+O campo:
 
-Examples of invalid source values:
+- deve estar presente;
+- deve conter texto diferente de espaços em branco;
+- deve ter espaços iniciais removidos;
+- deve ter espaços finais removidos;
+- deve preservar seu valor semântico original.
+
+### Exemplos inválidos
 
 ```text
 ""
@@ -239,90 +389,131 @@ null
 
 ---
 
-## description
+<a id="description"></a>
 
-Type:
+## 📝 `description`
 
-`str | None`
+### Tipo
 
-Required:
+```text
+str | None
+```
 
-No.
+### Obrigatório
 
-Purpose:
+**Não**
 
-Provide a concise human-readable explanation of what the evidence represents.
+### Objetivo
 
-Example:
+Fornecer uma explicação curta e legível sobre o que a evidência representa.
+
+Exemplo:
 
 ```text
 Raw and silver record counts differ.
 ```
 
-When provided:
+### Regras
 
-- leading and trailing whitespace should be removed;
-- the resulting value must contain meaningful non-whitespace text.
+Quando presente:
 
-An empty description should not be accepted as meaningful content.
+- remover espaços iniciais;
+- remover espaços finais;
+- rejeitar conteúdo composto apenas por espaços.
 
-The field may be omitted when the evidence value is self-explanatory or when the source does not provide a description.
+Exemplo inválido:
+
+```text
+"   "
+```
+
+O campo pode ser omitido quando:
+
+- o valor for autoexplicativo;
+- a origem não fornecer descrição;
+- não houver conteúdo adicional relevante.
 
 ---
 
-## value
+<a id="value"></a>
 
-Type:
+## 📊 `value`
 
-JSON-compatible value or `None`.
+### Tipo
 
-Required:
+Valor JSON-compatible ou:
 
-No.
+```text
+None
+```
 
-Purpose:
+### Obrigatório
 
-Store the actual evidence payload or summarized evidence value.
+**Não**
 
-The initial conceptual Incident Input contract described this concept as:
+### Objetivo
 
-`value or content`
+Armazenar o valor efetivo ou resumido associado à evidência.
 
-For the Challenge MVP, the canonical field name is:
+O contrato conceitual original utilizava a ideia:
 
-`value`
+```text
+value or content
+```
 
-A separate `content` field will not be introduced.
+Para o MVP, o campo canônico será exclusivamente:
 
-This avoids two fields representing the same concept.
+```text
+value
+```
 
-The value may contain JSON-compatible data such as:
+Não será introduzido um campo separado chamado:
+
+```text
+content
+```
+
+Essa decisão evita duas propriedades diferentes representando o mesmo conceito.
+
+---
+
+## Tipos suportados
+
+O valor pode conter dados compatíveis com JSON:
 
 - string;
-- integer;
-- floating-point number;
+- inteiro;
+- ponto flutuante;
 - boolean;
-- list;
-- object;
+- lista;
+- objeto;
 - null.
 
-Examples:
+### String
 
 ```json
 "orders RAW=400 SILVER=388"
 ```
 
+### Inteiro
+
 ```json
 30
 ```
+
+### Float
 
 ```json
 0.075
 ```
 
+### Boolean
+
 ```json
 true
 ```
+
+### Objeto
 
 ```json
 {
@@ -332,6 +523,8 @@ true
 }
 ```
 
+### Lista
+
 ```json
 [
   "ORD-000038",
@@ -340,112 +533,162 @@ true
 ]
 ```
 
-The Evidence model must not interpret or infer the semantic meaning of `value`.
+### Regra
 
-Interpretation belongs to later deterministic tools or workflow logic.
+O modelo `Evidence` não deve interpretar o significado do campo `value`.
+
+Exemplo:
+
+```text
+Evidence
+   │
+   └── value
+          │
+          └── apenas armazena
+```
+
+A interpretação pertence a:
+
+- ferramentas determinísticas;
+- regras de domínio;
+- etapas posteriores do workflow.
 
 ---
 
-## collected_at
+<a id="collected-at"></a>
 
-Type:
+## 🕒 `collected_at`
 
-`datetime | None`
+### Tipo
 
-Required:
+```text
+datetime | None
+```
 
-No.
+### Obrigatório
 
-Purpose:
+**Não**
 
-Represent when the evidence was collected or generated.
+### Objetivo
 
-Example serialized value:
+Representar o momento em que a evidência foi coletada ou gerada.
+
+### Exemplo serializado
 
 ```text
 2026-10-05T20:00:00Z
 ```
 
-Pydantic may accept a valid ISO 8601 datetime string and parse it into a Python datetime.
+A implementação com Pydantic poderá aceitar uma string ISO 8601 válida e convertê-la para `datetime`.
 
-Malformed datetime values must be rejected.
-
-Examples of valid input:
+### Exemplos válidos
 
 ```text
 2026-10-05T20:00:00Z
 2026-10-05T17:00:00-03:00
 ```
 
-Example of invalid input:
+### Exemplo inválido
 
 ```text
 yesterday evening
 ```
 
-DG-102 does not introduce additional timezone business rules.
+Valores temporais malformados devem ser rejeitados.
 
-Timezone-specific policies may be defined later if the project requires them.
+### Timezone
 
----
+A `DG-102` não introduzirá regras adicionais de timezone.
 
-## reliability
-
-Type:
-
-`EvidenceReliability | None`
-
-Required:
-
-No.
-
-Purpose:
-
-Represent the assessed reliability of the evidence source or observation.
-
-Allowed values:
-
-- `low`;
-- `medium`;
-- `high`.
-
-These values are defined in:
-
-`docs/contracts/DOMAIN_ENUMS.md`
-
-No `unknown` reliability enum is defined.
-
-When reliability has not been assessed, the field should remain absent or `None`.
-
-This preserves the distinction between:
-
-- an explicit reliability assessment;
-
-and:
-
-- no reliability assessment.
+Políticas específicas de timezone só deverão ser criadas posteriormente se houver necessidade concreta.
 
 ---
 
-## metadata
+<a id="reliability"></a>
 
-Type:
+## 📈 `reliability`
 
-JSON-compatible object.
+### Tipo
 
-Required:
+```text
+EvidenceReliability | None
+```
 
-No.
+### Obrigatório
 
-Default:
+**Não**
 
-Empty object.
+### Objetivo
 
-Purpose:
+Representar a confiabilidade atribuída à evidência ou à sua fonte.
 
-Store optional evidence-specific contextual attributes that do not justify dedicated top-level fields.
+### Valores permitidos
 
-Examples:
+```text
+low
+medium
+high
+```
+
+Os valores são definidos em:
+
+➡️ [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md)
+
+### Ausência de avaliação
+
+Não existe um valor:
+
+```text
+unknown
+```
+
+para `EvidenceReliability`.
+
+Quando a confiabilidade não tiver sido avaliada, o campo deve permanecer:
+
+```text
+None
+```
+
+ou ausente.
+
+### Princípio
+
+```text
+Reliability informada
+        ≠
+Reliability não avaliada
+```
+
+Essa distinção deve ser preservada.
+
+---
+
+<a id="metadata"></a>
+
+## 🗂️ `metadata`
+
+### Tipo
+
+Objeto JSON-compatible.
+
+### Obrigatório
+
+**Não**
+
+### Valor padrão
+
+Objeto vazio:
+
+```json
+{}
+```
+
+### Objetivo
+
+Armazenar atributos contextuais específicos da evidência que não justificam campos próprios no nível superior do modelo.
+
+### Exemplo
 
 ```json
 {
@@ -455,7 +698,7 @@ Examples:
 }
 ```
 
-or:
+Outro exemplo:
 
 ```json
 {
@@ -464,25 +707,41 @@ or:
 }
 ```
 
-Metadata values must remain JSON-compatible.
+### Regra
 
-The Evidence model should not attempt to interpret metadata semantics.
+O modelo `Evidence` não deve interpretar semanticamente os dados contidos em `metadata`.
 
-Mutable defaults must be created safely.
+### Segurança do valor padrão
 
-The implementation must not use a shared mutable dictionary instance between model objects.
+O objeto padrão deve ser criado de forma segura.
+
+A implementação não deve compartilhar a mesma instância mutável entre objetos diferentes.
+
+Exemplo de comportamento esperado:
+
+```text
+Evidence A.metadata
+        ≠
+mesma instância mutável
+        ≠
+Evidence B.metadata
+```
+
+Uma alteração em `Evidence A.metadata` não deve modificar `Evidence B.metadata`.
 
 ---
 
-## Minimum Valid Evidence
+<a id="minima-valida"></a>
 
-A structurally valid Evidence item requires only:
+## ✅ Evidência mínima válida
+
+Uma evidência estruturalmente válida exige apenas:
 
 - `evidence_id`;
 - `evidence_type`;
 - `source`.
 
-Example:
+Exemplo:
 
 ```json
 {
@@ -492,19 +751,27 @@ Example:
 }
 ```
 
-This is intentionally allowed.
+Esse comportamento é intencional.
 
-The project accepts that evidence may be incomplete.
+### Princípio
 
-Insufficient informational content is different from an invalid schema.
+```text
+Estrutura válida
+      ≠
+Evidência suficiente
+```
 
-Later analysis and governance logic may determine that the evidence is insufficient to support a conclusion.
+Uma evidência pode ser válida segundo o schema, mas insuficiente para sustentar uma conclusão.
 
-DG-102 must not attempt to calculate evidence sufficiency.
+A avaliação de suficiência pertence a etapas posteriores.
+
+A `DG-102` não deve calcular suficiência de evidência.
 
 ---
 
-## Complete Example
+<a id="exemplo-completo"></a>
+
+## 🧪 Exemplo completo
 
 ```json
 {
@@ -526,19 +793,44 @@ DG-102 must not attempt to calculate evidence sufficiency.
 }
 ```
 
+### Interpretação estrutural
+
+O exemplo representa:
+
+```text
+Evidence EV-001
+     │
+     ├── tipo: reconciliation_result
+     ├── origem: pipeline-report
+     ├── diferença: 12
+     ├── reliability: high
+     └── dataset: orders
+```
+
+O modelo apenas valida e representa esses dados.
+
+Ele não conclui automaticamente:
+
+- causa raiz;
+- impacto;
+- severidade;
+- recomendação.
+
 ---
 
-## Extra Fields
+<a id="campos-extras"></a>
 
-The Evidence model should reject undocumented top-level fields.
+## 🚫 Campos extras
 
-The planned Pydantic configuration should use strict schema behavior equivalent to:
+O modelo deverá rejeitar campos top-level que não estejam definidos neste contrato.
+
+A configuração planejada em Pydantic deve possuir comportamento equivalente a:
 
 ```text
 extra = "forbid"
 ```
 
-For example, this should be rejected:
+### Exemplo inválido
 
 ```json
 {
@@ -549,56 +841,88 @@ For example, this should be rejected:
 }
 ```
 
-This behavior helps detect malformed or unsupported evidence structures early.
+O campo:
+
+```text
+unsupported_field
+```
+
+não pertence ao contrato e deverá gerar erro de validação.
+
+### Justificativa
+
+Essa abordagem ajuda a detectar:
+
+- payloads malformados;
+- erros de integração;
+- campos incorretos;
+- alterações de contrato não documentadas.
 
 ---
 
-## String Normalization
+<a id="normalizacao"></a>
 
-For top-level textual fields:
+## ✂️ Normalização de strings
 
-- leading whitespace should be removed;
-- trailing whitespace should be removed.
-
-This applies to:
+Os seguintes campos textuais top-level devem remover espaços no início e no final:
 
 - `evidence_id`;
 - `source`;
 - `description`.
 
-Example input:
+### Exemplo
+
+Entrada:
 
 ```text
 "  EV-001  "
 ```
 
-should result in:
+Resultado:
 
 ```text
 "EV-001"
 ```
 
-However, the system must not perform semantic rewriting.
+### Regra
 
-For example:
+Somente whitespace externo deve ser removido.
+
+O sistema não deve executar reescrita semântica.
+
+Entrada:
 
 ```text
 "ev-001"
 ```
 
-must not automatically become:
+não deve se transformar em:
 
 ```text
 "EV-001"
 ```
 
+Da mesma forma:
+
+```text
+"Pipeline Report"
+```
+
+não deve ser reescrito automaticamente como:
+
+```text
+"pipeline-report"
+```
+
 ---
 
-## Enum Validation
+<a id="validacao-enums"></a>
 
-The model must use the domain enums defined by DG-101.
+## 🏷️ Validação de enums
 
-Example:
+O modelo deve utilizar os enums definidos pela `DG-101`.
+
+Exemplo válido:
 
 ```json
 {
@@ -609,9 +933,7 @@ Example:
 }
 ```
 
-must validate successfully.
-
-This must fail:
+Exemplo inválido:
 
 ```json
 {
@@ -621,22 +943,41 @@ This must fail:
 }
 ```
 
-Enum validation must remain case-sensitive.
+A validação deve permanecer case-sensitive.
+
+### Fluxo
+
+```text
+Entrada
+   │
+   ▼
+Valor existe no enum?
+   │
+ ┌─┴─┐
+ │   │
+Sim Não
+ │   │
+ ▼   ▼
+Aceita Rejeita
+```
 
 ---
 
-## Serialization
+<a id="serializacao"></a>
 
-The Evidence model must support deterministic serialization.
+## 📤 Serialização
 
-When serialized in JSON mode:
+O modelo deve possuir serialização determinística.
 
-- enum members must use their string values;
-- datetimes must use an ISO-compatible representation;
-- dictionaries and lists must remain JSON structures;
-- field names must remain stable.
+Em modo JSON:
 
-Example conceptual result:
+- enums devem utilizar seus valores string;
+- datetimes devem utilizar representação compatível com ISO;
+- dicionários devem permanecer objetos;
+- listas devem permanecer listas;
+- nomes de campos devem permanecer estáveis.
+
+### Exemplo conceitual
 
 ```json
 {
@@ -651,36 +992,60 @@ Example conceptual result:
 }
 ```
 
-DG-102 does not require custom JSON encoders when standard Pydantic behavior already satisfies the contract.
+A `DG-102` não precisa adicionar encoders customizados se o comportamento padrão do Pydantic já satisfizer o contrato.
 
 ---
 
-## Duplicate Evidence IDs
+<a id="ids-duplicados"></a>
 
-DG-102 validates one Evidence object at a time.
+## 🔁 IDs duplicados
 
-Therefore, this task must not implement duplicate identifier detection.
+A `DG-102` valida apenas uma instância de `Evidence`.
 
-For example, the following problem:
+Por esse motivo, a tarefa não deve implementar detecção de identificadores duplicados.
+
+Exemplo:
 
 ```text
-Evidence A -> evidence_id = EV-001
-Evidence B -> evidence_id = EV-001
+Evidence A → evidence_id = EV-001
+
+Evidence B → evidence_id = EV-001
 ```
 
-requires access to a collection of Evidence objects.
+Detectar esse problema exige conhecimento da coleção.
 
-That validation belongs to a later incident-level or evidence-collection step.
+### Responsabilidade
 
-The Evidence model itself must not use global state or external registries to detect duplicates.
+```text
+Evidence individual
+        │
+        └── não conhece outros objetos
+
+Coleção de Evidence
+        │
+        └── pode detectar duplicidade
+```
+
+A implementação não deve utilizar:
+
+- estado global;
+- registro global de IDs;
+- cache externo;
+- banco de dados;
+
+para tentar resolver duplicidade no modelo individual.
 
 ---
 
-## Validation Failures
+<a id="falhas-validacao"></a>
 
-Representative invalid cases must include:
+## ❌ Falhas de validação
 
-### Missing evidence_id
+Os casos inválidos representativos devem incluir os seguintes cenários.
+
+---
+
+### `evidence_id` ausente
 
 ```json
 {
@@ -689,7 +1054,15 @@ Representative invalid cases must include:
 }
 ```
 
-### Empty evidence_id
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+---
+
+### `evidence_id` vazio
 
 ```json
 {
@@ -699,7 +1072,15 @@ Representative invalid cases must include:
 }
 ```
 
-### Invalid evidence_type
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+---
+
+### `evidence_type` inválido
 
 ```json
 {
@@ -709,7 +1090,15 @@ Representative invalid cases must include:
 }
 ```
 
-### Missing source
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+---
+
+### `source` ausente
 
 ```json
 {
@@ -718,7 +1107,15 @@ Representative invalid cases must include:
 }
 ```
 
-### Empty source
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+---
+
+### `source` vazio
 
 ```json
 {
@@ -728,7 +1125,15 @@ Representative invalid cases must include:
 }
 ```
 
-### Invalid reliability
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+---
+
+### `reliability` inválida
 
 ```json
 {
@@ -739,7 +1144,15 @@ Representative invalid cases must include:
 }
 ```
 
-### Malformed collected_at
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+---
+
+### `collected_at` malformado
 
 ```json
 {
@@ -750,7 +1163,15 @@ Representative invalid cases must include:
 }
 ```
 
-### Unsupported extra field
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+---
+
+### Campo extra não suportado
 
 ```json
 {
@@ -761,127 +1182,396 @@ Representative invalid cases must include:
 }
 ```
 
+Resultado esperado:
+
+```text
+REJEITADO
+```
+
+O campo `confidence` não pertence ao modelo `Evidence`.
+
 ---
 
-## Required Tests
+<a id="testes"></a>
 
-DG-102 tests should verify at minimum:
+## 🧪 Testes obrigatórios
 
-1. minimal valid Evidence can be constructed;
-2. complete valid Evidence can be constructed;
-3. `evidence_id` is required;
-4. empty or whitespace-only `evidence_id` is rejected;
-5. `source` is required;
-6. empty or whitespace-only `source` is rejected;
-7. valid `EvidenceType` values are accepted;
-8. invalid evidence types are rejected;
-9. valid `EvidenceReliability` values are accepted;
-10. invalid reliability values are rejected;
-11. reliability may be omitted;
-12. description may be omitted;
-13. value may contain representative JSON-compatible data;
-14. valid datetime strings are parsed;
-15. malformed datetime strings are rejected;
-16. metadata defaults safely to an empty dictionary;
-17. mutable metadata is not shared between Evidence instances;
-18. extra top-level fields are rejected;
-19. serialization uses enum string values;
-20. serialization produces predictable JSON-compatible output.
+Os testes da `DG-102` devem verificar, no mínimo, os seguintes cenários.
 
-Tests must remain:
+### 1. Evidência mínima válida
 
-- deterministic;
+Uma `Evidence` contendo apenas:
+
+- `evidence_id`;
+- `evidence_type`;
+- `source`;
+
+deve ser aceita.
+
+---
+
+### 2. Evidência completa válida
+
+Todos os campos documentados devem poder ser utilizados simultaneamente.
+
+---
+
+### 3. `evidence_id` obrigatório
+
+Ausência do campo deve falhar.
+
+---
+
+### 4. `evidence_id` vazio
+
+Valor composto apenas por whitespace deve falhar.
+
+---
+
+### 5. `source` obrigatório
+
+Ausência do campo deve falhar.
+
+---
+
+### 6. `source` vazio
+
+Whitespace-only deve falhar.
+
+---
+
+### 7. `EvidenceType` válido
+
+Valores documentados devem ser aceitos.
+
+---
+
+### 8. `EvidenceType` inválido
+
+Valores não suportados devem ser rejeitados.
+
+---
+
+### 9. `EvidenceReliability` válida
+
+Valores:
+
+```text
+low
+medium
+high
+```
+
+devem ser aceitos.
+
+---
+
+### 10. Reliability inválida
+
+Exemplo:
+
+```text
+trusted
+```
+
+deve ser rejeitado.
+
+---
+
+### 11. Reliability omitida
+
+O campo poderá ser omitido.
+
+---
+
+### 12. Description omitida
+
+O campo poderá ser omitido.
+
+---
+
+### 13. Valores JSON-compatible
+
+O campo `value` deverá aceitar exemplos representativos de:
+
+- string;
+- integer;
+- float;
+- boolean;
+- list;
+- object;
+- null.
+
+---
+
+### 14. Datetime válido
+
+Strings ISO 8601 válidas devem ser interpretadas corretamente.
+
+---
+
+### 15. Datetime inválido
+
+Valores malformados devem ser rejeitados.
+
+---
+
+### 16. Metadata padrão
+
+Quando omitida:
+
+```text
+metadata
+```
+
+deve resultar em objeto vazio.
+
+---
+
+### 17. Metadata não compartilhada
+
+Objetos `Evidence` diferentes não devem compartilhar a mesma instância mutável de metadata.
+
+---
+
+### 18. Campos extras
+
+Campos top-level não documentados devem ser rejeitados.
+
+---
+
+### 19. Serialização dos enums
+
+Enums devem ser serializados utilizando seus valores string.
+
+Exemplo:
+
+```text
+EvidenceType.RECONCILIATION_RESULT
+```
+
+deve gerar:
+
+```text
+reconciliation_result
+```
+
+---
+
+### 20. Serialização previsível
+
+A saída deve produzir estruturas compatíveis com JSON e comportamento determinístico.
+
+---
+
+## Requisitos dos testes
+
+Os testes devem permanecer:
+
+- determinísticos;
 - offline;
-- independent of LLM credentials;
-- independent of network access.
+- independentes de credenciais externas;
+- independentes de rede;
+- independentes de modelos de linguagem.
 
 ---
 
-## Scope Boundaries
+<a id="limites"></a>
 
-DG-102 must not implement:
+## 🚧 Limites de escopo
 
-- evidence collection across multiple items;
-- duplicate evidence-ID detection;
-- evidence sufficiency calculation;
-- evidence conflict detection;
-- evidence scoring;
-- reliability inference;
-- Data Quality analysis;
-- business-impact analysis;
-- IncidentInput;
-- AgentResponse;
-- human-review rules;
+A `DG-102` deve permanecer uma tarefa pequena e focada.
+
+Ela **não deve implementar**:
+
+- coleta de múltiplas evidências;
+- detecção de `evidence_id` duplicado;
+- cálculo de suficiência de evidência;
+- detecção de evidências conflitantes;
+- score de evidência;
+- inferência automática de reliability;
+- análise de Data Quality;
+- análise de impacto de negócio;
+- `IncidentInput`;
+- `AgentResponse`;
+- regras de revisão humana;
 - FastAPI;
 - LangGraph;
-- LLM providers;
-- external storage;
-- database integration;
-- vector search.
+- providers de modelos;
+- armazenamento externo;
+- banco de dados;
+- busca vetorial.
 
-These capabilities belong to later backlog items.
-
----
-
-## Dependencies
-
-DG-102 implementation depends on DG-101 because Evidence uses:
-
-- `EvidenceType`;
-- `EvidenceReliability`.
-
-Therefore, DG-102 implementation should begin only after the DG-101 enum implementation is available.
-
-The documentation contract may be prepared before DG-101 implementation.
+Essas capacidades pertencem a tarefas posteriores.
 
 ---
 
-## Acceptance Criteria
+<a id="dependencias"></a>
 
-DG-102 is complete when:
+## 🔗 Dependências
 
-- the `Evidence` Pydantic model exists;
-- `evidence_id` is required and validated;
-- `evidence_type` uses `EvidenceType`;
-- `source` is required and validated;
-- optional evidence fields are supported;
-- reliability uses `EvidenceReliability`;
-- JSON-compatible evidence values are supported;
-- datetime validation works;
-- extra fields are rejected;
-- serialization is predictable;
-- duplicate-ID detection remains deferred;
-- unit tests cover valid and invalid cases;
-- existing tests continue to pass;
-- `python -m pip check` passes;
-- `ruff check .` passes;
-- `ruff format --check .` passes;
-- `pytest` passes.
+A implementação da `DG-102` depende da `DG-101`.
+
+Isso ocorre porque o modelo `Evidence` utiliza:
+
+```text
+EvidenceType
+EvidenceReliability
+```
+
+Fluxo de dependência:
+
+```text
+DG-101
+DOMAIN_ENUMS
+    │
+    ├── EvidenceType
+    └── EvidenceReliability
+             │
+             ▼
+          DG-102
+          Evidence
+```
+
+Portanto, a implementação do modelo `Evidence` deve começar somente depois que os enums necessários estiverem disponíveis no código.
+
+A documentação pode ser preparada antecipadamente.
 
 ---
 
-## Deferred Responsibilities
+<a id="criterios"></a>
 
-The following responsibilities are intentionally deferred.
+## ✅ Critérios de aceite
 
-### DG-103 — IncidentInput
+A `DG-102` será considerada concluída quando:
 
-- collection of Evidence objects;
-- incident-level validation;
-- duplicate evidence identifier validation.
+- o modelo Pydantic `Evidence` existir;
+- `evidence_id` for obrigatório;
+- `evidence_id` for validado;
+- `evidence_type` utilizar `EvidenceType`;
+- `source` for obrigatório;
+- `source` for validado;
+- campos opcionais forem suportados;
+- `reliability` utilizar `EvidenceReliability`;
+- valores JSON-compatible forem suportados;
+- datetime for validado;
+- campos extras forem rejeitados;
+- serialização for previsível;
+- detecção de ID duplicado permanecer fora desse modelo;
+- testes válidos e inválidos estiverem implementados;
+- testes existentes continuarem aprovados.
 
-### DG-201 — evidence_collector
+### Quality gates
 
-- evidence normalization across an incident;
-- evidence organization;
-- duplicate detection or reporting where appropriate;
-- unsupported evidence handling;
-- traceability processing.
+```bash
+python -m pip check
+ruff check .
+ruff format --check .
+pytest
+```
 
-### DG-501 to DG-503 — Guardrails
+Todos devem ser aprovados.
 
-- unsupported conclusions;
-- insufficient evidence behavior;
-- traceability validation.
+---
 
-DG-102 must remain a small, deterministic domain-model task.
+<a id="adiadas"></a>
+
+## ⏳ Responsabilidades adiadas
+
+Algumas responsabilidades relacionadas a evidências são deliberadamente atribuídas a etapas posteriores.
+
+---
+
+### DG-103 — `IncidentInput`
+
+Responsabilidades:
+
+- coleção de objetos `Evidence`;
+- validação no nível do incidente;
+- detecção de identificadores de evidência duplicados.
+
+Fluxo:
+
+```text
+Evidence
+    │
+    ▼
+IncidentInput
+    │
+    └── valida coleção
+```
+
+---
+
+### DG-201 — `evidence_collector`
+
+Responsabilidades:
+
+- normalização de evidências no contexto do incidente;
+- organização das evidências;
+- tratamento de duplicidades quando aplicável;
+- tratamento de estruturas não suportadas;
+- processamento de rastreabilidade.
+
+---
+
+### DG-501 a DG-503 — Guardrails
+
+Responsabilidades:
+
+- tratamento de conclusões sem suporte;
+- comportamento com evidência insuficiente;
+- validação de rastreabilidade.
+
+---
+
+## 🧭 Separação de responsabilidades
+
+```text
+Evidence
+   │
+   └── valida uma evidência
+          │
+          ▼
+IncidentInput
+   │
+   └── valida coleção
+          │
+          ▼
+evidence_collector
+   │
+   └── organiza e processa
+          │
+          ▼
+Guardrails
+   │
+   └── validam uso das evidências
+```
+
+Essa separação reduz acoplamento e mantém cada componente com responsabilidade clara.
+
+---
+
+## 📌 Resumo do contrato
+
+| Propriedade | Decisão |
+|---|---|
+| Modelo | `Evidence` |
+| Framework | Pydantic 2 |
+| ID obrigatório | Sim |
+| Tipo obrigatório | Sim |
+| Origem obrigatória | Sim |
+| Description | Opcional |
+| Value | Opcional |
+| Datetime | Opcional |
+| Reliability | Opcional |
+| Metadata | Opcional |
+| Campos extras | Rejeitados |
+| Case-sensitive | Sim |
+| IDs duplicados | Validados fora de `Evidence` |
+| Análise de suficiência | Fora da DG-102 |
+| Lógica analítica | Fora da DG-102 |
+
+---
+
+> 🧾 O modelo `Evidence` representa a unidade fundamental de rastreabilidade do **AI Data Governance Agent**, garantindo que informações utilizadas nas análises possuam identidade, origem e estrutura explícitas sem misturar validação de dados com interpretação analítica.

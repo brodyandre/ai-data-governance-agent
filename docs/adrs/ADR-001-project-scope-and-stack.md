@@ -1,143 +1,378 @@
-# ADR-001 — Project Scope and Technology Stack
+# 🏗️ ADR-001 — Escopo do Projeto e Stack Tecnológica
 
-## Status
+## 📌 Status
 
-Accepted
+**Aceito**
 
-## Date
+## 📅 Data
 
-2026-10-05
+**05/10/2026**
 
-## Context
+---
 
-The AI Data Governance Agent is being developed as an individual Challenge project for
-the Alura/ONE "Imersão de Agentes de IA para Negócios".
+## 📑 Sumário
 
-The project has a fixed delivery deadline and must balance:
+- [Contexto](#contexto)
+- [Decisão](#decisao)
+- [Stack tecnológica](#stack)
+- [Ferramentas iniciais](#ferramentas)
+- [Restrições arquiteturais](#restricoes)
+- [Justificativa](#justificativa)
+- [Consequências](#consequencias)
+- [Trade-offs](#tradeoffs)
+- [Condições para revisão](#revisao)
 
-- business relevance;
-- AI agent capabilities;
-- Data Engineering relevance;
-- governance and safety;
-- demonstrability;
-- automated testing;
-- limited development time;
-- limited Codex availability.
+---
 
-A broad technology stack could increase apparent sophistication but would also increase
-implementation risk and reduce the time available for evaluation, documentation, and
-demonstration quality.
+<a id="contexto"></a>
 
-## Decision
+## 🔎 Contexto
 
-The project will use the following primary stack:
+O **AI Data Governance Agent** está sendo desenvolvido como projeto individual do Challenge da **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**.
+
+O projeto possui prazo definido e precisa equilibrar:
+
+- relevância de negócio;
+- aplicação prática de Inteligência Artificial;
+- aderência à Engenharia de Dados;
+- Data Quality;
+- Data Governance;
+- segurança;
+- rastreabilidade;
+- testes automatizados;
+- qualidade da demonstração;
+- tempo limitado de desenvolvimento.
+
+Adicionar tecnologias sem benefício direto aumentaria o risco de implementação e reduziria o tempo disponível para:
+
+- testes;
+- avaliação;
+- documentação;
+- refinamento;
+- demonstração.
+
+Portanto, a arquitetura inicial deve permanecer enxuta e orientada ao problema.
+
+---
+
+<a id="decisao"></a>
+
+## ✅ Decisão
+
+O projeto adotará uma arquitetura de agente único, baseada em contratos estruturados e ferramentas com responsabilidades bem definidas.
+
+O sistema será construído de forma incremental.
+
+O fluxo conceitual será:
+
+```text
+IncidentInput
+     │
+     ▼
+Validação
+     │
+     ▼
+Coleta de evidências
+     │
+     ▼
+Ferramentas determinísticas
+     │
+     ▼
+Orquestração
+     │
+     ▼
+Guardrails
+     │
+     ▼
+Supervisão humana
+     │
+     ▼
+AgentResponse
+```
+
+---
+
+<a id="stack"></a>
+
+## 🧰 Stack tecnológica
 
 ### Backend
 
-- Python 3.12;
-- FastAPI;
-- Pydantic;
-- LangGraph.
+| Tecnologia | Responsabilidade |
+|---|---|
+| Python 3.12 | Linguagem principal |
+| FastAPI | Interface HTTP |
+| Pydantic | Modelagem e validação de contratos |
+| LangGraph | Orquestração do workflow |
 
-### Development Quality
+### Qualidade de desenvolvimento
 
-- pytest;
-- pytest-cov;
-- Ruff;
-- GitHub Actions.
+| Tecnologia | Responsabilidade |
+|---|---|
+| pytest | Testes automatizados |
+| pytest-cov | Cobertura |
+| Ruff | Lint e formatação |
+| GitHub Actions | Integração contínua |
 
-### AI Provider Strategy
+### Estratégia de providers de IA
 
-- FakeProvider for automated tests and CI;
-- real LLM provider only for controlled testing and demonstrations.
+A lógica de negócio não deverá depender diretamente de um fornecedor específico.
 
-### Web Interface
+Será criada uma camada de abstração para providers.
 
-Primary approach:
+A estratégia inicial contempla:
+
+```text
+Aplicação
+    │
+    ▼
+Provider Interface
+    │
+    ├── Provider determinístico para testes
+    │
+    └── Provider real opcional
+```
+
+### Requisitos
+
+A CI deverá funcionar:
+
+- sem credenciais externas;
+- sem chamadas de rede obrigatórias;
+- com resultados reproduzíveis.
+
+A integração com modelos reais será opcional e utilizada apenas quando necessária à demonstração ou avaliação.
+
+### Interface web
+
+Abordagem principal:
 
 - Node.js;
 - Express;
 - EJS;
-- vanilla JavaScript.
+- Vanilla JavaScript.
 
-Fallback:
+Alternativa de contingência:
 
 - Streamlit.
 
-### Initial Agent Tools
+A interface deverá priorizar:
 
-- quality_analyzer;
-- business_impact_analyzer;
-- policy_retriever;
-- evidence_collector.
+- simplicidade;
+- clareza;
+- boa demonstração;
+- baixo custo de manutenção.
 
-## Architectural Constraints
+---
 
-Before Challenge delivery, the project will intentionally avoid:
+<a id="ferramentas"></a>
+
+## 🛠️ Ferramentas iniciais
+
+O MVP terá quatro capacidades principais:
+
+### `quality_analyzer`
+
+Analisa sinais relacionados à qualidade dos dados.
+
+### `business_impact_analyzer`
+
+Traduz descobertas técnicas em possíveis impactos de negócio.
+
+### `policy_retriever`
+
+Identifica regras, políticas ou controles de governança relevantes.
+
+### `evidence_collector`
+
+Organiza e preserva a rastreabilidade das evidências.
+
+Essas ferramentas devem possuir contratos claros e ser testáveis independentemente da camada de orquestração.
+
+---
+
+<a id="restricoes"></a>
+
+## 🚧 Restrições arquiteturais
+
+Antes da entrega do Challenge, o projeto evitará deliberadamente:
 
 - Kubernetes;
-- multi-agent architecture;
-- mandatory cloud infrastructure;
-- complex databases;
+- arquitetura multi-agent;
+- infraestrutura cloud obrigatória;
+- bancos complexos;
 - Qdrant;
 - Redis;
-- Airflow in the runtime;
-- Spark in the runtime;
+- Airflow no runtime;
+- Spark no runtime;
 - React;
 - Next.js;
-- autonomous critical remediation.
+- autenticação corporativa complexa;
+- remediação crítica autônoma;
+- execução automática de ações irreversíveis.
 
-## Rationale
+Essa restrição não significa que essas tecnologias não sejam úteis.
 
-Python provides the strongest fit for the agent, evaluation, validation, and Data
-Engineering components.
+Ela significa apenas que **não são necessárias para demonstrar adequadamente o valor do MVP**.
 
-FastAPI provides a lightweight typed API layer and integrates naturally with Pydantic.
+---
 
-Pydantic provides explicit contracts and structured validation for inputs, tool outputs,
-and final responses.
+<a id="justificativa"></a>
 
-LangGraph provides explicit workflow orchestration while allowing the solution to remain
-a single-agent architecture.
+## 💡 Justificativa
 
-FakeProvider separates deterministic engineering tests from external model availability,
-cost, credentials, latency, and nondeterminism.
+### Python
 
-Node.js with Express and EJS provides sufficient flexibility for a professional
-demonstration interface without introducing the additional complexity of a SPA
-framework.
+Python possui forte aderência às necessidades de:
 
-## Consequences
+- Inteligência Artificial;
+- Engenharia de Dados;
+- validação;
+- avaliação;
+- testes;
+- automação.
 
-Positive consequences:
+### FastAPI
 
-- reduced delivery risk;
-- simpler local development;
-- deterministic CI;
-- easier automated testing;
-- explicit domain contracts;
-- lower infrastructure cost;
-- better explainability;
-- easier demonstration;
-- stronger alignment with Data Engineering and governance positioning.
+FastAPI oferece:
 
-Trade-offs:
+- contratos HTTP simples;
+- integração natural com Pydantic;
+- documentação OpenAPI;
+- validação estruturada;
+- baixo overhead arquitetural.
 
-- the project will not demonstrate distributed infrastructure;
-- the project will not demonstrate a multi-agent architecture;
-- the web interface will favor simplicity over frontend sophistication;
-- production-grade enterprise scalability is outside the Challenge scope.
+### Pydantic
 
-These trade-offs are accepted because they do not materially reduce the value of the
-Challenge demonstration.
+Pydantic permite definir contratos explícitos para:
 
-## Revisit Conditions
+- entrada;
+- evidências;
+- resultados de ferramentas;
+- saída final.
 
-This decision should be revisited only if:
+Isso reduz ambiguidades e melhora a previsibilidade do sistema.
 
-- the official Challenge requirements demand another technology;
-- a selected component creates a blocking compatibility issue;
-- a simpler option materially improves delivery reliability;
-- a missing capability prevents a required demonstration.
+### LangGraph
 
-Architectural expansion alone is not sufficient reason to revise this ADR.
+LangGraph permite representar o fluxo do agente de forma explícita.
+
+A escolha favorece:
+
+- estados bem definidos;
+- nodes com responsabilidades claras;
+- controle de execução;
+- testabilidade;
+- evolução futura.
+
+A primeira versão permanecerá com **arquitetura de agente único**.
+
+### Provider abstrato
+
+Separar providers da lógica de negócio reduz acoplamento com:
+
+- fornecedor;
+- credenciais;
+- disponibilidade externa;
+- latência;
+- custo;
+- comportamento não determinístico.
+
+Isso permite que testes e CI permaneçam previsíveis.
+
+### Node.js + Express + EJS
+
+Essa combinação oferece flexibilidade suficiente para construir uma interface profissional de demonstração sem o overhead de uma SPA completa.
+
+O projeto prioriza experiência de demonstração e simplicidade de manutenção.
+
+---
+
+<a id="consequencias"></a>
+
+## 📈 Consequências
+
+### Consequências positivas
+
+A decisão arquitetural proporciona:
+
+- menor risco de entrega;
+- ambiente local mais simples;
+- CI determinística;
+- testes mais fáceis;
+- contratos explícitos;
+- baixo custo de infraestrutura;
+- maior explicabilidade;
+- rastreabilidade;
+- melhor controle de escopo;
+- forte aderência a Engenharia de Dados e Governança.
+
+---
+
+<a id="tradeoffs"></a>
+
+## ⚖️ Trade-offs
+
+A arquitetura inicial não demonstrará:
+
+- infraestrutura distribuída;
+- Kubernetes;
+- arquitetura multi-agent;
+- frontend SPA moderno;
+- escalabilidade corporativa;
+- arquitetura cloud complexa;
+- processamento distribuído em runtime.
+
+Essas limitações são aceitas porque não reduzem materialmente o valor principal da demonstração.
+
+O objetivo do Challenge é demonstrar uma solução coerente e funcional, e não reproduzir uma plataforma empresarial completa.
+
+---
+
+<a id="revisao"></a>
+
+## 🔄 Condições para revisão
+
+Esta decisão deverá ser revisitada somente se:
+
+- um requisito oficial exigir outra tecnologia;
+- um componente selecionado apresentar incompatibilidade bloqueadora;
+- uma alternativa mais simples melhorar significativamente a confiabilidade;
+- uma capacidade essencial não puder ser demonstrada;
+- requisitos futuros justificarem expansão arquitetural.
+
+### Regra
+
+```text
+Nova tecnologia
+      │
+      ▼
+Resolve problema real?
+      │
+ ┌────┴────┐
+ │         │
+Sim       Não
+ │         │
+ ▼         ▼
+Avaliar   Adiar
+```
+
+Complexidade arquitetural por si só não constitui justificativa suficiente para alterar esta decisão.
+
+---
+
+## 🎯 Resultado esperado
+
+A arquitetura deve permitir que o projeto permaneça:
+
+- compreensível;
+- testável;
+- reproduzível;
+- rastreável;
+- seguro;
+- demonstrável;
+- evolutivo.
+
+---
+
+> 🏗️ Esta decisão arquitetural prioriza uma solução enxuta e profissional, capaz de demonstrar claramente a integração entre Engenharia de Dados, Inteligência Artificial, Data Quality e Governança.

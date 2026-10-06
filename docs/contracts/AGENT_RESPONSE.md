@@ -1,229 +1,885 @@
-# Agent Response Contract
+# 📤 Contrato de Resposta do Agente — AgentResponse
 
-## Purpose
+Este documento define o contrato conceitual da resposta estruturada produzida pelo **AI Data Governance Agent**.
 
-This document defines the conceptual structured response produced by the AI Data Governance Agent.
+A implementação final utilizará **Pydantic** para validar e garantir a consistência deste contrato.
 
-The final implementation will use Pydantic to enforce this contract.
+O objetivo é assegurar que toda análise produzida pelo agente seja:
 
-## Fields
+- estruturada;
+- rastreável;
+- explícita quanto à incerteza;
+- adequada para consumo por API;
+- adequada para interface web;
+- compatível com supervisão humana.
 
-### incident_id
+---
 
-Identifier of the analyzed incident.
+## 📑 Sumário
 
-The value must correspond to the incident received in the input contract.
+- [Objetivo](#objetivo)
+- [Visão geral](#visao-geral)
+- [incident_id](#incident-id)
+- [classification](#classification)
+- [severity](#severity)
+- [executive_summary](#executive-summary)
+- [evidence](#evidence)
+- [business_impact](#business-impact)
+- [root_cause_hypotheses](#root-cause-hypotheses)
+- [recommended_actions](#recommended-actions)
+- [governance_controls](#governance-controls)
+- [confidence](#confidence)
+- [human_review_required](#human-review-required)
+- [human_review_reasons](#human-review-reasons)
+- [Princípios da resposta](#principios)
+- [Rastreabilidade de evidências](#rastreabilidade)
+- [Comportamento com evidência insuficiente](#evidencia-insuficiente)
+- [Supervisão humana](#supervisao-humana)
+- [Exemplo completo](#exemplo)
+- [Responsabilidades futuras](#responsabilidades)
 
-### classification
+---
 
-Primary classification assigned to the incident.
+<a id="objetivo"></a>
 
-Initial values may include:
+## 🎯 Objetivo
 
-- data_quality;
-- schema;
-- integrity;
-- reconciliation;
-- freshness;
-- pipeline_failure;
-- governance;
-- unknown.
+O `AgentResponse` representa a saída formal da análise de um incidente.
 
-The classification must be based on available evidence.
+Ele deve consolidar:
 
-### severity
+- identificação do incidente;
+- classificação;
+- severidade;
+- resumo executivo;
+- evidências;
+- impacto de negócio;
+- hipóteses de causa raiz;
+- ações recomendadas;
+- controles de governança;
+- nível de confiança;
+- necessidade de revisão humana.
 
-Normalized severity assigned by the analysis.
+O contrato deve permitir que uma pessoa ou sistema consumidor compreenda não apenas **o que o agente concluiu**, mas também **quais evidências sustentam essas conclusões**.
 
-Initial values:
+---
 
-- low;
-- medium;
-- high;
-- critical.
+<a id="visao-geral"></a>
 
-Severity rules are defined separately in `SEVERITY_AND_HUMAN_REVIEW.md`.
+## 🏗️ Visão geral
 
-### executive_summary
+Estrutura conceitual:
 
-Concise explanation of the incident.
+```text
+AgentResponse
+     │
+     ├── incident_id
+     ├── classification
+     ├── severity
+     ├── executive_summary
+     ├── evidence
+     ├── business_impact
+     ├── root_cause_hypotheses
+     ├── recommended_actions
+     ├── governance_controls
+     ├── confidence
+     ├── human_review_required
+     └── human_review_reasons
+```
 
-The summary should communicate:
+A resposta deve permanecer consistente com os contratos de entrada e com as evidências efetivamente disponíveis.
 
-- what happened;
-- why it matters;
-- the current level of risk;
-- whether human review is required.
+---
 
-### evidence
+<a id="incident-id"></a>
 
-Evidence used to support the analysis.
+## 🆔 `incident_id`
 
-Every important conclusion should be traceable to one or more evidence items whenever possible.
+### Objetivo
 
-Evidence references should use the same identifiers defined in the incident input.
+Identificar o incidente analisado.
 
-### business_impact
+O valor deve corresponder ao mesmo identificador recebido no `IncidentInput`.
 
-Structured description of confirmed or potential business consequences.
+Exemplo:
 
-The business impact should distinguish among:
+```text
+DE-101
+```
 
-- confirmed impact;
-- potential impact;
-- unknown impact.
+### Regra
 
-Suggested conceptual fields:
+O sistema não deve criar um novo identificador para o incidente durante a análise.
 
-- status;
-- description;
-- affected_processes;
-- affected_consumers;
-- materiality;
-- supporting_evidence.
+Fluxo esperado:
 
-### root_cause_hypotheses
+```text
+IncidentInput.incident_id
+          │
+          ▼
+      AgentResponse
+          │
+          └── mesmo incident_id
+```
 
-Possible explanations for the incident.
+---
 
-Each hypothesis should conceptually contain:
+<a id="classification"></a>
 
-- description;
-- supporting_evidence;
-- confidence;
-- status.
+## 🧭 `classification`
 
-Initial hypothesis statuses may include:
+### Objetivo
 
-- suspected;
-- probable;
-- confirmed;
-- rejected.
+Representar a classificação principal atribuída ao incidente.
 
-A hypothesis must not be represented as confirmed unless supporting evidence justifies that status.
+Os valores normalizados são definidos em:
 
-### recommended_actions
+➡️ [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md)
 
-Recommended next steps.
+Valores atuais:
 
-Each action should conceptually contain:
+```text
+data_quality
+schema
+integrity
+reconciliation
+freshness
+pipeline_failure
+governance
+unknown
+```
 
-- description;
-- priority;
-- rationale;
-- requires_human_approval;
-- supporting_evidence.
+### Princípio
 
-Initial priorities may include:
+A classificação deve ser sustentada pelas evidências disponíveis.
 
-- low;
-- medium;
-- high;
-- urgent.
+Quando não houver evidência suficiente para uma classificação específica, o domínio permite:
 
-Recommendations must remain advisory.
+```text
+unknown
+```
 
-### governance_controls
+Entretanto, `unknown` não deve ser utilizado para mascarar entradas inválidas ou falhas de validação.
 
-Relevant governance rules, controls, or policies associated with the incident.
+---
 
-Each control should conceptually contain:
+<a id="severity"></a>
 
-- control_id;
-- title;
-- description;
-- source;
-- relevance;
-- supporting_evidence.
+## 🚦 `severity`
 
-### confidence
+### Objetivo
 
-Confidence in the overall assessment.
+Representar a severidade normalizada atribuída ao incidente após a análise.
 
-The initial implementation is expected to use a numeric value between:
+Valores:
 
-`0.0` and `1.0`
+```text
+low
+medium
+high
+critical
+```
 
-where:
+As regras detalhadas de severidade estão definidas em:
 
-- `0.0` represents no meaningful confidence;
-- `1.0` represents maximum confidence supported by the available evidence.
+➡️ [`SEVERITY_AND_HUMAN_REVIEW.md`](SEVERITY_AND_HUMAN_REVIEW.md)
 
-Confidence must reflect evidence quality and uncertainty.
+### Princípio
 
-### human_review_required
+A severidade deve considerar fatores como:
 
-Boolean indicating whether accountable human review is required.
+- impacto;
+- amplitude;
+- criticidade dos dados;
+- risco de negócio;
+- governança;
+- urgência;
+- evidências disponíveis.
 
-Possible values:
+A classificação final não deve depender exclusivamente de comportamento não determinístico do modelo.
 
-- true;
-- false.
+---
 
-The decision must follow explicit governance rules rather than arbitrary model behavior.
+<a id="executive-summary"></a>
 
-### human_review_reasons
+## 📝 `executive_summary`
 
-List of reasons explaining why human review was required.
+### Objetivo
 
-Examples:
+Fornecer um resumo curto e compreensível da situação.
 
-- high severity;
-- critical severity;
-- insufficient evidence;
-- conflicting evidence;
-- low confidence;
-- possible governance exposure;
-- material business impact;
-- destructive recommendation.
+O resumo deve comunicar, sempre que possível:
 
-## Response Principles
+- o que aconteceu;
+- por que isso importa;
+- qual é o nível atual de risco;
+- se existe impacto confirmado ou potencial;
+- se revisão humana é necessária.
 
-A valid response must:
+### Características esperadas
 
-- conform to the defined schema;
-- preserve the original incident_id;
-- distinguish facts from hypotheses;
-- reference supporting evidence;
-- expose uncertainty;
-- avoid unsupported claims;
-- explicitly identify insufficient evidence;
-- indicate human review when appropriate.
+O resumo deve ser:
 
-## Evidence Traceability
+- conciso;
+- objetivo;
+- legível;
+- baseado em evidências;
+- livre de afirmações não sustentadas.
 
-Important conclusions should reference the evidence that supports them.
+### Exemplo conceitual
 
-The response should make it possible to answer:
+```text
+Data Quality validation removed records from the silver layer and may affect downstream sales analytics.
+```
 
-- What evidence supports this conclusion?
-- Which source produced the evidence?
-- Is the conclusion observed, derived, or hypothetical?
+---
 
-A conclusion without sufficient support must be qualified or rejected.
+<a id="evidence"></a>
 
-## Insufficient Evidence Behavior
+## 🧾 `evidence`
 
-When evidence is insufficient, the response must not fabricate information.
+### Objetivo
 
-The agent should instead:
+Representar as evidências utilizadas para sustentar a análise.
 
-- reduce confidence;
-- identify missing information;
-- qualify root-cause hypotheses;
-- avoid unsupported conclusions;
-- recommend additional investigation;
-- require human review when appropriate.
+As evidências devem utilizar os mesmos identificadores definidos no incidente recebido.
 
-## Human Oversight
+Exemplo:
 
-The response is advisory.
+```text
+EV-001
+EV-002
+EV-003
+```
 
-The agent must not imply that a recommendation has already been executed.
+O contrato detalhado de uma evidência está definido em:
 
-Critical or irreversible actions require accountable human approval.
+➡️ [`EVIDENCE_MODEL.md`](EVIDENCE_MODEL.md)
 
-## Example
+### Princípio de rastreabilidade
+
+Conclusões importantes devem, sempre que possível, referenciar explicitamente as evidências que as sustentam.
+
+```text
+Evidence EV-001
+      │
+      ├── BusinessImpact
+      ├── RootCauseHypothesis
+      └── RecommendedAction
+```
+
+---
+
+<a id="business-impact"></a>
+
+## 💼 `business_impact`
+
+### Objetivo
+
+Representar consequências confirmadas, potenciais ou ainda desconhecidas para o negócio.
+
+O impacto deve distinguir claramente:
+
+```text
+confirmed
+potential
+unknown
+```
+
+Os estados são definidos em:
+
+➡️ [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md)
+
+### Estrutura conceitual sugerida
+
+```text
+BusinessImpact
+     │
+     ├── status
+     ├── description
+     ├── affected_processes
+     ├── affected_consumers
+     ├── materiality
+     └── supporting_evidence
+```
+
+---
+
+### `status`
+
+Representa se o impacto é:
+
+- confirmado;
+- potencial;
+- desconhecido.
+
+---
+
+### `description`
+
+Descrição do possível ou confirmado efeito de negócio.
+
+---
+
+### `affected_processes`
+
+Processos de negócio possivelmente afetados.
+
+Exemplo:
+
+```json
+[
+  "sales analytics",
+  "revenue reporting"
+]
+```
+
+---
+
+### `affected_consumers`
+
+Consumidores, equipes ou sistemas downstream possivelmente afetados.
+
+---
+
+### `materiality`
+
+Indicação conceitual da relevância ou materialidade do impacto.
+
+A definição formal poderá ser refinada na implementação do modelo correspondente.
+
+---
+
+### `supporting_evidence`
+
+Lista de IDs de evidências que sustentam a avaliação.
+
+Exemplo:
+
+```json
+[
+  "EV-001",
+  "EV-004"
+]
+```
+
+### Regra
+
+Um impacto não deve ser marcado como `confirmed` sem evidências que sustentem essa classificação.
+
+---
+
+<a id="root-cause-hypotheses"></a>
+
+## 🧠 `root_cause_hypotheses`
+
+### Objetivo
+
+Representar explicações possíveis para o incidente.
+
+Cada hipótese deve permanecer explicitamente identificada como hipótese enquanto não houver evidência suficiente para confirmação.
+
+### Estrutura conceitual
+
+```text
+RootCauseHypothesis
+     │
+     ├── description
+     ├── supporting_evidence
+     ├── confidence
+     └── status
+```
+
+### Estados iniciais planejados
+
+```text
+suspected
+probable
+confirmed
+rejected
+```
+
+Esses estados serão formalizados durante a implementação da `DG-104`.
+
+---
+
+### `suspected`
+
+Existe uma possibilidade razoável, mas o suporte ainda é limitado.
+
+---
+
+### `probable`
+
+As evidências tornam a hipótese plausível e relativamente forte, sem confirmação definitiva.
+
+---
+
+### `confirmed`
+
+A evidência disponível sustenta a causa de forma suficiente para tratá-la como confirmada.
+
+---
+
+### `rejected`
+
+As evidências disponíveis contradizem ou descartam a hipótese.
+
+---
+
+## Regra fundamental
+
+```text
+Hipótese
+   ≠
+Fato confirmado
+```
+
+Uma hipótese só pode receber status:
+
+```text
+confirmed
+```
+
+quando houver evidência suficiente.
+
+---
+
+<a id="recommended-actions"></a>
+
+## 🛠️ `recommended_actions`
+
+### Objetivo
+
+Representar próximos passos sugeridos pelo sistema.
+
+As recomendações possuem caráter **consultivo**.
+
+### Estrutura conceitual
+
+```text
+RecommendedAction
+     │
+     ├── description
+     ├── priority
+     ├── rationale
+     ├── requires_human_approval
+     └── supporting_evidence
+```
+
+---
+
+### `description`
+
+Descrição objetiva da ação recomendada.
+
+---
+
+### `priority`
+
+Valores previstos:
+
+```text
+low
+medium
+high
+urgent
+```
+
+A fonte canônica está em:
+
+➡️ [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md)
+
+---
+
+### `rationale`
+
+Explica por que a ação está sendo recomendada.
+
+---
+
+### `requires_human_approval`
+
+Indica explicitamente se a ação necessita de aprovação humana antes de qualquer execução.
+
+Valores:
+
+```text
+true
+false
+```
+
+---
+
+### `supporting_evidence`
+
+Referências às evidências que sustentam a recomendação.
+
+---
+
+## Princípio de segurança
+
+Prioridade não significa autorização.
+
+```text
+urgent
+   │
+   ▼
+Alta prioridade
+   │
+   ✕
+Não significa execução automática
+```
+
+Mesmo uma ação `urgent` pode exigir aprovação humana.
+
+---
+
+<a id="governance-controls"></a>
+
+## 🛡️ `governance_controls`
+
+### Objetivo
+
+Representar regras, políticas ou controles de governança relevantes para o incidente.
+
+### Estrutura conceitual
+
+```text
+GovernanceControl
+     │
+     ├── control_id
+     ├── title
+     ├── description
+     ├── source
+     ├── relevance
+     └── supporting_evidence
+```
+
+---
+
+### `control_id`
+
+Identificador estável do controle.
+
+---
+
+### `title`
+
+Nome legível do controle ou política.
+
+---
+
+### `description`
+
+Descrição do requisito ou regra.
+
+---
+
+### `source`
+
+Origem da política ou controle.
+
+---
+
+### `relevance`
+
+Explica por que o controle é relevante para o incidente.
+
+---
+
+### `supporting_evidence`
+
+Evidências associadas ao vínculo entre o incidente e o controle.
+
+---
+
+<a id="confidence"></a>
+
+## 📊 `confidence`
+
+### Objetivo
+
+Representar o nível de confiança da avaliação geral.
+
+A implementação inicial deverá utilizar valor numérico entre:
+
+```text
+0.0
+```
+
+e:
+
+```text
+1.0
+```
+
+### Interpretação
+
+```text
+0.0
+│
+│ nenhuma confiança significativa
+│
+├───────────────────────────────
+│
+│ confiança crescente
+│
+├───────────────────────────────
+│
+│ confiança máxima suportada
+│
+1.0
+```
+
+### Regra
+
+O valor deve refletir:
+
+- quantidade de evidências;
+- qualidade das evidências;
+- consistência;
+- conflitos;
+- lacunas de informação;
+- força do suporte para as conclusões.
+
+### Importante
+
+Confidence não representa certeza absoluta.
+
+Mesmo:
+
+```text
+1.0
+```
+
+significa apenas confiança máxima **dentro do conjunto de evidências disponível e das regras definidas pelo sistema**.
+
+---
+
+<a id="human-review-required"></a>
+
+## 👤 `human_review_required`
+
+### Tipo conceitual
+
+```text
+bool
+```
+
+### Valores
+
+```text
+true
+false
+```
+
+### Objetivo
+
+Indicar se o incidente exige revisão por uma pessoa responsável.
+
+A decisão deve seguir regras explícitas de governança.
+
+Ela não deve depender de escolha arbitrária de um modelo.
+
+As regras estão definidas em:
+
+➡️ [`SEVERITY_AND_HUMAN_REVIEW.md`](SEVERITY_AND_HUMAN_REVIEW.md)
+
+---
+
+<a id="human-review-reasons"></a>
+
+## 📋 `human_review_reasons`
+
+### Objetivo
+
+Explicar por que a revisão humana foi exigida.
+
+Exemplos conceituais:
+
+```text
+high severity
+critical severity
+insufficient evidence
+conflicting evidence
+low confidence
+possible governance exposure
+material business impact
+destructive recommendation
+```
+
+### Princípio
+
+Sempre que:
+
+```text
+human_review_required = true
+```
+
+a resposta deve fornecer motivos compreensíveis e auditáveis.
+
+Exemplo:
+
+```json
+{
+  "human_review_required": true,
+  "human_review_reasons": [
+    "high severity",
+    "potential material business impact"
+  ]
+}
+```
+
+---
+
+<a id="principios"></a>
+
+## ✅ Princípios da resposta
+
+Uma resposta válida deve:
+
+- respeitar o schema definido;
+- preservar o `incident_id`;
+- distinguir fatos de hipóteses;
+- referenciar evidências;
+- expor incerteza;
+- evitar afirmações sem suporte;
+- sinalizar evidência insuficiente;
+- indicar revisão humana quando necessário;
+- permanecer consultiva;
+- ser serializável;
+- possuir comportamento previsível.
+
+---
+
+## Separação conceitual
+
+```text
+Fato observado
+      │
+      ▼
+Resultado determinístico
+      │
+      ▼
+Hipótese
+      │
+      ▼
+Recomendação
+```
+
+Cada nível deve permanecer semanticamente distinguível.
+
+---
+
+<a id="rastreabilidade"></a>
+
+## 🔗 Rastreabilidade de evidências
+
+Conclusões importantes devem permitir responder:
+
+- qual evidência sustenta esta conclusão?
+- qual fonte produziu a evidência?
+- a conclusão é observada, derivada ou hipotética?
+- qual é o nível de confiança?
+- existem evidências conflitantes?
+
+### Exemplo
+
+```text
+EV-001
+  │
+  ▼
+Finding
+  │
+  ▼
+RootCauseHypothesis
+  │
+  ▼
+RecommendedAction
+```
+
+Uma conclusão sem suporte suficiente deve ser:
+
+- qualificada;
+- rejeitada;
+- ou marcada como incerta.
+
+---
+
+<a id="evidencia-insuficiente"></a>
+
+## ⚠️ Comportamento com evidência insuficiente
+
+Quando as evidências disponíveis forem insuficientes, o agente não deve fabricar informação.
+
+O comportamento esperado inclui:
+
+- reduzir `confidence`;
+- identificar informações ausentes;
+- qualificar hipóteses;
+- evitar conclusões não sustentadas;
+- recomendar investigação adicional;
+- exigir revisão humana quando aplicável.
+
+### Fluxo conceitual
+
+```text
+Evidência insuficiente
+        │
+        ▼
+Não fabricar informação
+        │
+        ▼
+Reduzir confidence
+        │
+        ▼
+Declarar limitações
+        │
+        ▼
+Recomendar investigação adicional
+        │
+        ▼
+Revisão humana quando necessária
+```
+
+---
+
+<a id="supervisao-humana"></a>
+
+## 👥 Supervisão humana
+
+A resposta produzida pelo agente é **consultiva**.
+
+O sistema não deve:
+
+- declarar que uma recomendação já foi executada;
+- sugerir que aprovação humana ocorreu quando não ocorreu;
+- executar automaticamente ações críticas;
+- executar automaticamente ações irreversíveis.
+
+### Regra
+
+Ações críticas ou irreversíveis exigem aprovação humana responsável.
+
+```text
+Recomendação crítica
+        │
+        ▼
+requires_human_approval = true
+        │
+        ▼
+Pessoa responsável
+        │
+        ▼
+Decisão
+```
+
+---
+
+<a id="exemplo"></a>
+
+## 🧪 Exemplo completo
 
 ```json
 {
@@ -278,3 +934,123 @@ Critical or irreversible actions require accountable human approval.
   ]
 }
 ```
+
+---
+
+## 🔍 Leitura do exemplo
+
+O exemplo indica que:
+
+- o incidente analisado é `DE-101`;
+- a classificação é `data_quality`;
+- a severidade é `high`;
+- existe evidência identificada como `EV-001`;
+- o impacto de negócio é considerado `potential`;
+- existe uma hipótese de causa raiz com status `probable`;
+- existe recomendação de prioridade `high`;
+- a confiança geral é `0.90`;
+- revisão humana é obrigatória.
+
+Importante: a hipótese não foi marcada como `confirmed`.
+
+---
+
+<a id="responsabilidades"></a>
+
+## 🔄 Responsabilidades futuras
+
+A implementação formal dos modelos de resposta está planejada para:
+
+```text
+DG-104 — Modelos AgentResponse
+```
+
+A tarefa deverá contemplar estruturas como:
+
+```text
+BusinessImpact
+RootCauseHypothesis
+RecommendedAction
+GovernanceControl
+AgentResponse
+```
+
+### Dependências conceituais
+
+```text
+DOMAIN_ENUMS
+      │
+      ├── IncidentClassification
+      ├── Severity
+      ├── BusinessImpactStatus
+      └── ActionPriority
+                │
+                ▼
+        AgentResponse models
+```
+
+---
+
+## 📌 Requisitos previstos para DG-104
+
+A implementação deverá garantir:
+
+- tipos explícitos;
+- `confidence` limitada ao intervalo permitido;
+- severity normalizada;
+- classification normalizada;
+- `human_review_required` booleano;
+- `human_review_reasons` representável;
+- evidências de suporte referenciáveis;
+- hipóteses com status explícito;
+- ações com prioridade explícita;
+- serialização previsível;
+- campos extras tratados de acordo com o contrato;
+- testes válidos e inválidos.
+
+---
+
+## 🧭 Princípio central
+
+A resposta final deve permitir que um avaliador compreenda:
+
+```text
+O que aconteceu?
+      │
+Por que importa?
+      │
+Quais evidências existem?
+      │
+O que é fato?
+      │
+O que é hipótese?
+      │
+Qual é a confiança?
+      │
+O que deve ser feito?
+      │
+Uma pessoa precisa revisar?
+```
+
+---
+
+## 📌 Resumo do contrato
+
+| Campo | Finalidade |
+|---|---|
+| `incident_id` | Identificar o incidente |
+| `classification` | Classificar o tipo de incidente |
+| `severity` | Representar severidade |
+| `executive_summary` | Resumir a situação |
+| `evidence` | Preservar evidências |
+| `business_impact` | Representar impacto de negócio |
+| `root_cause_hypotheses` | Representar hipóteses |
+| `recommended_actions` | Recomendar próximos passos |
+| `governance_controls` | Apresentar controles relevantes |
+| `confidence` | Representar incerteza/confiança |
+| `human_review_required` | Indicar revisão humana |
+| `human_review_reasons` | Explicar a decisão de revisão |
+
+---
+
+> 📤 O `AgentResponse` é a fronteira de saída do **AI Data Governance Agent** e deve transformar a análise interna em uma resposta estruturada, rastreável, explicável e adequada à tomada de decisão responsável.
