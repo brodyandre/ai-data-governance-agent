@@ -572,7 +572,7 @@ Objetivo: separar comportamento dependente de modelos da lógica central de neg�
 
 **Prioridade:** P0
 **Complexidade:** BAIXA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Escopo
 
