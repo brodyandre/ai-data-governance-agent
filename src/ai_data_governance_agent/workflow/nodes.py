@@ -26,6 +26,7 @@ from ai_data_governance_agent.guardrails import (
     build_additional_investigation_recommendation,
     cap_insufficient_evidence_confidence,
     qualify_unsupported_hypotheses,
+    validate_traceability,
 )
 from ai_data_governance_agent.providers import ModelProvider
 from ai_data_governance_agent.tools.business_impact_analyzer import (
@@ -356,6 +357,14 @@ def build_final_response_node(
         review = _require_value(
             state["human_review_decision"],
             "human_review_decision",
+        )
+
+        validate_traceability(
+            evidence=state["evidence"],
+            business_impact=business_impact,
+            hypotheses=state["root_cause_hypotheses"],
+            recommendations=state["recommended_actions"],
+            governance_controls=(state["tool_results"].governance_controls),
         )
 
         response = AgentResponse(
