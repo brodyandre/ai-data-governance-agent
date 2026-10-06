@@ -7,7 +7,7 @@ Este documento define as regras conceituais iniciais utilizadas pelo **AI Data G
 - identificar situações de maior risco;
 - determinar quando revisão humana responsável é obrigatória.
 
-Essas regras deverão ser convertidas posteriormente em **lógica determinística e testes automatizados**.
+Essas regras são implementadas na `DG-105` como **lógica determinística e testes automatizados**.
 
 ---
 
@@ -35,7 +35,7 @@ Essas regras deverão ser convertidas posteriormente em **lógica determinístic
 - [Princípio conservador](#principio-conservador)
 - [Governança determinística](#governanca-deterministica)
 - [Casos de decisão](#casos)
-- [Critérios previstos para implementação](#implementacao)
+- [Implementação DG-105](#implementacao)
 
 ---
 
@@ -611,7 +611,7 @@ Uma única regra obrigatória é suficiente.
 
 ## 📏 Limite inicial de confidence
 
-O limite inicial planejado é:
+O limite inicial implementado é:
 
 ```text
 confidence < 0.70
@@ -1300,7 +1300,7 @@ Processo crítico afetado?
 NO MANDATORY REVIEW
 ```
 
-A implementação final poderá organizar as regras de maneira diferente, desde que o comportamento permaneça equivalente e testável.
+A implementação organiza as regras em ordem determinística, preservando comportamento equivalente, auditável e testável.
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
@@ -1308,9 +1308,9 @@ A implementação final poderá organizar as regras de maneira diferente, desde 
 
 <a id="implementacao"></a>
 
-## 🧩 Critérios previstos para implementação
+## 🧩 Implementação DG-105
 
-A implementação determinística dessas regras está planejada para:
+A implementação determinística dessas regras é realizada na tarefa:
 
 ```text
 DG-105 — Regras determinísticas de revisão humana
@@ -1318,7 +1318,7 @@ DG-105 — Regras determinísticas de revisão humana
 
 ### Responsabilidades
 
-A implementação deverá avaliar, no mínimo:
+A implementação avalia explicitamente:
 
 - severity;
 - business impact;
@@ -1331,13 +1331,25 @@ A implementação deverá avaliar, no mínimo:
 - destructive action;
 - irreversible action;
 - root-cause uncertainty;
+- inability to determine a safe recommendation;
 - affected critical process.
+
+### Estruturas implementadas
+
+A `DG-105` introduz:
+
+- `HumanReviewSignals`, para representar explicitamente os sinais usados pelas regras;
+- `HumanReviewDecision`, para retornar a decisão e os motivos auditáveis;
+- `evaluate_human_review()`, responsável por aplicar as regras em ordem determinística;
+- `HUMAN_REVIEW_CONFIDENCE_THRESHOLD = 0.70`.
+
+Os sinais booleanos de risco utilizam validação estrita e não são inferidos silenciosamente a partir de valores ambíguos.
 
 ---
 
-## 🧪 Testes esperados
+## 🧪 Testes implementados
 
-Devem existir testes para cenários como:
+Existem testes automatizados para cenários como:
 
 1. critical sempre exige revisão;
 2. high + impacto material exige revisão;
@@ -1351,8 +1363,9 @@ Devem existir testes para cenários como:
 10. ação destrutiva exige revisão;
 11. ação irreversível exige revisão;
 12. causa raiz altamente incerta exige revisão;
-13. processo crítico exige revisão;
-14. cenário seguro e de baixo risco pode dispensar revisão.
+13. impossibilidade de determinar recomendação segura exige revisão;
+14. processo crítico exige revisão;
+15. cenário seguro e de baixo risco pode dispensar revisão.
 
 ---
 
