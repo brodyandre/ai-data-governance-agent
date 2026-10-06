@@ -688,7 +688,7 @@ O estado deve representar explicitamente:
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Critérios de aceite
 
