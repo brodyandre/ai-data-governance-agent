@@ -1,991 +1,1182 @@
-# AI Data Governance Agent — Development Backlog
+# 📋 AI Data Governance Agent — Backlog de Desenvolvimento
 
-## Purpose
+Este documento organiza as entregas planejadas do **AI Data Governance Agent** em unidades incrementais, testáveis e alinhadas ao escopo do Challenge.
 
-This backlog defines the planned implementation sequence for the AI Data Governance Agent.
-
-The backlog is designed to keep development incremental, testable, and aligned with the Challenge deadline.
-
-Official delivery deadline: 2026-11-08.
-
-Internal code freeze: 2026-11-06.
-
-## Priority Levels
-
-- P0 — required for the Challenge MVP;
-- P1 — important for professional quality and demonstration;
-- P2 — valuable improvement if time allows;
-- P3 — post-Challenge or optional enhancement.
-
-## Codex Complexity
-
-Every implementation task must be classified before being sent to Codex.
-
-Allowed classifications:
-
-- LIGHT;
-- MEDIUM;
-- HIGH.
-
-LIGHT and MEDIUM tasks should be preferred.
-
-HIGH tasks should be decomposed whenever possible.
+O backlog complementa o [`ROADMAP.md`](ROADMAP.md), transformando cada fase do projeto em tarefas objetivas com prioridade, complexidade e critérios claros de aceite.
 
 ---
 
-# Phase 0 — Planning and Bootstrap
+## 📑 Sumário
 
-## DG-001 — Repository bootstrap
+- [Informações da entrega](#informacoes-entrega)
+- [Prioridades](#prioridades)
+- [Complexidade das tarefas](#complexidade)
+- [Fase 0 — Planejamento e Bootstrap](#fase-0)
+- [Fase 1 — Modelos e Contratos de Domínio](#fase-1)
+- [Fase 2 — Ferramentas Determinísticas](#fase-2)
+- [Fase 3 — Abstração de Provedores](#fase-3)
+- [Fase 4 — Workflow do Agente](#fase-4)
+- [Fase 5 — Guardrails](#fase-5)
+- [Fase 6 — FastAPI](#fase-6)
+- [Fase 7 — Avaliação](#fase-7)
+- [Fase 8 — Interface Web](#fase-8)
+- [Fase 9 — Demonstração do Challenge](#fase-9)
+- [Fase 10 — Hardening Final](#fase-10)
+- [Itens adiados](#itens-adiados)
+- [Regra de controle do backlog](#regra-backlog)
 
-Priority: P0
+---
 
-Codex: NOT REQUIRED
+<a id="informacoes-entrega"></a>
 
-Status: DONE
+## 📅 Informações da entrega
 
-Scope:
+| Marco | Data |
+|---|---|
+| Code freeze interno | **06/11/2026** |
+| Entrega oficial do Challenge | **08/11/2026** |
 
-- create repository directory;
-- initialize Git;
-- create Python 3.12 virtual environment;
-- configure src layout;
-- configure pytest;
-- configure Ruff;
-- install project dependencies.
+O período posterior ao code freeze deve ser reservado para:
 
-Acceptance criteria:
+- validação final;
+- correções bloqueadoras;
+- revisão documental;
+- preparação da demonstração;
+- captura de evidências;
+- ensaio da apresentação;
+- submissão final.
 
-- Python 3.12 environment works;
-- editable installation succeeds;
-- `pip check` passes;
-- Ruff passes;
-- pytest passes.
+---
+
+<a id="prioridades"></a>
+
+## 🎯 Prioridades
+
+| Prioridade | Significado |
+|---|---|
+| `P0` | Obrigatório para o MVP do Challenge |
+| `P1` | Importante para qualidade profissional e demonstração |
+| `P2` | Melhoria relevante caso haja tempo disponível |
+| `P3` | Pós-Challenge ou melhoria opcional |
+
+Uma tarefa `P0` deve ser tratada antes de funcionalidades opcionais.
+
+---
+
+<a id="complexidade"></a>
+
+## 🧩 Complexidade das tarefas
+
+Cada tarefa de implementação é classificada previamente para auxiliar no controle de escopo.
+
+### BAIXA
+
+Alteração:
+
+- pequena;
+- localizada;
+- com comportamento claramente definido;
+- com baixo risco arquitetural.
+
+### MÉDIA
+
+Alteração que normalmente envolve:
+
+- múltiplos modelos;
+- regras de negócio;
+- integração entre componentes;
+- testes mais abrangentes;
+- validação de contratos.
+
+### ALTA
+
+Alteração que envolve:
+
+- forte impacto arquitetural;
+- múltiplas camadas;
+- alto risco de regressão;
+- grande quantidade de decisões interdependentes.
+
+Sempre que possível, tarefas de complexidade `ALTA` devem ser divididas em entregas menores.
+
+### NÃO APLICÁVEL
+
+Usado para atividades essencialmente:
+
+- documentais;
+- administrativas;
+- de planejamento;
+- de validação manual.
+
+---
+
+<a id="fase-0"></a>
+
+# ✅ Fase 0 — Planejamento e Bootstrap
+
+Objetivo: estabelecer uma fundação reproduzível antes do início da implementação funcional.
+
+---
+
+## DG-001 — Bootstrap do repositório
+
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ✅ CONCLUÍDO
+
+### Escopo
+
+- criar estrutura inicial do repositório;
+- inicializar Git;
+- configurar Python 3.12;
+- criar `.venv`;
+- configurar layout `src`;
+- configurar pytest;
+- configurar Ruff;
+- instalar dependências iniciais.
+
+### Critérios de aceite
+
+- Python 3.12 operacional;
+- ambiente virtual funcional;
+- instalação editável bem-sucedida;
+- `pip check` aprovado;
+- Ruff aprovado;
+- pytest aprovado.
 
 ---
 
 ## DG-002 — Project Charter
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ✅ CONCLUÍDO
 
-Codex: NOT REQUIRED
+### Escopo
 
-Status: DONE
+Definir:
 
-Scope:
-
-Define:
-
-- project problem;
-- target users;
-- project objectives;
+- problema;
+- usuários;
+- objetivos;
 - MVP;
-- non-goals;
-- human oversight;
-- evidence principles;
-- evaluation metrics.
+- não escopo;
+- supervisão humana;
+- princípios de evidência;
+- métricas de avaliação.
 
-Acceptance criteria:
+### Critérios de aceite
 
-- `docs/PROJECT_CHARTER.md` exists;
-- scope is explicit;
-- non-scope is explicit;
-- MVP success criteria are documented.
-
----
-
-## DG-003 — Project Roadmap
-
-Priority: P0
-
-Codex: NOT REQUIRED
-
-Status: DONE
-
-Acceptance criteria:
-
-- implementation phases are documented;
-- code freeze is documented;
-- final delivery period is documented.
+- `docs/PROJECT_CHARTER.md` existente;
+- escopo explícito;
+- não escopo explícito;
+- critérios de sucesso documentados.
 
 ---
 
-## DG-004 — Initial Architecture Decision
+## DG-003 — Roadmap do projeto
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ✅ CONCLUÍDO
 
-Codex: NOT REQUIRED
+### Critérios de aceite
 
-Status: DONE
+- fases documentadas;
+- code freeze documentado;
+- período final de entrega documentado;
+- controle de escopo definido.
 
-Deliverable:
+---
+
+## DG-004 — Decisão inicial de arquitetura
+
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ✅ CONCLUÍDO
+
+### Entrega
 
 `docs/adrs/ADR-001-project-scope-and-stack.md`
 
-Acceptance criteria:
+### Critérios de aceite
 
-- primary stack is recorded;
-- rejected complexity is documented;
-- architectural rationale is explicit.
+- stack principal registrada;
+- tecnologias deliberadamente excluídas documentadas;
+- justificativa arquitetural explícita;
+- trade-offs documentados.
 
 ---
 
-## DG-005 — Domain contracts
+## DG-005 — Contratos iniciais de domínio
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ✅ CONCLUÍDO
 
-Codex: NOT REQUIRED
-
-Status: DONE
-
-Deliverables:
+### Entregas
 
 - `docs/contracts/INCIDENT_INPUT.md`;
 - `docs/contracts/AGENT_RESPONSE.md`;
 - `docs/contracts/SEVERITY_AND_HUMAN_REVIEW.md`.
 
-Acceptance criteria:
+### Critérios de aceite
 
-- conceptual input contract is defined;
-- conceptual output contract is defined;
-- severity levels are defined;
-- human-review triggers are defined;
-- evidence traceability principles are explicit.
+- contrato conceitual de entrada definido;
+- contrato conceitual de saída definido;
+- níveis de severidade definidos;
+- critérios de revisão humana definidos;
+- princípios de rastreabilidade explícitos.
 
 ---
 
-## DG-006 — GitHub Actions bootstrap
+## DG-006 — Bootstrap do GitHub Actions
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ✅ CONCLUÍDO
 
-Codex classification: LIGHT
+### Escopo
 
-Status: DONE
-
-Scope:
-
-Create CI workflow for:
+Criar workflow de CI para:
 
 - Python 3.12;
-- project installation;
-- dependency validation;
+- instalação do projeto;
+- validação de dependências;
 - Ruff lint;
-- Ruff formatting validation;
+- validação de formatação;
 - pytest.
 
-Acceptance criteria:
+### Critérios de aceite
 
-- workflow runs on push;
-- workflow runs on pull request;
-- CI requires no LLM credentials;
-- CI passes on main.
-
----
-
-## DG-007 — Initial repository publication
-
-Priority: P0
-
-Codex: NOT REQUIRED
-
-Status: DONE
-
-Scope:
-
-- create GitHub repository;
-- first commit;
-- push main;
-- verify CI;
-- verify README rendering.
-
-Acceptance criteria:
-
-- repository is available on GitHub;
-- working tree is clean;
-- main branch is synchronized;
-- CI passes.
+- workflow executa em `push`;
+- workflow está configurado para `pull_request`;
+- CI não exige credenciais de modelos externos;
+- CI aprovada na `main`.
 
 ---
 
-# Phase 1 — Domain Models
+## DG-007 — Publicação inicial do repositório
 
-## DG-101 — Severity and classification enums
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ✅ CONCLUÍDO
 
-Priority: P0
+### Escopo
 
-Codex classification: LIGHT
+- criar repositório no GitHub;
+- realizar commit inicial;
+- publicar `main`;
+- validar CI;
+- validar README.
 
-Status: TODO
+### Critérios de aceite
 
-Scope:
+- repositório público disponível;
+- working tree limpa;
+- `main` sincronizada;
+- CI aprovada.
 
-Implement normalized domain values for:
+---
+
+<a id="fase-1"></a>
+
+# 🚧 Fase 1 — Modelos e Contratos de Domínio
+
+Objetivo: transformar os contratos conceituais em estruturas de domínio consistentes e testáveis.
+
+---
+
+## DG-101 — Enums de severidade e classificação
+
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
+
+### Escopo
+
+Implementar valores normalizados para:
 
 - severity;
 - incident classification;
 - evidence type;
 - evidence reliability;
-- business-impact status;
+- business impact status;
 - action priority.
 
-Acceptance criteria:
+### Contrato
 
-- invalid enum values are rejected;
-- unit tests cover valid and invalid values;
-- Ruff and pytest pass.
+`docs/contracts/DOMAIN_ENUMS.md`
 
----
+### Critérios de aceite
 
-## DG-102 — Evidence model
-
-Priority: P0
-
-Codex classification: LIGHT
-
-Status: TODO
-
-Scope:
-
-Implement the Pydantic model for incident evidence.
-
-Acceptance criteria:
-
-- evidence_id is required;
-- evidence_type is validated;
-- source is required;
-- duplicated evidence identifiers can later be detected at incident level;
-- serialization works;
-- tests pass.
+- valores válidos aceitos;
+- valores inválidos rejeitados;
+- aliases não documentados rejeitados;
+- casing preservado;
+- serialização previsível;
+- testes unitários implementados;
+- Ruff aprovado;
+- pytest aprovado.
 
 ---
 
-## DG-103 — IncidentInput model
+## DG-102 — Modelo Evidence
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Escopo
 
-Status: TODO
+Implementar o modelo Pydantic responsável por representar uma evidência individual.
 
-Scope:
+### Contrato
 
-Convert `INCIDENT_INPUT.md` into Pydantic models.
+`docs/contracts/EVIDENCE_MODEL.md`
 
-Acceptance criteria:
+### Critérios de aceite
 
-- required fields are enforced;
-- optional fields are supported;
-- timestamps are validated;
-- evidence is structured;
-- malformed requests fail predictably;
-- tests cover valid and invalid incidents.
-
----
-
-## DG-104 — AgentResponse models
-
-Priority: P0
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Scope:
-
-Implement structured models for:
-
-- BusinessImpact;
-- RootCauseHypothesis;
-- RecommendedAction;
-- GovernanceControl;
-- AgentResponse.
-
-Acceptance criteria:
-
-- confidence is constrained to the accepted interval;
-- severity is normalized;
-- human_review_required is boolean;
-- response serialization is deterministic;
-- tests pass.
+- `evidence_id` obrigatório;
+- `evidence_type` validado;
+- `source` obrigatório;
+- reliability opcional e validada;
+- datetime validado;
+- metadata suportada;
+- campos extras rejeitados;
+- serialização previsível;
+- IDs duplicados permanecem responsabilidade de camada superior;
+- testes aprovados.
 
 ---
 
-## DG-105 — Deterministic human-review rules
+## DG-103 — Modelo IncidentInput
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Escopo
 
-Status: TODO
+Converter `INCIDENT_INPUT.md` em modelos Pydantic.
 
-Scope:
+### Responsabilidades
 
-Implement rules defined in `SEVERITY_AND_HUMAN_REVIEW.md`.
+- campos obrigatórios;
+- campos opcionais;
+- timestamps;
+- coleção de `Evidence`;
+- `initial_severity`;
+- tags;
+- datasets afetados;
+- validação de identificadores duplicados de evidência.
 
-Acceptance criteria:
+### Critérios de aceite
 
-- critical incidents always require review;
-- confidence below 0.70 requires review;
-- insufficient evidence requires review;
-- conflicting evidence requires review;
-- destructive actions require review;
-- governance exposure requires review;
-- rules are covered by unit tests.
-
----
-
-# Phase 2 — Deterministic Tools
-
-## DG-201 — evidence_collector
-
-Priority: P0
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Purpose:
-
-Normalize and organize evidence provided with an incident.
-
-Acceptance criteria:
-
-- evidence identifiers remain traceable;
-- duplicated identifiers are detected;
-- unsupported evidence is handled explicitly;
-- output is deterministic;
-- unit tests pass.
+- campos obrigatórios efetivamente exigidos;
+- campos opcionais aceitos;
+- timestamps inválidos rejeitados;
+- evidências estruturadas;
+- IDs duplicados tratados deterministicamente;
+- requests malformadas falham de forma previsível;
+- testes válidos e inválidos implementados.
 
 ---
 
-## DG-202 — quality_analyzer
+## DG-104 — Modelos AgentResponse
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Escopo
 
-Status: TODO
+Implementar:
 
-Purpose:
+- `BusinessImpact`;
+- `RootCauseHypothesis`;
+- `RecommendedAction`;
+- `GovernanceControl`;
+- `AgentResponse`.
 
-Analyze deterministic Data Quality signals.
+### Critérios de aceite
 
-Initial supported patterns may include:
-
-- invalid records;
-- reconciliation differences;
-- missing relationships;
-- validation failures;
-- record-count divergence.
-
-Acceptance criteria:
-
-- findings reference evidence;
-- deterministic fixtures produce predictable output;
-- unsupported conclusions are not generated;
-- tests pass.
-
----
-
-## DG-203 — business_impact_analyzer
-
-Priority: P0
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Purpose:
-
-Map technical incident findings to possible business consequences.
-
-Acceptance criteria:
-
-- confirmed and potential impact are distinguished;
-- supporting evidence is referenced;
-- unknown impact remains representable;
-- deterministic tests pass.
+- confidence restrita ao intervalo definido;
+- severity normalizada;
+- `human_review_required` booleano;
+- supporting evidence representável;
+- hipóteses possuem status;
+- serialização determinística;
+- testes aprovados.
 
 ---
 
-## DG-204 — policy_retriever
+## DG-105 — Regras determinísticas de revisão humana
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Escopo
 
-Status: TODO
+Implementar as regras definidas em:
 
-Purpose:
+`docs/contracts/SEVERITY_AND_HUMAN_REVIEW.md`
 
-Retrieve governance controls applicable to an incident.
+### Critérios de aceite
 
-Initial implementation should remain lightweight.
+Revisão humana deve ser exigida quando aplicável a:
 
-Acceptance criteria:
+- severidade crítica;
+- severidade alta com impacto material;
+- confidence inferior a `0.70`;
+- evidência insuficiente;
+- evidência conflitante;
+- exposição de governança;
+- exposição regulatória;
+- impacto de privacidade;
+- ação destrutiva;
+- ação irreversível;
+- causa raiz altamente incerta;
+- processo crítico afetado.
 
-- policies are locally available;
-- retrieval is deterministic for CI;
-- retrieved controls contain source references;
-- no vector database is required.
+Todas as regras devem possuir testes automatizados.
 
 ---
 
-# Phase 3 — Provider Abstraction
+<a id="fase-2"></a>
 
-## DG-301 — Provider interface
+# 🛠️ Fase 2 — Ferramentas Determinísticas
 
-Priority: P0
+Objetivo: implementar capacidades analíticas independentes da camada de orquestração.
 
-Codex classification: LIGHT
+---
 
-Status: TODO
+## DG-201 — `evidence_collector`
 
-Scope:
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Define a model-provider abstraction independent of any specific LLM vendor.
+### Objetivo
 
-Acceptance criteria:
+Normalizar e organizar as evidências associadas a um incidente.
 
-- application logic does not depend directly on a real provider;
-- provider can return structured output;
-- interface is documented.
+### Critérios de aceite
+
+- IDs preservados;
+- rastreabilidade mantida;
+- duplicidades detectadas;
+- estruturas não suportadas tratadas explicitamente;
+- comportamento determinístico;
+- testes aprovados.
+
+---
+
+## DG-202 — `quality_analyzer`
+
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Objetivo
+
+Analisar sinais determinísticos relacionados à qualidade dos dados.
+
+### Padrões iniciais
+
+- registros inválidos;
+- divergência de reconciliação;
+- relacionamentos ausentes;
+- falhas de validação;
+- divergência de contagem;
+- inconsistências de integridade.
+
+### Critérios de aceite
+
+- findings referenciam evidências;
+- fixtures conhecidas produzem resultados previsíveis;
+- conclusões sem suporte não são geradas;
+- testes aprovados.
+
+---
+
+## DG-203 — `business_impact_analyzer`
+
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Objetivo
+
+Relacionar problemas técnicos a possíveis consequências de negócio.
+
+### Critérios de aceite
+
+- impacto confirmado e potencial diferenciados;
+- estado `unknown` representável;
+- evidências de suporte referenciadas;
+- resultados determinísticos;
+- testes aprovados.
+
+---
+
+## DG-204 — `policy_retriever`
+
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Objetivo
+
+Recuperar controles ou políticas de governança aplicáveis ao incidente.
+
+### Diretriz
+
+A primeira implementação deve permanecer leve e determinística.
+
+### Critérios de aceite
+
+- políticas disponíveis localmente;
+- recuperação previsível;
+- controles contendo referência de origem;
+- CI independente de banco vetorial;
+- testes aprovados.
+
+---
+
+<a id="fase-3"></a>
+
+# 🔌 Fase 3 — Abstração de Provedores
+
+Objetivo: separar comportamento dependente de modelos da lógica central de negócio.
+
+---
+
+## DG-301 — Interface de provider
+
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
+
+### Escopo
+
+Definir uma abstração independente de fornecedor para interação com modelos.
+
+### Critérios de aceite
+
+- lógica central não acoplada diretamente a um fornecedor;
+- interface compatível com saída estruturada;
+- contrato documentado;
+- comportamento testável.
 
 ---
 
 ## DG-302 — FakeProvider
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Objetivo
 
-Status: TODO
+Fornecer comportamento previsível para:
 
-Purpose:
-
-Provide deterministic model behavior for:
-
-- unit tests;
-- integration tests;
+- testes unitários;
+- testes de integração;
 - CI;
-- offline development.
+- desenvolvimento offline.
 
-Acceptance criteria:
+### Critérios de aceite
 
-- requires no credentials;
-- requires no network;
-- produces repeatable responses;
-- supports error simulation;
-- tests pass.
-
----
-
-## DG-303 — Controlled real LLM provider
-
-Priority: P1
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Acceptance criteria:
-
-- configuration uses environment variables;
-- missing credentials fail safely;
-- no secrets are committed;
-- real provider is optional;
-- CI remains independent of it.
+- sem credenciais;
+- sem rede;
+- respostas reproduzíveis;
+- suporte a simulação de erros;
+- testes aprovados.
 
 ---
 
-# Phase 4 — Agent Workflow
+## DG-303 — Provider real controlado
 
-## DG-401 — LangGraph state
+**Prioridade:** P1
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Priority: P0
+### Critérios de aceite
 
-Codex classification: MEDIUM
-
-Status: TODO
-
-Scope:
-
-Define workflow state based on approved domain contracts.
-
-Acceptance criteria:
-
-- incident state is explicit;
-- evidence state is explicit;
-- tool results are explicit;
-- errors can be represented;
-- final response can be constructed from state.
+- configuração por variáveis de ambiente;
+- credenciais ausentes falham com segurança;
+- nenhum segredo versionado;
+- provider real opcional;
+- CI independente dessa integração.
 
 ---
 
-## DG-402 — LangGraph nodes
+<a id="fase-4"></a>
 
-Priority: P0
+# 🧠 Fase 4 — Workflow do Agente
 
-Codex classification: MEDIUM
-
-Status: TODO
-
-Initial nodes:
-
-- validate incident;
-- collect evidence;
-- analyze quality;
-- analyze business impact;
-- retrieve policies;
-- generate hypotheses;
-- generate recommendations;
-- determine human review;
-- construct final response.
-
-Acceptance criteria:
-
-- node responsibilities remain narrow;
-- nodes are independently testable where practical;
-- failures are represented predictably.
+Objetivo: orquestrar o processo de análise do incidente utilizando LangGraph.
 
 ---
 
-## DG-403 — LangGraph orchestration
+## DG-401 — Estado do LangGraph
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Critérios de aceite
 
-Status: TODO
+O estado deve representar explicitamente:
 
-Acceptance criteria:
-
-- single-agent graph compiles;
-- deterministic FakeProvider execution succeeds;
-- tools execute in expected sequence;
-- final AgentResponse is valid;
-- integration tests pass.
-
----
-
-# Phase 5 — Guardrails
-
-## DG-501 — Unsupported claim guardrail
-
-Priority: P0
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Acceptance criteria:
-
-- unsupported conclusions are rejected or qualified;
-- hypotheses cannot silently become confirmed facts;
-- tests contain unsupported-evidence scenarios.
+- incidente;
+- evidências;
+- resultados das ferramentas;
+- erros;
+- progresso do fluxo;
+- resposta final.
 
 ---
 
-## DG-502 — Insufficient evidence behavior
+## DG-402 — Nodes do LangGraph
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Nodes iniciais
 
-Status: TODO
+- validar incidente;
+- coletar evidências;
+- analisar qualidade;
+- analisar impacto de negócio;
+- recuperar políticas;
+- gerar hipóteses;
+- gerar recomendações;
+- determinar revisão humana;
+- construir resposta final.
 
-Acceptance criteria:
+### Critérios de aceite
 
-- low-evidence incidents are accepted when structurally valid;
-- confidence is reduced;
-- missing evidence is communicated;
-- human review is triggered when required;
-- fabricated evidence is prohibited.
-
----
-
-## DG-503 — Evidence traceability validation
-
-Priority: P0
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Acceptance criteria:
-
-- important conclusions can reference evidence IDs;
-- invalid evidence references are detected;
-- traceability can be measured.
+- responsabilidades estreitas;
+- comportamento previsível;
+- nodes testáveis individualmente quando aplicável;
+- falhas representadas explicitamente.
 
 ---
 
-# Phase 6 — FastAPI
+## DG-403 — Orquestração LangGraph
 
-## DG-601 — FastAPI application bootstrap
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Priority: P0
+### Critérios de aceite
 
-Codex classification: LIGHT
-
-Status: TODO
-
-Acceptance criteria:
-
-- application starts;
-- `/health` responds successfully;
-- API configuration is minimal;
-- test client validates health endpoint.
+- grafo compila;
+- fluxo de agente único;
+- execução determinística com `FakeProvider`;
+- ferramentas executadas na sequência esperada;
+- `AgentResponse` final válida;
+- testes de integração aprovados.
 
 ---
 
-## DG-602 — Incident analysis endpoint
+<a id="fase-5"></a>
 
-Priority: P0
+# 🛡️ Fase 5 — Guardrails
 
-Codex classification: MEDIUM
-
-Status: TODO
-
-Expected endpoint:
-
-`POST /api/v1/incidents/analyze`
-
-Acceptance criteria:
-
-- accepts IncidentInput;
-- invokes agent workflow;
-- returns AgentResponse;
-- invalid requests return appropriate status;
-- API tests pass.
+Objetivo: proteger a solução contra conclusões sem suporte e tornar incertezas explícitas.
 
 ---
 
-## DG-603 — API error handling
+## DG-501 — Guardrail de afirmações sem suporte
 
-Priority: P1
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Critérios de aceite
 
-Status: TODO
-
-Acceptance criteria:
-
-- validation errors are structured;
-- internal failures do not expose sensitive details;
-- provider failures are handled safely;
-- error tests pass.
+- conclusões sem suporte são rejeitadas ou qualificadas;
+- hipótese não se transforma silenciosamente em fato;
+- testes incluem cenários sem evidência suficiente.
 
 ---
 
-# Phase 7 — Evaluation
+## DG-502 — Comportamento com evidência insuficiente
 
-## DG-701 — Evaluation dataset
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Priority: P0
+### Critérios de aceite
 
-Codex classification: MEDIUM
-
-Status: TODO
-
-Initial scenarios:
-
-- DE-101-inspired incident;
-- DE-102-inspired incident;
-- insufficient-evidence incident;
-- conflicting-evidence incident;
-- low-severity incident;
-- critical incident;
-- unsupported-claim scenario.
-
-Existing source repositories must remain unchanged.
+- incidentes estruturalmente válidos continuam aceitos;
+- confidence reduzida;
+- evidência ausente explicitada;
+- investigação adicional recomendada;
+- revisão humana ativada quando aplicável;
+- fabricação de evidências proibida.
 
 ---
 
-## DG-702 — Evaluation metrics
+## DG-503 — Validação de rastreabilidade
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Critérios de aceite
 
-Status: TODO
-
-Metrics:
-
-- schema_valid_rate;
-- severity_accuracy;
-- evidence_traceability_rate;
-- unsupported_rejection_rate;
-- human_review_accuracy;
-- tool_execution_success_rate;
-- response_latency;
-- test_pass_rate.
-
-Acceptance criteria:
-
-- metric definitions are explicit;
-- each metric is reproducible;
-- deterministic evaluation works with FakeProvider.
+- conclusões importantes referenciam IDs de evidência;
+- referências inválidas detectadas;
+- rastreabilidade mensurável;
+- testes aprovados.
 
 ---
 
-## DG-703 — Evaluation report
+<a id="fase-6"></a>
 
-Priority: P1
+# 🌐 Fase 6 — FastAPI
 
-Codex classification: MEDIUM
-
-Status: TODO
-
-Acceptance criteria:
-
-- evaluation command generates summary output;
-- metrics are understandable;
-- results can be used in README or Challenge presentation.
+Objetivo: disponibilizar o fluxo por meio de um contrato HTTP estável.
 
 ---
 
-# Phase 8 — Web Interface
+## DG-601 — Bootstrap FastAPI
 
-## DG-801 — Node.js application bootstrap
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
 
-Priority: P1
+### Critérios de aceite
 
-Codex classification: LIGHT
+- aplicação inicia;
+- endpoint `/health` operacional;
+- configuração mínima;
+- teste do endpoint aprovado.
 
-Status: TODO
+---
 
-Stack:
+## DG-602 — Endpoint de análise
+
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Endpoint esperado
+
+```text
+POST /api/v1/incidents/analyze
+```
+
+### Critérios de aceite
+
+- recebe `IncidentInput`;
+- executa workflow;
+- retorna `AgentResponse`;
+- requests inválidas recebem status apropriado;
+- testes de API aprovados.
+
+---
+
+## DG-603 — Tratamento de erros da API
+
+**Prioridade:** P1
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Critérios de aceite
+
+- erros de validação estruturados;
+- detalhes sensíveis não expostos;
+- falhas de provider tratadas;
+- falhas internas tratadas com segurança;
+- testes aprovados.
+
+---
+
+<a id="fase-7"></a>
+
+# 📊 Fase 7 — Avaliação
+
+Objetivo: medir objetivamente o comportamento da solução.
+
+---
+
+## DG-701 — Dataset de avaliação
+
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Cenários iniciais
+
+- incidente inspirado em DE-101;
+- incidente inspirado em DE-102;
+- evidência insuficiente;
+- evidência conflitante;
+- incidente de baixa severidade;
+- incidente crítico;
+- tentativa de afirmação sem suporte.
+
+Os repositórios de origem permanecem inalterados.
+
+---
+
+## DG-702 — Métricas de avaliação
+
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Métricas
+
+- `schema_valid_rate`;
+- `severity_accuracy`;
+- `evidence_traceability_rate`;
+- `unsupported_rejection_rate`;
+- `human_review_accuracy`;
+- `tool_execution_success_rate`;
+- `response_latency`;
+- `test_pass_rate`.
+
+### Critérios de aceite
+
+- métricas formalmente definidas;
+- cálculo reproduzível;
+- avaliação determinística disponível;
+- resultados interpretáveis.
+
+---
+
+## DG-703 — Relatório de avaliação
+
+**Prioridade:** P1
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Critérios de aceite
+
+- comando de avaliação gera resumo;
+- métricas legíveis;
+- resultados reutilizáveis no README;
+- resultados reutilizáveis na apresentação do Challenge.
+
+---
+
+<a id="fase-8"></a>
+
+# 🖥️ Fase 8 — Interface Web
+
+Objetivo: criar experiência profissional de demonstração sem complexidade desnecessária.
+
+---
+
+## DG-801 — Bootstrap Node.js
+
+**Prioridade:** P1
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
+
+### Stack
 
 - Node.js;
 - Express;
 - EJS;
 - Vanilla JavaScript.
 
-Acceptance criteria:
+### Critérios de aceite
 
-- application starts locally;
-- configuration is simple;
-- no React or Next.js is introduced.
-
----
-
-## DG-802 — Incident input screen
-
-Priority: P1
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Acceptance criteria:
-
-- user can enter or load an incident;
-- interface validates essential fields;
-- sample incident can be loaded easily.
+- aplicação inicia localmente;
+- configuração simples;
+- integração prevista com API;
+- React ou Next.js não introduzidos.
 
 ---
 
-## DG-803 — Analysis result screen
+## DG-802 — Tela de entrada do incidente
 
-Priority: P1
+**Prioridade:** P1
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Critérios de aceite
 
-Status: TODO
+- preenchimento manual de incidente;
+- carregamento de cenário de demonstração;
+- validação básica;
+- envio para análise.
 
-Display:
+---
 
-- classification;
-- severity;
-- executive summary;
-- evidence;
-- business impact;
-- hypotheses;
-- actions;
-- governance controls;
+## DG-803 — Tela de resultado
+
+**Prioridade:** P1
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Exibir
+
+- classificação;
+- severidade;
+- resumo executivo;
+- evidências;
+- impacto de negócio;
+- hipóteses;
+- recomendações;
+- controles de governança;
 - confidence;
-- human-review requirement.
+- necessidade de revisão humana.
 
 ---
 
-## DG-804 — Demonstration polish
+## DG-804 — Polimento da demonstração
 
-Priority: P2
+**Prioridade:** P2
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
 
-Codex classification: LIGHT
+### Escopo
 
-Status: TODO
-
-Scope:
-
-- visual hierarchy;
-- severity indication;
-- human-review warning;
-- readable evidence cards;
+- hierarquia visual;
+- identificação clara de severidade;
+- aviso de revisão humana;
+- cards de evidência;
 - loading state;
-- error state.
+- error state;
+- legibilidade;
+- responsividade básica.
 
 ---
 
-# Phase 9 — Challenge Demonstration
+<a id="fase-9"></a>
 
-## DG-901 — DE-101 scenario
+# 🎬 Fase 9 — Demonstração do Challenge
 
-Priority: P0
-
-Codex classification: MEDIUM
-
-Status: TODO
-
-Purpose:
-
-Create a representative incident based on Data Quality patterns previously investigated in the `aws-lakehouse-engineering-lab`.
-
-Existing repository must remain unchanged.
+Objetivo: demonstrar valor técnico e de negócio por meio de cenários representativos.
 
 ---
 
-## DG-902 — DE-102 scenario
+## DG-901 — Cenário DE-101
 
-Priority: P1
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Codex classification: MEDIUM
+### Objetivo
 
-Status: TODO
+Construir um incidente representativo baseado nos padrões de Data Quality previamente investigados no:
 
-Purpose:
+`aws-lakehouse-engineering-lab`
 
-Create a second representative incident scenario to demonstrate generalization.
-
----
-
-## DG-903 — Demo narrative
-
-Priority: P0
-
-Codex: NOT REQUIRED
-
-Status: TODO
-
-Narrative should explain:
-
-1. business problem;
-2. incident submitted;
-3. evidence collected;
-4. tools used;
-5. AI reasoning boundaries;
-6. governance controls;
-7. human review;
-8. measurable evaluation results;
-9. business value.
+O repositório original permanecerá inalterado.
 
 ---
 
-# Phase 10 — Hardening
+## DG-902 — Cenário DE-102
 
-## DG-1001 — Full quality gate
+**Prioridade:** P1
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
 
-Priority: P0
+### Objetivo
 
-Codex classification: LIGHT
+Criar um segundo cenário representativo para demonstrar capacidade de generalização.
 
-Status: TODO
+---
 
-Required checks:
+## DG-903 — Narrativa da demonstração
 
-- pip check;
-- Ruff lint;
-- Ruff formatting;
-- full pytest;
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ⏳ PENDENTE
+
+### Narrativa esperada
+
+1. problema de negócio;
+2. incidente recebido;
+3. evidências disponíveis;
+4. ferramentas utilizadas;
+5. limites do raciocínio baseado em IA;
+6. controles de governança;
+7. supervisão humana;
+8. resultados mensuráveis;
+9. valor de negócio.
+
+---
+
+<a id="fase-10"></a>
+
+# 🔒 Fase 10 — Hardening Final
+
+Objetivo: preparar o repositório para o code freeze.
+
+---
+
+## DG-1001 — Quality gate completo
+
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
+
+### Validações obrigatórias
+
+```bash
+python -m pip check
+ruff check .
+ruff format --check .
+pytest
+```
+
+Também validar:
+
 - CI;
-- clean environment installation.
+- instalação em ambiente limpo;
+- ausência de arquivos temporários;
+- árvore Git limpa.
 
 ---
 
-## DG-1002 — Security and secret review
+## DG-1002 — Revisão de segurança e segredos
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
 
-Codex classification: LIGHT
+### Critérios de aceite
 
-Status: TODO
-
-Acceptance criteria:
-
-- no API keys committed;
-- `.env` ignored;
-- example environment documented safely;
-- provider credentials optional.
+- nenhuma chave versionada;
+- `.env` ignorado;
+- exemplo de configuração seguro;
+- credenciais opcionais;
+- documentação sem dados sensíveis.
 
 ---
 
-## DG-1003 — Documentation review
+## DG-1003 — Revisão de documentação
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
 
-Codex classification: LIGHT
+### Critérios de aceite
 
-Status: TODO
-
-Acceptance criteria:
-
-- README reflects implemented architecture;
-- setup instructions work from a clean environment;
-- diagrams match implementation;
-- evaluation results are current;
-- known limitations are documented.
+- README compatível com implementação;
+- documentação em PT-BR;
+- instruções reproduzíveis;
+- diagramas coerentes;
+- avaliação atualizada;
+- limitações documentadas;
+- links válidos;
+- índice documental atualizado.
 
 ---
 
 ## DG-1004 — Code freeze
 
-Priority: P0
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ⏳ PENDENTE
 
-Codex: NOT REQUIRED
+### Data-alvo
 
-Target:
+**06/11/2026**
 
-2026-11-06
+Após o code freeze:
 
-After code freeze:
-
-- no unnecessary features;
-- only blocking fixes;
-- final validation;
-- demonstration rehearsal;
-- submission preparation.
+- nenhuma funcionalidade desnecessária;
+- somente correções bloqueadoras;
+- validação final;
+- ensaio da demonstração;
+- preparação da submissão.
 
 ---
 
-# Deferred / Post-Challenge
+<a id="itens-adiados"></a>
 
-The following items should remain deferred unless Challenge requirements change:
+# 🧊 Itens adiados / Pós-Challenge
+
+Os seguintes itens permanecem fora do escopo do MVP, salvo mudança explícita nos requisitos:
 
 - Kubernetes;
-- multi-agent architecture;
+- arquitetura multi-agent;
 - Redis;
 - Qdrant;
-- Airflow runtime integration;
-- Spark runtime integration;
+- integração runtime com Airflow;
+- integração runtime com Spark;
 - React;
 - Next.js;
-- complex authentication;
-- enterprise IAM;
-- mandatory cloud deployment;
-- autonomous remediation;
-- production scalability work.
+- autenticação complexa;
+- IAM corporativo;
+- implantação obrigatória em cloud;
+- remediação autônoma;
+- escalabilidade de produção;
+- infraestrutura distribuída desnecessária.
 
-## Backlog Rule
+Esses itens podem ser revisitados posteriormente, caso exista benefício concreto.
 
-A new item should be added to the pre-delivery backlog only when it materially improves:
+---
 
-- Challenge compliance;
-- reliability;
-- explainability;
-- governance;
-- evidence traceability;
-- evaluation;
-- demonstration quality;
-- professional portfolio value.
+<a id="regra-backlog"></a>
 
-Otherwise, it should be deferred.
+# 🧭 Regra de controle do backlog
+
+Uma nova tarefa deve entrar no backlog anterior à entrega somente quando melhorar materialmente pelo menos um dos seguintes aspectos:
+
+- aderência ao Challenge;
+- confiabilidade;
+- explicabilidade;
+- governança;
+- rastreabilidade;
+- segurança;
+- avaliação;
+- qualidade da demonstração;
+- qualidade profissional do portfólio.
+
+Caso contrário, a tarefa deve ser adiada.
+
+---
+
+## ✅ Definition of Done geral
+
+Uma tarefa de implementação só deve ser considerada concluída quando, quando aplicável:
+
+- requisitos atendidos;
+- critérios de aceite satisfeitos;
+- testes implementados;
+- testes aprovados;
+- Ruff aprovado;
+- dependências válidas;
+- documentação atualizada;
+- comportamento reproduzível;
+- nenhuma regressão conhecida introduzida.
+
+---
+
+## 🔄 Fluxo de execução
+
+```text
+Planejamento
+     ↓
+Contrato / critérios de aceite
+     ↓
+Implementação com escopo controlado
+     ↓
+Testes
+     ↓
+Quality gates
+     ↓
+Revisão
+     ↓
+Versionamento
+     ↓
+Próxima tarefa
+```
+
+---
+
+> 📋 O backlog do **AI Data Governance Agent** prioriza entregas pequenas, testáveis, rastreáveis e alinhadas ao objetivo de produzir uma solução profissional de Engenharia de Dados, Inteligência Artificial e Governança.

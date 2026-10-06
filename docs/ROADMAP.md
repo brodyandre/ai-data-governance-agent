@@ -1,299 +1,615 @@
-# AI Data Governance Agent — Roadmap
+# 🗺️ AI Data Governance Agent — Roadmap
 
-## Delivery Dates
+Este documento apresenta a evolução planejada do **AI Data Governance Agent**, organizada em fases incrementais.
 
-- Official Challenge deadline: 2026-11-08
-- Internal code freeze: 2026-11-06
-
-The internal freeze leaves time for final validation, documentation review, repository
-cleanup, screenshots, presentation preparation, and submission.
+O objetivo do roadmap é preservar foco, reduzir risco de implementação e garantir que cada etapa produza entregas verificáveis antes do avanço para a próxima.
 
 ---
 
-## Phase 0 — Planning and Bootstrap
+## 📑 Sumário
 
-Goal:
+- [Datas principais](#datas)
+- [Princípios do roadmap](#principios)
+- [Fase 0 — Planejamento e Bootstrap](#fase-0)
+- [Fase 1 — Modelos e Contratos de Domínio](#fase-1)
+- [Fase 2 — Ferramentas Determinísticas](#fase-2)
+- [Fase 3 — Abstração de Provedores](#fase-3)
+- [Fase 4 — Workflow com LangGraph](#fase-4)
+- [Fase 5 — Guardrails e Governança](#fase-5)
+- [Fase 6 — API FastAPI](#fase-6)
+- [Fase 7 — Framework de Avaliação](#fase-7)
+- [Fase 8 — Interface Web](#fase-8)
+- [Fase 9 — Cenários Representativos](#fase-9)
+- [Fase 10 — Hardening Final](#fase-10)
+- [Fase 11 — Preparação da Entrega](#fase-11)
+- [Regra de controle de escopo](#controle-escopo)
 
-Create a reproducible project foundation and freeze the initial product scope before
-agent implementation.
+---
 
-Deliverables:
+<a id="datas"></a>
 
-- repository structure;
-- Python 3.12 virtual environment;
-- pyproject.toml;
+## 📅 Datas principais
+
+| Marco | Data |
+|---|---|
+| Code freeze interno | **06/11/2026** |
+| Entrega oficial do Challenge | **08/11/2026** |
+
+O período após o code freeze será reservado para:
+
+- validação final;
+- revisão documental;
+- limpeza do repositório;
+- preparação da demonstração;
+- captura de evidências;
+- revisão de links;
+- ensaio da apresentação;
+- submissão final.
+
+---
+
+<a id="principios"></a>
+
+## 🧭 Princípios do roadmap
+
+A evolução do projeto seguirá os seguintes princípios:
+
+- construir primeiro a base;
+- definir contratos antes da orquestração;
+- implementar componentes determinísticos antes da IA generativa;
+- testar cada camada isoladamente;
+- preservar rastreabilidade;
+- manter CI independente de serviços externos;
+- limitar o escopo;
+- priorizar demonstrabilidade e qualidade.
+
+Fluxo geral:
+
+```text
+Planejamento
+     ↓
+Contratos
+     ↓
+Modelos
+     ↓
+Ferramentas determinísticas
+     ↓
+Providers
+     ↓
+Orquestração
+     ↓
+Guardrails
+     ↓
+API
+     ↓
+Avaliação
+     ↓
+Interface
+     ↓
+Demonstração
+```
+
+---
+
+<a id="fase-0"></a>
+
+# ✅ Fase 0 — Planejamento e Bootstrap
+
+## Objetivo
+
+Criar uma fundação reproduzível e definir o escopo inicial antes da implementação funcional.
+
+## Entregas
+
+- estrutura do repositório;
+- Python 3.12;
+- ambiente virtual;
+- `pyproject.toml`;
 - pytest;
 - Ruff;
-- initial CI configuration;
+- CI inicial;
 - Project Charter;
-- project roadmap;
-- initial architecture decision records;
-- initial README;
+- roadmap;
 - backlog;
-- initial contracts.
+- ADR inicial;
+- contratos conceituais;
+- README inicial.
 
-Status:
+## Status
 
-COMPLETED
-
----
-
-## Phase 1 — Domain Contracts and Incident Model
-
-Goal:
-
-Define the domain before implementing orchestration.
-
-Expected deliverables:
-
-- IncidentInput model;
-- Evidence model;
-- severity model;
-- classification model;
-- BusinessImpact model;
-- GovernanceControl model;
-- RecommendedAction model;
-- AgentResponse model;
-- confidence representation;
-- human-review rules;
-- example incident fixtures;
-- schema validation tests.
-
-No real LLM integration is required in this phase.
+**✅ CONCLUÍDA**
 
 ---
 
-## Phase 2 — Deterministic Analysis Tools
+<a id="fase-1"></a>
 
-Goal:
+# 🚧 Fase 1 — Modelos e Contratos de Domínio
 
-Implement the first deterministic capabilities independently of LangGraph.
+## Objetivo
 
-Initial tools:
+Transformar os contratos conceituais em estruturas de domínio explícitas, consistentes e testáveis.
 
-- quality_analyzer;
-- business_impact_analyzer;
-- policy_retriever;
-- evidence_collector.
+## Entregas previstas
 
-Requirements:
+- `IncidentInput`;
+- `Evidence`;
+- enums de domínio;
+- severidade;
+- classificação;
+- `BusinessImpact`;
+- `GovernanceControl`;
+- `RecommendedAction`;
+- `RootCauseHypothesis`;
+- `AgentResponse`;
+- representação de confidence;
+- regras determinísticas de revisão humana;
+- fixtures de incidentes;
+- testes de validação.
 
-- explicit inputs and outputs;
-- unit tests;
-- predictable failure behavior;
-- evidence traceability;
-- no dependency on a real LLM for CI.
+## Diretriz
 
----
+Nenhuma integração obrigatória com modelo real é necessária nesta fase.
 
-## Phase 3 — Provider Abstraction
+## Resultado esperado
 
-Goal:
+Ao final da fase, os principais contratos deverão estar:
 
-Separate model-dependent behavior from business logic.
-
-Expected deliverables:
-
-- provider protocol or interface;
-- FakeProvider;
-- deterministic test behavior;
-- controlled real-provider adapter;
-- configuration through environment variables;
-- safe handling of missing credentials.
-
-CI must continue to run without external LLM credentials.
-
----
-
-## Phase 4 — LangGraph Workflow
-
-Goal:
-
-Orchestrate incident analysis using LangGraph.
-
-Expected high-level flow:
-
-1. validate incident;
-2. collect evidence;
-3. analyze data quality;
-4. analyze business impact;
-5. retrieve governance controls;
-6. produce or refine hypotheses;
-7. generate recommendations;
-8. calculate or assign confidence;
-9. determine human-review requirement;
-10. validate final response.
-
-The first version must remain a single-agent workflow.
+- implementados;
+- validados;
+- testados;
+- serializáveis;
+- documentados.
 
 ---
 
-## Phase 5 — Guardrails and Governance
+<a id="fase-2"></a>
 
-Goal:
+# 🛠️ Fase 2 — Ferramentas Determinísticas
 
-Make the agent safer, traceable, and explicit about uncertainty.
+## Objetivo
 
-Expected deliverables:
+Implementar capacidades analíticas independentes da camada de orquestração.
 
-- insufficient-evidence behavior;
-- unsupported-claim rejection;
-- critical-decision human review;
-- evidence references;
-- confidence rules;
-- structured failure responses;
-- clear separation between facts and hypotheses.
+## Ferramentas iniciais
+
+### `evidence_collector`
+
+Responsável por organizar e preservar as evidências do incidente.
+
+### `quality_analyzer`
+
+Responsável por analisar sinais de qualidade dos dados.
+
+### `business_impact_analyzer`
+
+Responsável por avaliar possíveis impactos de negócio.
+
+### `policy_retriever`
+
+Responsável por recuperar políticas ou controles de governança aplicáveis.
+
+## Requisitos
+
+Cada ferramenta deverá possuir:
+
+- entrada explícita;
+- saída explícita;
+- comportamento previsível;
+- tratamento de erro;
+- rastreabilidade;
+- testes unitários.
+
+## Resultado esperado
+
+As ferramentas devem poder ser executadas e testadas sem LangGraph e sem modelo externo.
 
 ---
 
-## Phase 6 — FastAPI Application
+<a id="fase-3"></a>
 
-Goal:
+# 🔌 Fase 3 — Abstração de Provedores
 
-Expose the workflow through a stable HTTP contract.
+## Objetivo
 
-Expected deliverables:
+Separar comportamento dependente de modelos da lógica principal de negócio.
 
-- health endpoint;
-- incident-analysis endpoint;
-- request validation;
-- structured response;
-- error handling;
-- API tests;
-- OpenAPI documentation.
+## Entregas previstas
+
+- interface ou protocolo de provider;
+- provider determinístico para testes;
+- provider real opcional;
+- configuração por variáveis de ambiente;
+- tratamento seguro de credenciais ausentes.
+
+## Princípio arquitetural
+
+```text
+Lógica de negócio
+       │
+       ▼
+Provider Interface
+       │
+   ┌───┴────┐
+   │        │
+Teste      Real
+```
+
+## Requisitos
+
+A CI deverá permanecer funcional:
+
+- sem chave de API;
+- sem chamadas externas obrigatórias;
+- com comportamento reproduzível.
 
 ---
 
-## Phase 7 — Evaluation Framework
+<a id="fase-4"></a>
 
-Goal:
+# 🧠 Fase 4 — Workflow com LangGraph
 
-Measure behavior objectively.
+## Objetivo
 
-Initial metrics:
+Orquestrar a análise do incidente de forma explícita e controlada.
 
-- schema_valid_rate;
-- severity_accuracy;
-- evidence_traceability_rate;
-- unsupported_rejection_rate;
-- human_review_accuracy;
-- tool_execution_success_rate;
-- response_latency;
-- test_pass_rate.
+## Fluxo inicial
 
-Expected deliverables:
+```text
+Validar incidente
+       ↓
+Coletar evidências
+       ↓
+Analisar Data Quality
+       ↓
+Avaliar impacto de negócio
+       ↓
+Consultar governança
+       ↓
+Construir hipóteses
+       ↓
+Gerar recomendações
+       ↓
+Avaliar confidence
+       ↓
+Determinar revisão humana
+       ↓
+Construir AgentResponse
+```
 
-- evaluation fixtures;
-- evaluation runner;
+## Entregas previstas
+
+- estado do grafo;
+- nodes;
+- transições;
+- tratamento de falhas;
+- integração das ferramentas;
+- integração do provider;
+- testes do workflow.
+
+## Diretriz
+
+A primeira versão permanecerá com **arquitetura de agente único**.
+
+---
+
+<a id="fase-5"></a>
+
+# 🛡️ Fase 5 — Guardrails e Governança
+
+## Objetivo
+
+Tornar o comportamento do agente mais seguro, rastreável e explícito quanto à incerteza.
+
+## Entregas previstas
+
+- rejeição de afirmações sem suporte;
+- comportamento com evidência insuficiente;
+- validação de rastreabilidade;
+- regras de confidence;
+- revisão humana obrigatória;
+- separação entre fatos e hipóteses;
+- respostas de falha estruturadas.
+
+## Princípio
+
+```text
+Sem evidência suficiente
+        ↓
+Não afirmar como fato
+        ↓
+Qualificar ou rejeitar
+        ↓
+Solicitar revisão humana quando necessário
+```
+
+---
+
+<a id="fase-6"></a>
+
+# 🌐 Fase 6 — API FastAPI
+
+## Objetivo
+
+Disponibilizar o workflow por meio de um contrato HTTP estável.
+
+## Entregas previstas
+
+### Health check
+
+```text
+GET /health
+```
+
+### Análise de incidente
+
+```text
+POST /api/v1/incidents/analyze
+```
+
+## Requisitos
+
+- validação de request;
+- execução do workflow;
+- resposta estruturada;
+- tratamento de erros;
+- testes de API;
+- documentação OpenAPI.
+
+## Resultado esperado
+
+A aplicação deverá poder ser consumida por clientes externos de forma previsível.
+
+---
+
+<a id="fase-7"></a>
+
+# 📊 Fase 7 — Framework de Avaliação
+
+## Objetivo
+
+Medir o comportamento da solução de forma objetiva.
+
+## Métricas iniciais
+
+- `schema_valid_rate`;
+- `severity_accuracy`;
+- `evidence_traceability_rate`;
+- `unsupported_rejection_rate`;
+- `human_review_accuracy`;
+- `tool_execution_success_rate`;
+- `response_latency`;
+- `test_pass_rate`.
+
+## Entregas previstas
+
+- fixtures de avaliação;
+- cenários controlados;
 - expected outcomes;
-- generated summary report.
+- runner de avaliação;
+- cálculo das métricas;
+- relatório de resultados.
+
+## Resultado esperado
+
+A avaliação deverá ser:
+
+- reproduzível;
+- interpretável;
+- adequada para demonstração;
+- independente de comportamento imprevisível sempre que possível.
 
 ---
 
-## Phase 8 — Web Demonstration Interface
+<a id="fase-8"></a>
 
-Goal:
+# 🖥️ Fase 8 — Interface Web
 
-Provide a professional demonstration experience without introducing unnecessary
-frontend complexity.
+## Objetivo
 
-Primary stack:
+Criar uma experiência visual profissional para demonstração da solução.
+
+## Stack principal
 
 - Node.js;
 - Express;
 - EJS;
-- vanilla JavaScript.
+- Vanilla JavaScript.
 
-Expected capabilities:
+## Capacidades previstas
 
-- enter or load an incident;
-- submit analysis;
-- display severity and classification;
-- display executive summary;
-- show evidence;
-- show business impact;
-- show root-cause hypotheses;
-- show recommended actions;
-- show governance controls;
-- show confidence;
-- highlight human-review requirement.
+- inserir incidente;
+- carregar cenário predefinido;
+- enviar análise;
+- visualizar classificação;
+- visualizar severidade;
+- exibir resumo executivo;
+- exibir evidências;
+- exibir impacto de negócio;
+- exibir hipóteses;
+- exibir recomendações;
+- exibir controles de governança;
+- exibir confidence;
+- destacar revisão humana.
 
-Streamlit remains a fallback only.
+## Diretriz
 
----
+A interface deve privilegiar:
 
-## Phase 9 — Representative Incident Scenarios
+- clareza;
+- legibilidade;
+- hierarquia visual;
+- demonstração do valor do projeto.
 
-Goal:
-
-Demonstrate the agent with realistic Data Engineering incidents.
-
-Initial sources:
-
-- DE-101 patterns from aws-lakehouse-engineering-lab;
-- DE-102 patterns from aws-lakehouse-engineering-lab;
-- synthetic incidents specifically created for Challenge evaluation.
-
-Existing repositories remain unchanged.
+Streamlit permanece apenas como opção de contingência.
 
 ---
 
-## Phase 10 — Final Hardening
+<a id="fase-9"></a>
 
-Goal:
+# 🎬 Fase 9 — Cenários Representativos
 
-Prepare the repository for code freeze.
+## Objetivo
 
-Activities:
+Demonstrar o agente com situações próximas de problemas reais de Engenharia de Dados.
 
-- full pytest execution;
-- Ruff validation;
-- CI verification;
-- dependency review;
-- documentation review;
-- removal of dead code;
-- removal of temporary files;
-- secret scanning review;
-- reproducibility check;
-- clean-environment installation test;
-- final demonstration rehearsal.
+## Cenários iniciais
 
-Target completion:
+### Cenário 1
 
-2026-11-06.
+Inspirado em padrões do incidente **DE-101** do repositório:
 
----
+```text
+aws-lakehouse-engineering-lab
+```
 
-## Phase 11 — Submission Preparation
+### Cenário 2
 
-Period:
+Inspirado em padrões do incidente **DE-102**.
 
-2026-11-07 to 2026-11-08.
+### Cenários sintéticos
 
-Activities:
+Também poderão ser utilizados casos específicos para avaliar:
 
-- final README review;
-- screenshots or demo evidence;
-- presentation narrative;
-- repository visibility validation;
-- links validation;
-- final Challenge submission.
+- evidência insuficiente;
+- evidência conflitante;
+- baixa severidade;
+- severidade crítica;
+- afirmação sem suporte;
+- necessidade de revisão humana.
 
-No substantial feature development should occur during this phase.
+## Regra
+
+Os repositórios de referência permanecem independentes e inalterados.
 
 ---
 
-## Scope Control Rule
+<a id="fase-10"></a>
 
-A feature should enter the pre-delivery roadmap only if it materially improves at least
-one of the following:
+# 🔒 Fase 10 — Hardening Final
 
-- Challenge requirements;
-- demonstrability;
-- reliability;
-- governance;
-- evidence traceability;
-- evaluation quality;
-- professional portfolio value.
+## Objetivo
 
-Otherwise, it should be deferred.
+Preparar o projeto para o code freeze.
+
+## Atividades
+
+- execução completa do pytest;
+- validação com Ruff;
+- validação da CI;
+- revisão de dependências;
+- revisão da documentação;
+- remoção de código morto;
+- remoção de arquivos temporários;
+- revisão de segredos;
+- instalação em ambiente limpo;
+- validação de reprodutibilidade;
+- revisão dos links;
+- ensaio da demonstração.
+
+## Quality gates
+
+```bash
+python -m pip check
+ruff check .
+ruff format --check .
+pytest
+```
+
+## Data-alvo
+
+**06/11/2026**
+
+---
+
+<a id="fase-11"></a>
+
+# 🏁 Fase 11 — Preparação da Entrega
+
+## Período
+
+**07/11/2026 a 08/11/2026**
+
+## Objetivo
+
+Preparar a entrega final sem introduzir complexidade nova.
+
+## Atividades
+
+- revisão final do README;
+- revisão do índice documental;
+- validação dos screenshots;
+- preparação da narrativa;
+- validação da demonstração;
+- revisão do repositório público;
+- validação dos links;
+- preparação da submissão.
+
+## Regra
+
+Nenhuma funcionalidade significativa deverá ser iniciada nesta fase.
+
+Somente correções necessárias para estabilidade ou apresentação deverão ser realizadas.
+
+---
+
+<a id="controle-escopo"></a>
+
+# 🧭 Regra de controle de escopo
+
+Uma nova funcionalidade deve entrar no roadmap anterior à entrega somente quando melhorar materialmente pelo menos um destes aspectos:
+
+- aderência aos requisitos do Challenge;
+- demonstrabilidade;
+- confiabilidade;
+- governança;
+- rastreabilidade;
+- explicabilidade;
+- segurança;
+- qualidade da avaliação;
+- valor profissional do portfólio.
+
+Caso contrário, deverá ser adiada.
+
+---
+
+## 🧊 Itens deliberadamente adiados
+
+Antes da entrega, não fazem parte do escopo principal:
+
+- Kubernetes;
+- arquitetura multi-agent;
+- Redis;
+- Qdrant;
+- Airflow no runtime;
+- Spark no runtime;
+- React;
+- Next.js;
+- IAM corporativo;
+- infraestrutura distribuída;
+- remediação autônoma;
+- escalabilidade empresarial completa.
+
+Esses itens poderão ser revisitados após o Challenge caso exista benefício concreto.
+
+---
+
+## 📈 Visão resumida
+
+```text
+FASE 0   ✅ Planejamento e Bootstrap
+FASE 1   🚧 Modelos e Contratos
+FASE 2   ⏳ Ferramentas Determinísticas
+FASE 3   ⏳ Providers
+FASE 4   ⏳ LangGraph
+FASE 5   ⏳ Guardrails
+FASE 6   ⏳ FastAPI
+FASE 7   ⏳ Avaliação
+FASE 8   ⏳ Interface Web
+FASE 9   ⏳ Cenários
+FASE 10  ⏳ Hardening
+FASE 11  ⏳ Entrega
+```
+
+---
+
+> 🗺️ O roadmap do **AI Data Governance Agent** prioriza evolução incremental, qualidade técnica, rastreabilidade e controle de escopo até a entrega final do Challenge.
