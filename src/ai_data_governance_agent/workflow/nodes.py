@@ -21,7 +21,12 @@ from ai_data_governance_agent.domain.response import (
     RecommendedAction,
     RootCauseHypothesis,
 )
-from ai_data_governance_agent.guardrails import qualify_unsupported_hypotheses
+from ai_data_governance_agent.guardrails import (
+    INSUFFICIENT_EVIDENCE_EXECUTIVE_SUMMARY,
+    build_additional_investigation_recommendation,
+    cap_insufficient_evidence_confidence,
+    qualify_unsupported_hypotheses,
+)
 from ai_data_governance_agent.providers import ModelProvider
 from ai_data_governance_agent.tools.business_impact_analyzer import (
     analyze_business_impact,
@@ -196,14 +201,21 @@ def make_generate_hypotheses_node(
                 exc,
             )
 
-        hypotheses = qualify_unsupported_hypotheses(result.root_cause_hypotheses)
+        if state["evidence"]:
+            executive_summary = result.executive_summary
+            confidence = result.confidence
+            hypotheses = qualify_unsupported_hypotheses(result.root_cause_hypotheses)
+        else:
+            executive_summary = INSUFFICIENT_EVIDENCE_EXECUTIVE_SUMMARY
+            confidence = cap_insufficient_evidence_confidence(result.confidence)
+            hypotheses = []
 
         return _success_update(
             "hypotheses_generated",
             classification=result.classification,
             severity=result.severity,
-            executive_summary=result.executive_summary,
-            confidence=result.confidence,
+            executive_summary=executive_summary,
+            confidence=confidence,
             root_cause_hypotheses=hypotheses,
         )
 
@@ -218,6 +230,12 @@ def make_generate_recommendations_node(
     def generate_recommendations_node(
         state: AgentState,
     ) -> dict[str, object]:
+        if not state["evidence"]:
+            return _success_update(
+                "recommendations_generated",
+                recommended_actions=[build_additional_investigation_recommendation()],
+            )
+
         try:
             result = provider.generate_structured(
                 system_prompt=(
