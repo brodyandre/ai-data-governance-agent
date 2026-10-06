@@ -21,6 +21,7 @@ from ai_data_governance_agent.domain.response import (
     RecommendedAction,
     RootCauseHypothesis,
 )
+from ai_data_governance_agent.guardrails import qualify_unsupported_hypotheses
 from ai_data_governance_agent.providers import ModelProvider
 from ai_data_governance_agent.tools.business_impact_analyzer import (
     analyze_business_impact,
@@ -195,13 +196,15 @@ def make_generate_hypotheses_node(
                 exc,
             )
 
+        hypotheses = qualify_unsupported_hypotheses(result.root_cause_hypotheses)
+
         return _success_update(
             "hypotheses_generated",
             classification=result.classification,
             severity=result.severity,
             executive_summary=result.executive_summary,
             confidence=result.confidence,
-            root_cause_hypotheses=result.root_cause_hypotheses,
+            root_cause_hypotheses=hypotheses,
         )
 
     return generate_hypotheses_node
