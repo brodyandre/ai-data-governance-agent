@@ -12,6 +12,10 @@ from ai_data_governance_agent.evaluation.metrics import (
     evaluate_dataset,
     evaluate_scenario,
 )
+from ai_data_governance_agent.evaluation.reporting import (
+    render_markdown,
+    render_summary,
+)
 
 __all__ = [
     "EvaluationExpectedOutcome",
@@ -22,4 +26,6 @@ __all__ = [
     "evaluate_dataset",
     "evaluate_scenario",
     "load_evaluation_dataset",
+    "render_markdown",
+    "render_summary",
 ]

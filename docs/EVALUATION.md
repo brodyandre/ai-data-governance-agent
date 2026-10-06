@@ -14,8 +14,21 @@ A avaliação completa pode ser executada com:
 python -m ai_data_governance_agent.evaluation
 ```
 
-O comando retorna um relatório JSON contendo as métricas agregadas e os
-resultados de cada cenário.
+O formato padrão é um resumo legível para uso durante desenvolvimento,
+demonstrações e revisão do projeto.
+
+A saída JSON continua disponível com:
+
+```bash
+python -m ai_data_governance_agent.evaluation --format json
+```
+
+Um relatório Markdown reutilizável no README ou na apresentação pode ser
+gerado com:
+
+```bash
+python -m ai_data_governance_agent.evaluation --format markdown --output reports/evaluation/latest.md
+```
 
 ## Métricas
 
