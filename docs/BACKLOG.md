@@ -880,7 +880,7 @@ Os repositórios de origem permanecem inalterados.
 
 **Prioridade:** P1
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Critérios de aceite
 
