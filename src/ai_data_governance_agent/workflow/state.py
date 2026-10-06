@@ -5,12 +5,19 @@ from typing import Annotated, Literal, TypedDict
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from ai_data_governance_agent.domain.enums import (
+    IncidentClassification,
+    Severity,
+)
 from ai_data_governance_agent.domain.evidence import Evidence
+from ai_data_governance_agent.domain.human_review import HumanReviewDecision
 from ai_data_governance_agent.domain.incident import IncidentInput
 from ai_data_governance_agent.domain.response import (
     AgentResponse,
     BusinessImpact,
     GovernanceControl,
+    RecommendedAction,
+    RootCauseHypothesis,
 )
 from ai_data_governance_agent.tools.quality_analyzer import QualityFinding
 
@@ -56,6 +63,16 @@ class AgentState(TypedDict):
     incident: IncidentInput
     evidence: list[Evidence]
     tool_results: ToolResults
+
+    classification: IncidentClassification | None
+    severity: Severity | None
+    executive_summary: str | None
+    confidence: float | None
+
+    root_cause_hypotheses: list[RootCauseHypothesis]
+    recommended_actions: list[RecommendedAction]
+    human_review_decision: HumanReviewDecision | None
+
     errors: Annotated[list[WorkflowError], add]
     completed_steps: Annotated[list[WorkflowStep], add]
     current_step: WorkflowStep
@@ -68,6 +85,13 @@ def create_initial_state(incident: IncidentInput) -> AgentState:
         incident=incident.model_copy(deep=True),
         evidence=[evidence.model_copy(deep=True) for evidence in incident.evidence],
         tool_results=ToolResults(),
+        classification=None,
+        severity=None,
+        executive_summary=None,
+        confidence=None,
+        root_cause_hypotheses=[],
+        recommended_actions=[],
+        human_review_decision=None,
         errors=[],
         completed_steps=[],
         current_step="received",
