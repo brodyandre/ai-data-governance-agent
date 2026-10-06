@@ -335,7 +335,7 @@ Implementar valores normalizados para:
 
 **Prioridade:** P0
 **Complexidade:** BAIXA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Escopo
 
