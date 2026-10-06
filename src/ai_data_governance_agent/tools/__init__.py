@@ -1,5 +1,9 @@
 """Deterministic tools used by the AI Data Governance Agent."""
 
+from ai_data_governance_agent.tools.business_impact_analyzer import (
+    BusinessImpactAnalysisError,
+    analyze_business_impact,
+)
 from ai_data_governance_agent.tools.evidence_collector import (
     EvidenceCandidate,
     EvidenceCollectionError,
@@ -12,10 +16,12 @@ from ai_data_governance_agent.tools.quality_analyzer import (
 )
 
 __all__ = [
+    "BusinessImpactAnalysisError",
     "EvidenceCandidate",
     "EvidenceCollectionError",
     "QualityFinding",
     "QualityFindingType",
+    "analyze_business_impact",
     "analyze_quality",
     "collect_evidence",
 ]
