@@ -591,7 +591,7 @@ Definir uma abstração independente de fornecedor para interação com modelos.
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Objetivo
 
