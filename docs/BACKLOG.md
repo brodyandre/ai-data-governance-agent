@@ -808,7 +808,7 @@ POST /api/v1/incidents/analyze
 
 **Prioridade:** P1
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Critérios de aceite
 

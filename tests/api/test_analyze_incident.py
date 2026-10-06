@@ -149,8 +149,10 @@ def test_invalid_incident_request_returns_422() -> None:
 
     body = response.json()
 
-    assert "detail" in body
-    assert isinstance(body["detail"], list)
+    assert body["code"] == "request_validation_error"
+    assert body["message"] == "request validation failed"
+    assert isinstance(body["details"], list)
+    assert body["details"]
 
 
 def test_request_with_unknown_field_returns_422() -> None:
@@ -181,4 +183,8 @@ def test_analyze_endpoint_requires_configured_provider() -> None:
 
     assert response.status_code == 503
 
-    assert response.json() == {"detail": "model provider is not configured"}
+    assert response.json() == {
+        "code": "provider_not_configured",
+        "message": "model provider is not configured",
+        "details": [],
+    }
