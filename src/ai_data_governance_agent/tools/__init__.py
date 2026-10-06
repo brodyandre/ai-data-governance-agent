@@ -9,6 +9,10 @@ from ai_data_governance_agent.tools.evidence_collector import (
     EvidenceCollectionError,
     collect_evidence,
 )
+from ai_data_governance_agent.tools.policy_retriever import (
+    PolicyRetrievalError,
+    retrieve_policies,
+)
 from ai_data_governance_agent.tools.quality_analyzer import (
     QualityFinding,
     QualityFindingType,
@@ -19,9 +23,11 @@ __all__ = [
     "BusinessImpactAnalysisError",
     "EvidenceCandidate",
     "EvidenceCollectionError",
+    "PolicyRetrievalError",
     "QualityFinding",
     "QualityFindingType",
     "analyze_business_impact",
     "analyze_quality",
     "collect_evidence",
+    "retrieve_policies",
 ]

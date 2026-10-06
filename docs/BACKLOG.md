@@ -538,7 +538,7 @@ Relacionar problemas técnicos a possíveis consequências de negócio.
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Objetivo
 
