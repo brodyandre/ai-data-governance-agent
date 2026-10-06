@@ -93,6 +93,7 @@ Eles permitem que comportamento, validação e estrutura dos dados sejam definid
 | [`DOMAIN_ENUMS.md`](contracts/DOMAIN_ENUMS.md) | Valores normalizados utilizados pelos modelos |
 | [`AGENT_RESPONSE.md`](contracts/AGENT_RESPONSE.md) | Estrutura conceitual da resposta produzida pelo agente |
 | [`SEVERITY_AND_HUMAN_REVIEW.md`](contracts/SEVERITY_AND_HUMAN_REVIEW.md) | Regras de severidade e critérios de revisão humana |
+| [`PROVIDER_INTERFACE.md`](contracts/PROVIDER_INTERFACE.md) | Contrato independente de fornecedor para geração estruturada |
 
 ### Relação conceitual
 
