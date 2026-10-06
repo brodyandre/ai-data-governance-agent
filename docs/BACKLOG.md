@@ -425,7 +425,7 @@ Implementar:
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Escopo
 
@@ -448,6 +448,7 @@ Revisão humana deve ser exigida quando aplicável a:
 - ação destrutiva;
 - ação irreversível;
 - causa raiz altamente incerta;
+- impossibilidade de determinar recomendação segura;
 - processo crítico afetado.
 
 Todas as regras devem possuir testes automatizados.
