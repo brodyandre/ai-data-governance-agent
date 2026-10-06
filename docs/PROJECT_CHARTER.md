@@ -6,6 +6,8 @@ O projeto está sendo desenvolvido como Challenge individual da **Imersão de Ag
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Visão do projeto](#visao)
@@ -53,6 +55,8 @@ O projeto busca demonstrar a aplicação integrada de:
 | Code freeze interno | **06/11/2026** |
 | Entrega oficial do Challenge | **08/11/2026** |
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="problema"></a>
@@ -83,6 +87,8 @@ O **AI Data Governance Agent** busca reduzir essa fragmentação organizando evi
 
 O sistema possui caráter consultivo e não substitui a tomada de decisão humana em situações críticas.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="usuarios"></a>
@@ -101,6 +107,8 @@ Perfis representativos incluem:
 - profissionais responsáveis por observabilidade e confiabilidade de dados.
 
 A solução deve ser compreensível tanto para profissionais técnicos quanto para responsáveis por decisões de negócio e governança.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -121,6 +129,8 @@ Construir um fluxo assistido por IA capaz de:
 9. estimar o nível de confiança da análise;
 10. identificar quando revisão humana é obrigatória;
 11. retornar uma resposta estruturada, explicável e rastreável.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -143,6 +153,8 @@ O projeto foi concebido para reforçar competências relacionadas a:
 - human-in-the-loop.
 
 O foco está em demonstrar **qualidade de engenharia e capacidade de resolver um problema real**, e não simplesmente acumular tecnologias.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -219,6 +231,8 @@ EJS
 Vanilla JavaScript
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fora-escopo"></a>
@@ -245,6 +259,8 @@ As seguintes tecnologias ou capacidades permanecem fora do MVP salvo necessidade
 - arquitetura distribuída sem benefício demonstrável.
 
 Essas decisões reduzem risco de implementação e ajudam a manter foco no problema principal.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -303,6 +319,8 @@ Hipótese
 Recomendação
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="resposta"></a>
@@ -333,6 +351,8 @@ docs/contracts/
 ```
 
 A resposta deve ser serializável, validável e adequada tanto para API quanto para interface web.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -367,6 +387,8 @@ Maior risco
     ↓
 Maior necessidade de supervisão humana
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -414,6 +436,8 @@ Isso permite responder:
 - esta informação é observada ou inferida?
 - qual o grau de confiança?
 - por que revisão humana foi exigida?
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -475,6 +499,8 @@ Referência para:
 
 Nenhum desses repositórios deverá ser transformado diretamente no projeto atual.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="metricas"></a>
@@ -499,6 +525,8 @@ As definições exatas serão mantidas em:
 ```text
 docs/evaluation/
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -540,6 +568,8 @@ As tarefas devem, sempre que possível:
 
 Tarefas grandes devem ser divididas antes da implementação quando isso reduzir risco.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="sucesso"></a>
@@ -561,6 +591,8 @@ O MVP será considerado bem-sucedido quando:
 - CI estiver aprovada;
 - pelo menos um incidente representativo puder ser demonstrado de ponta a ponta;
 - a solução puder ser explicada claramente em termos técnicos e de negócio.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -599,3 +631,5 @@ Qualidade profissional será demonstrada por:
 ---
 
 > 🎯 O objetivo do **AI Data Governance Agent** não é substituir especialistas, mas oferecer uma camada estruturada de análise que transforme evidências fragmentadas em informações rastreáveis e úteis para tomada de decisão.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)

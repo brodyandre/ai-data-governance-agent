@@ -6,6 +6,8 @@ O objetivo desta página é funcionar como um **índice remissivo central**, per
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Visão e planejamento](#visao-planejamento)
@@ -47,6 +49,8 @@ O `ROADMAP` transforma essa visão em etapas.
 
 O `BACKLOG` transforma as etapas em unidades concretas de implementação.
 
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
+
 ---
 
 <a id="arquitetura"></a>
@@ -69,6 +73,8 @@ Um ADR deve explicar:
 - condições que justificariam revisão futura.
 
 Novos ADRs devem ser adicionados quando uma decisão arquitetural relevante precisar permanecer registrada e auditável.
+
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
 
 ---
 
@@ -112,6 +118,8 @@ AgentResponse
      ├── confidence
      └── human_review_required
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
 
 ---
 
@@ -170,6 +178,8 @@ A decisão humana permanece obrigatória em cenários como:
 - impacto material de negócio;
 - recomendações destrutivas ou irreversíveis.
 
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
+
 ---
 
 <a id="avaliacao"></a>
@@ -209,6 +219,8 @@ Essa área deverá concentrar:
 | `test_pass_rate` | Acompanhar estabilidade da suíte de testes |
 
 As definições matemáticas e critérios de cálculo serão registrados quando o framework de avaliação for implementado.
+
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
 
 ---
 
@@ -273,6 +285,8 @@ Definem formalmente dados de entrada, evidências, saída e regras de governanç
 
 Transforma a arquitetura planejada em tarefas implementáveis e testáveis.
 
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
+
 ---
 
 <a id="convencoes"></a>
@@ -324,6 +338,8 @@ Alguns termos consolidados da área poderão permanecer em inglês quando sua tr
 - endpoint;
 - runtime;
 - code freeze.
+
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
 
 ---
 
@@ -412,3 +428,5 @@ docs/
 ---
 
 > 📚 Esta central documental foi estruturada para tornar o **AI Data Governance Agent** compreensível tanto do ponto de vista de negócio quanto de Engenharia de Software, Engenharia de Dados, Inteligência Artificial e Governança.
+
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)

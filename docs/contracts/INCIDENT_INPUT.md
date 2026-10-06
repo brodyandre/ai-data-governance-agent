@@ -6,6 +6,8 @@ O contrato será posteriormente implementado utilizando **Pydantic**, preservand
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Objetivo](#objetivo)
@@ -40,6 +42,8 @@ Sua função é fornecer uma estrutura previsível para que o restante do sistem
 
 O contrato deve permanecer explícito, validável e independente da camada de orquestração.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="visao-geral"></a>
@@ -71,6 +75,8 @@ IncidentInput
 Os campos obrigatórios permitem representar o incidente em seu nível mínimo necessário.
 
 Os campos opcionais adicionam contexto quando essa informação estiver disponível.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -170,6 +176,8 @@ IncidentInput
 ```
 
 Um incidente poderá ser estruturalmente válido mesmo quando a quantidade de evidências for insuficiente para uma conclusão confiável.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -284,6 +292,8 @@ Exemplo:
 
 As tags adicionam contexto, mas não substituem classificações formais de domínio.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="evidencia"></a>
@@ -327,6 +337,8 @@ EV-001
 
 A rastreabilidade deve permitir identificar quais evidências sustentaram determinada conclusão.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="tipos-evidencia"></a>
@@ -353,6 +365,8 @@ A fonte canônica desses valores é:
 ➡️ [`DOMAIN_ENUMS.md`](DOMAIN_ENUMS.md)
 
 Valores não documentados devem ser rejeitados pela implementação.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -419,6 +433,8 @@ O `IncidentInput` não deve:
 - consultar políticas;
 - executar ferramentas analíticas.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="evidencia-insuficiente"></a>
@@ -457,6 +473,8 @@ Limitação explícita
       ↓
 Revisão humana quando aplicável
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -506,6 +524,8 @@ O exemplo informa que:
 O contrato de entrada apenas representa esses fatos.
 
 A interpretação analítica deve ocorrer nas etapas posteriores do sistema.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -562,3 +582,5 @@ O `IncidentInput` deve permanecer:
 ---
 
 > 📥 O `IncidentInput` define a fronteira de entrada do **AI Data Governance Agent** e garante que os incidentes sejam representados de maneira estruturada antes de qualquer análise automatizada.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)

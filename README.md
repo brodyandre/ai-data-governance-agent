@@ -8,6 +8,8 @@ Este repositório está sendo desenvolvido como projeto individual do Challenge 
 
 ---
 
+<a id="sumario"></a>
+
 ## 📚 Sumário
 
 - [Visão geral](#visao-geral)
@@ -65,6 +67,8 @@ O projeto combina conceitos de:
 
 > O projeto está sendo construído de forma incremental, com contratos de domínio, testes e critérios de aceite definidos antes da implementação das camadas de maior complexidade.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="problema"></a>
@@ -93,6 +97,8 @@ Essa fragmentação pode tornar a investigação mais lenta e produzir avaliaç�
 
 O projeto busca organizar essas informações e transformá-las em uma análise **estruturada, explicável e auditável**.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="objetivos"></a>
@@ -111,6 +117,8 @@ O fluxo planejado deverá ser capaz de:
 8. estimar o nível de confiança da análise;
 9. identificar situações que exigem revisão humana;
 10. retornar uma resposta estruturada e rastreável.
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -152,6 +160,8 @@ O fluxo será orquestrado com **LangGraph**, mantendo inicialmente uma arquitetu
 
 A proposta é combinar componentes determinísticos com capacidades de IA sem transferir decisões críticas exclusivamente para o modelo.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="ferramentas"></a>
@@ -168,6 +178,8 @@ O MVP prevê quatro ferramentas determinísticas principais:
 | `evidence_collector` | Organizar e preservar a rastreabilidade das evidências |
 
 A separação dessas responsabilidades permite testar cada capacidade de forma independente e manter o fluxo mais previsível.
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -194,6 +206,8 @@ human_review_reasons
 
 Os contratos de entrada e saída são definidos antes da implementação para reduzir ambiguidades e manter estabilidade entre as diferentes camadas da aplicação.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="supervisao-humana"></a>
@@ -217,6 +231,8 @@ Situações de maior risco deverão exigir revisão humana, incluindo casos de:
 O agente não executará automaticamente ações críticas de remediação.
 
 A decisão final permanece sob responsabilidade de uma pessoa ou equipe devidamente autorizada.
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -249,6 +265,8 @@ O objetivo é permitir perguntas como:
 - a conclusão foi observada, calculada ou inferida?
 - qual é o nível de confiança?
 - por que uma revisão humana foi exigida?
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -295,6 +313,8 @@ Vanilla JavaScript
 
 O objetivo é produzir uma interface limpa e profissional sem introduzir complexidade desnecessária no frontend.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="estrutura"></a>
@@ -322,6 +342,8 @@ ai-data-governance-agent/
 ```
 
 As principais responsabilidades estão separadas entre código, testes, documentação, contratos e interface de demonstração.
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -365,6 +387,8 @@ python -m pip install -e ".[dev]"
 ```bash
 python -m pip check
 ```
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -410,6 +434,8 @@ pytest                ✅
 GitHub Actions CI     ✅
 ```
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="avaliacao"></a>
@@ -439,6 +465,8 @@ docs/evaluation/
 
 A avaliação deverá permanecer reproduzível e, sempre que possível, independente de serviços externos.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="roadmap"></a>
@@ -465,6 +493,8 @@ O desenvolvimento foi dividido em fases progressivas:
 A visão completa está disponível em:
 
 ➡️ [`docs/ROADMAP.md`](docs/ROADMAP.md)
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -494,6 +524,8 @@ A documentação do projeto utiliza **português brasileiro** como idioma princi
 
 Nomes de classes, campos, funções, métricas e componentes técnicos permanecem em inglês quando fazem parte dos contratos de software.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="projetos-referencia"></a>
@@ -521,6 +553,8 @@ Os repositórios de referência podem contribuir com:
 - FastAPI;
 - LangGraph;
 - experiência de demonstração.
+
+[⬆️ Voltar ao índice](#sumario)
 
 ---
 
@@ -559,6 +593,8 @@ As decisões priorizam:
 
 O projeto prioriza uma solução **confiável, demonstrável e bem documentada** em vez de complexidade arquitetural sem benefício concreto.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="prazo"></a>
@@ -580,6 +616,8 @@ O período após o code freeze será reservado para:
 - validação dos links;
 - preparação da submissão final.
 
+[⬆️ Voltar ao índice](#sumario)
+
 ---
 
 <a id="autor"></a>
@@ -598,3 +636,5 @@ Projeto desenvolvido como parte do portfólio profissional em:
 ---
 
 > 🤖 **AI Data Governance Agent** — transformando evidências fragmentadas de incidentes de dados em análises estruturadas, rastreáveis e orientadas à governança.
+
+[⬆️ Voltar ao índice](#sumario)

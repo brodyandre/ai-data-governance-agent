@@ -6,6 +6,8 @@ O backlog complementa o [`ROADMAP.md`](ROADMAP.md), transformando cada fase do p
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Informações da entrega](#informacoes-entrega)
@@ -46,6 +48,8 @@ O período posterior ao code freeze deve ser reservado para:
 - ensaio da apresentação;
 - submissão final.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="prioridades"></a>
@@ -60,6 +64,8 @@ O período posterior ao code freeze deve ser reservado para:
 | `P3` | Pós-Challenge ou melhoria opcional |
 
 Uma tarefa `P0` deve ser tratada antes de funcionalidades opcionais.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -107,6 +113,8 @@ Usado para atividades essencialmente:
 - administrativas;
 - de planejamento;
 - de validação manual.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -277,6 +285,8 @@ Criar workflow de CI para:
 - `main` sincronizada;
 - CI aprovada.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-1"></a>
@@ -442,6 +452,8 @@ Revisão humana deve ser exigida quando aplicável a:
 
 Todas as regras devem possuir testes automatizados.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-2"></a>
@@ -543,6 +555,8 @@ A primeira implementação deve permanecer leve e determinística.
 - CI independente de banco vetorial;
 - testes aprovados.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-3"></a>
@@ -610,6 +624,8 @@ Fornecer comportamento previsível para:
 - nenhum segredo versionado;
 - provider real opcional;
 - CI independente dessa integração.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -682,6 +698,8 @@ O estado deve representar explicitamente:
 - `AgentResponse` final válida;
 - testes de integração aprovados.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-5"></a>
@@ -735,6 +753,8 @@ Objetivo: proteger a solução contra conclusões sem suporte e tornar incerteza
 - referências inválidas detectadas;
 - rastreabilidade mensurável;
 - testes aprovados.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -796,6 +816,8 @@ POST /api/v1/incidents/analyze
 - falhas de provider tratadas;
 - falhas internas tratadas com segurança;
 - testes aprovados.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -865,6 +887,8 @@ Os repositórios de origem permanecem inalterados.
 - métricas legíveis;
 - resultados reutilizáveis no README;
 - resultados reutilizáveis na apresentação do Challenge.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -951,6 +975,8 @@ Objetivo: criar experiência profissional de demonstração sem complexidade des
 - legibilidade;
 - responsividade básica.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-9"></a>
@@ -1006,6 +1032,8 @@ Criar um segundo cenário representativo para demonstrar capacidade de generaliz
 7. supervisão humana;
 8. resultados mensuráveis;
 9. valor de negócio.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -1094,6 +1122,8 @@ Após o code freeze:
 - ensaio da demonstração;
 - preparação da submissão.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="itens-adiados"></a>
@@ -1118,6 +1148,8 @@ Os seguintes itens permanecem fora do escopo do MVP, salvo mudança explícita n
 - infraestrutura distribuída desnecessária.
 
 Esses itens podem ser revisitados posteriormente, caso exista benefício concreto.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -1180,3 +1212,5 @@ Próxima tarefa
 ---
 
 > 📋 O backlog do **AI Data Governance Agent** prioriza entregas pequenas, testáveis, rastreáveis e alinhadas ao objetivo de produzir uma solução profissional de Engenharia de Dados, Inteligência Artificial e Governança.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)

@@ -10,6 +10,8 @@
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Contexto](#contexto)
@@ -53,6 +55,8 @@ Adicionar tecnologias sem benefício direto aumentaria o risco de implementaçã
 
 Portanto, a arquitetura inicial deve permanecer enxuta e orientada ao problema.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="decisao"></a>
@@ -89,6 +93,8 @@ Supervisão humana
      ▼
 AgentResponse
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -163,6 +169,8 @@ A interface deverá priorizar:
 - boa demonstração;
 - baixo custo de manutenção.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="ferramentas"></a>
@@ -189,6 +197,8 @@ Organiza e preserva a rastreabilidade das evidências.
 
 Essas ferramentas devem possuir contratos claros e ser testáveis independentemente da camada de orquestração.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="restricoes"></a>
@@ -214,6 +224,8 @@ Antes da entrega do Challenge, o projeto evitará deliberadamente:
 Essa restrição não significa que essas tecnologias não sejam úteis.
 
 Ela significa apenas que **não são necessárias para demonstrar adequadamente o valor do MVP**.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -286,6 +298,8 @@ Essa combinação oferece flexibilidade suficiente para construir uma interface 
 
 O projeto prioriza experiência de demonstração e simplicidade de manutenção.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="consequencias"></a>
@@ -307,6 +321,8 @@ A decisão arquitetural proporciona:
 - melhor controle de escopo;
 - forte aderência a Engenharia de Dados e Governança.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="tradeoffs"></a>
@@ -326,6 +342,8 @@ A arquitetura inicial não demonstrará:
 Essas limitações são aceitas porque não reduzem materialmente o valor principal da demonstração.
 
 O objetivo do Challenge é demonstrar uma solução coerente e funcional, e não reproduzir uma plataforma empresarial completa.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -376,3 +394,5 @@ A arquitetura deve permitir que o projeto permaneça:
 ---
 
 > 🏗️ Esta decisão arquitetural prioriza uma solução enxuta e profissional, capaz de demonstrar claramente a integração entre Engenharia de Dados, Inteligência Artificial, Data Quality e Governança.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)

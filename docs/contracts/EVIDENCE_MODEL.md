@@ -20,6 +20,8 @@ e depende dos enums definidos em:
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Objetivo](#objetivo)
@@ -88,6 +90,8 @@ Evidência
    └── pode ser referenciada por outras estruturas
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="nome-modelo"></a>
@@ -120,6 +124,8 @@ tests/
     └── test_evidence.py
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="estrutura"></a>
@@ -145,6 +151,8 @@ O modelo deve validar apenas uma evidência por vez.
 
 Responsabilidades que dependem de uma coleção de evidências pertencem a camadas posteriores.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="campos"></a>
@@ -163,6 +171,8 @@ O modelo deverá suportar os seguintes campos:
 | `collected_at` | `datetime \| None` | Não |
 | `reliability` | `EvidenceReliability \| None` | Não |
 | `metadata` | objeto JSON-compatible | Não |
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -267,6 +277,8 @@ A duplicidade deverá ser tratada no nível de:
 - coleção de evidências;
 - ou ferramenta responsável pela organização das evidências.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="evidence-type"></a>
@@ -326,6 +338,8 @@ unknown_type
 Valores não suportados devem ser rejeitados.
 
 O sistema não deve converter silenciosamente uma entrada inválida para outro tipo.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -387,6 +401,8 @@ O campo:
 null
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="description"></a>
@@ -432,6 +448,8 @@ O campo pode ser omitido quando:
 - o valor for autoexplicativo;
 - a origem não fornecer descrição;
 - não houver conteúdo adicional relevante.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -553,6 +571,8 @@ A interpretação pertence a:
 - regras de domínio;
 - etapas posteriores do workflow.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="collected-at"></a>
@@ -601,6 +621,8 @@ Valores temporais malformados devem ser rejeitados.
 A `DG-102` não introduzirá regras adicionais de timezone.
 
 Políticas específicas de timezone só deverão ser criadas posteriormente se houver necessidade concreta.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -661,6 +683,8 @@ Reliability não avaliada
 ```
 
 Essa distinção deve ser preservada.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -729,6 +753,8 @@ Evidence B.metadata
 
 Uma alteração em `Evidence A.metadata` não deve modificar `Evidence B.metadata`.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="minima-valida"></a>
@@ -766,6 +792,8 @@ Uma evidência pode ser válida segundo o schema, mas insuficiente para sustenta
 A avaliação de suficiência pertence a etapas posteriores.
 
 A `DG-102` não deve calcular suficiência de evidência.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -816,6 +844,8 @@ Ele não conclui automaticamente:
 - severidade;
 - recomendação.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="campos-extras"></a>
@@ -857,6 +887,8 @@ Essa abordagem ajuda a detectar:
 - erros de integração;
 - campos incorretos;
 - alterações de contrato não documentadas.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -914,6 +946,8 @@ não deve ser reescrito automaticamente como:
 "pipeline-report"
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="validacao-enums"></a>
@@ -961,6 +995,8 @@ Sim Não
 Aceita Rejeita
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="serializacao"></a>
@@ -993,6 +1029,8 @@ Em modo JSON:
 ```
 
 A `DG-102` não precisa adicionar encoders customizados se o comportamento padrão do Pydantic já satisfizer o contrato.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1034,6 +1072,8 @@ A implementação não deve utilizar:
 - banco de dados;
 
 para tentar resolver duplicidade no modelo individual.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1189,6 +1229,8 @@ REJEITADO
 ```
 
 O campo `confidence` não pertence ao modelo `Evidence`.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1374,6 +1416,8 @@ Os testes devem permanecer:
 - independentes de rede;
 - independentes de modelos de linguagem.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="limites"></a>
@@ -1403,6 +1447,8 @@ Ela **não deve implementar**:
 - busca vetorial.
 
 Essas capacidades pertencem a tarefas posteriores.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1436,6 +1482,8 @@ DOMAIN_ENUMS
 Portanto, a implementação do modelo `Evidence` deve começar somente depois que os enums necessários estiverem disponíveis no código.
 
 A documentação pode ser preparada antecipadamente.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1471,6 +1519,8 @@ pytest
 ```
 
 Todos devem ser aprovados.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1575,3 +1625,5 @@ Essa separação reduz acoplamento e mantém cada componente com responsabilidad
 ---
 
 > 🧾 O modelo `Evidence` representa a unidade fundamental de rastreabilidade do **AI Data Governance Agent**, garantindo que informações utilizadas nas análises possuam identidade, origem e estrutura explícitas sem misturar validação de dados com interpretação analítica.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
