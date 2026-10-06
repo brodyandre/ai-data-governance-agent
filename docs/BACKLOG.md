@@ -364,7 +364,7 @@ Implementar o modelo Pydantic responsável por representar uma evidência indivi
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Escopo
 
