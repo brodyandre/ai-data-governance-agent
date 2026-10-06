@@ -490,7 +490,7 @@ Normalizar e organizar as evidências associadas a um incidente.
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Objetivo
 
