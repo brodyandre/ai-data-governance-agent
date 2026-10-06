@@ -1,5 +1,11 @@
 """LangGraph workflow contracts exposed by the application."""
 
+from ai_data_governance_agent.workflow.graph import (
+    WorkflowExecutionError,
+    build_agent_graph,
+    run_agent,
+    run_agent_state,
+)
 from ai_data_governance_agent.workflow.nodes import (
     HypothesisGenerationResult,
     RecommendationGenerationResult,
@@ -28,10 +34,12 @@ __all__ = [
     "RecommendationGenerationResult",
     "ToolResults",
     "WorkflowError",
+    "WorkflowExecutionError",
     "WorkflowNodeStateError",
     "WorkflowStep",
     "analyze_business_impact_node",
     "analyze_quality_node",
+    "build_agent_graph",
     "build_final_response_node",
     "collect_evidence_node",
     "create_initial_state",
@@ -39,5 +47,7 @@ __all__ = [
     "make_generate_hypotheses_node",
     "make_generate_recommendations_node",
     "retrieve_policies_node",
+    "run_agent",
+    "run_agent_state",
     "validate_incident_node",
 ]
