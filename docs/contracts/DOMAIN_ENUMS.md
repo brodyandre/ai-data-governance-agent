@@ -6,6 +6,8 @@ Os enums funcionam como contratos estáveis entre as diferentes camadas da solu�
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Objetivo](#objetivo)
@@ -52,6 +54,8 @@ O principal objetivo é garantir que valores de domínio sejam:
 - validados;
 - serializáveis;
 - consistentes entre diferentes componentes.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -228,6 +232,8 @@ e nunca como:
 Severity.HIGH
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="severity"></a>
@@ -287,6 +293,8 @@ A `DG-101` não deverá implementar:
 - cálculo de severidade.
 
 Esses comportamentos pertencem a etapas posteriores.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -414,6 +422,8 @@ unknown
 
 Nesse caso, a entrada deve ser rejeitada.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="evidence-type"></a>
@@ -520,6 +530,8 @@ Novos tipos de evidência não devem ser adicionados sem uma necessidade concret
 
 Valores não suportados devem ser rejeitados.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="evidence-reliability"></a>
@@ -593,6 +605,8 @@ com:
 ```text
 classificação explícita de confiabilidade
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -678,6 +692,8 @@ unknown
 
 Esses estados não são intercambiáveis.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="action-priority"></a>
@@ -732,6 +748,8 @@ continua sendo uma **recomendação consultiva**.
 Ela não autoriza execução automática.
 
 A aprovação humana continua necessária quando exigida pelas regras de governança.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -818,6 +836,8 @@ hIGH
 
 Essa regra mantém os contratos previsíveis.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="serializacao"></a>
@@ -868,6 +888,8 @@ O formato serializado deve permanecer estável entre:
 - relatórios;
 - interface web.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="implementacao"></a>
@@ -911,6 +933,8 @@ Ela **não deve implementar**:
 - lógica de negócio de severidade.
 
 Essas responsabilidades pertencem a tarefas posteriores.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -979,6 +1003,8 @@ ActionPriority
 
 Nenhum enum documentado deve permanecer sem teste.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="criterios-aceite"></a>
@@ -1005,6 +1031,8 @@ ruff check .
 ruff format --check .
 pytest
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1085,3 +1113,5 @@ Os enums constituem uma das camadas mais básicas do domínio e devem permanecer
 ---
 
 > 🏷️ Este contrato garante que valores fundamentais do **AI Data Governance Agent** sejam representados de maneira consistente, previsível e validável em todas as camadas da solução.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)

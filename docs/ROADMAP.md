@@ -6,6 +6,8 @@ O objetivo do roadmap é preservar foco, reduzir risco de implementação e gara
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Datas principais](#datas)
@@ -45,6 +47,8 @@ O período após o code freeze será reservado para:
 - revisão de links;
 - ensaio da apresentação;
 - submissão final.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -89,6 +93,8 @@ Interface
 Demonstração
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-0"></a>
@@ -118,6 +124,8 @@ Criar uma fundação reproduzível e definir o escopo inicial antes da implement
 ## Status
 
 **✅ CONCLUÍDA**
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -159,6 +167,8 @@ Ao final da fase, os principais contratos deverão estar:
 - testados;
 - serializáveis;
 - documentados.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -203,6 +213,8 @@ Cada ferramenta deverá possuir:
 
 As ferramentas devem poder ser executadas e testadas sem LangGraph e sem modelo externo.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-3"></a>
@@ -241,6 +253,8 @@ A CI deverá permanecer funcional:
 - sem chave de API;
 - sem chamadas externas obrigatórias;
 - com comportamento reproduzível.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -290,6 +304,8 @@ Construir AgentResponse
 
 A primeira versão permanecerá com **arquitetura de agente único**.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-5"></a>
@@ -321,6 +337,8 @@ Qualificar ou rejeitar
         ↓
 Solicitar revisão humana quando necessário
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -358,6 +376,8 @@ POST /api/v1/incidents/analyze
 ## Resultado esperado
 
 A aplicação deverá poder ser consumida por clientes externos de forma previsível.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -397,6 +417,8 @@ A avaliação deverá ser:
 - interpretável;
 - adequada para demonstração;
 - independente de comportamento imprevisível sempre que possível.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -442,6 +464,8 @@ A interface deve privilegiar:
 
 Streamlit permanece apenas como opção de contingência.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-9"></a>
@@ -481,6 +505,8 @@ Também poderão ser utilizados casos específicos para avaliar:
 
 Os repositórios de referência permanecem independentes e inalterados.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-10"></a>
@@ -519,6 +545,8 @@ pytest
 
 **06/11/2026**
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
 ---
 
 <a id="fase-11"></a>
@@ -549,6 +577,8 @@ Preparar a entrega final sem introduzir complexidade nova.
 Nenhuma funcionalidade significativa deverá ser iniciada nesta fase.
 
 Somente correções necessárias para estabilidade ou apresentação deverão ser realizadas.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
 ---
 
@@ -613,3 +643,5 @@ FASE 11  ⏳ Entrega
 ---
 
 > 🗺️ O roadmap do **AI Data Governance Agent** prioriza evolução incremental, qualidade técnica, rastreabilidade e controle de escopo até a entrega final do Challenge.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)

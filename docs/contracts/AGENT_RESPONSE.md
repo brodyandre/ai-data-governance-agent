@@ -15,6 +15,8 @@ O objetivo é assegurar que toda análise produzida pelo agente seja:
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Objetivo](#objetivo)
@@ -62,6 +64,8 @@ Ele deve consolidar:
 
 O contrato deve permitir que uma pessoa ou sistema consumidor compreenda não apenas **o que o agente concluiu**, mas também **quais evidências sustentam essas conclusões**.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="visao-geral"></a>
@@ -88,6 +92,8 @@ AgentResponse
 ```
 
 A resposta deve permanecer consistente com os contratos de entrada e com as evidências efetivamente disponíveis.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -121,6 +127,8 @@ IncidentInput.incident_id
           │
           └── mesmo incident_id
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -161,6 +169,8 @@ unknown
 
 Entretanto, `unknown` não deve ser utilizado para mascarar entradas inválidas ou falhas de validação.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="severity"></a>
@@ -198,6 +208,8 @@ A severidade deve considerar fatores como:
 
 A classificação final não deve depender exclusivamente de comportamento não determinístico do modelo.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="executive-summary"></a>
@@ -231,6 +243,8 @@ O resumo deve ser:
 ```text
 Data Quality validation removed records from the silver layer and may affect downstream sales analytics.
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -267,6 +281,8 @@ Evidence EV-001
       ├── RootCauseHypothesis
       └── RecommendedAction
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -367,6 +383,8 @@ Exemplo:
 
 Um impacto não deve ser marcado como `confirmed` sem evidências que sustentem essa classificação.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="root-cause-hypotheses"></a>
@@ -442,6 +460,8 @@ confirmed
 ```
 
 quando houver evidência suficiente.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -533,6 +553,8 @@ Não significa execução automática
 
 Mesmo uma ação `urgent` pode exigir aprovação humana.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="governance-controls"></a>
@@ -591,6 +613,8 @@ Explica por que o controle é relevante para o incidente.
 ### `supporting_evidence`
 
 Evidências associadas ao vínculo entre o incidente e o controle.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -655,6 +679,8 @@ Mesmo:
 
 significa apenas confiança máxima **dentro do conjunto de evidências disponível e das regras definidas pelo sistema**.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="human-review-required"></a>
@@ -685,6 +711,8 @@ Ela não deve depender de escolha arbitrária de um modelo.
 As regras estão definidas em:
 
 ➡️ [`SEVERITY_AND_HUMAN_REVIEW.md`](SEVERITY_AND_HUMAN_REVIEW.md)
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -731,6 +759,8 @@ Exemplo:
 }
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="principios"></a>
@@ -770,6 +800,8 @@ Recomendação
 
 Cada nível deve permanecer semanticamente distinguível.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="rastreabilidade"></a>
@@ -804,6 +836,8 @@ Uma conclusão sem suporte suficiente deve ser:
 - qualificada;
 - rejeitada;
 - ou marcada como incerta.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -843,6 +877,8 @@ Recomendar investigação adicional
 Revisão humana quando necessária
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="supervisao-humana"></a>
@@ -874,6 +910,8 @@ Pessoa responsável
         ▼
 Decisão
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -952,6 +990,8 @@ O exemplo indica que:
 - revisão humana é obrigatória.
 
 Importante: a hipótese não foi marcada como `confirmed`.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1054,3 +1094,5 @@ Uma pessoa precisa revisar?
 ---
 
 > 📤 O `AgentResponse` é a fronteira de saída do **AI Data Governance Agent** e deve transformar a análise interna em uma resposta estruturada, rastreável, explicável e adequada à tomada de decisão responsável.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)

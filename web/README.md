@@ -6,6 +6,24 @@ A interface será implementada após a estabilização dos contratos do backend 
 
 ---
 
+<a id="sumario"></a>
+
+## 📑 Sumário
+
+- [Objetivo](#objetivo)
+- [Stack planejada](#stack)
+- [Arquitetura conceitual](#arquitetura)
+- [Dependência da API](#api)
+- [Diretrizes de experiência](#experiencia)
+- [Comportamento de demonstração](#demonstracao)
+- [Alternativa de contingência](#contingencia)
+- [Limites de escopo](#limites)
+- [Princípio](#principio)
+
+---
+
+<a id="objetivo"></a>
+
 ## 🎯 Objetivo
 
 A camada web terá como principal função demonstrar, de forma clara e profissional, o fluxo de análise de incidentes realizado pelo sistema.
@@ -25,7 +43,11 @@ A interface deverá permitir:
 - visualizar o nível de `confidence`;
 - identificar quando revisão humana é obrigatória.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="stack"></a>
 
 ## 🧰 Stack planejada
 
@@ -46,7 +68,11 @@ Essa combinação foi escolhida para manter a interface:
 - adequada para demonstração;
 - integrada à API FastAPI sem complexidade desnecessária.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="arquitetura"></a>
 
 ## 🏗️ Arquitetura conceitual
 
@@ -74,7 +100,11 @@ A interface web não deverá duplicar regras de negócio já existentes no backe
 
 Seu papel principal será consumir e apresentar os contratos expostos pela API.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="api"></a>
 
 ## 🔌 Dependência da API
 
@@ -92,7 +122,11 @@ A interface deverá consumir a resposta estruturada definida em:
 docs/contracts/AGENT_RESPONSE.md
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="experiencia"></a>
 
 ## 🎨 Diretrizes de experiência
 
@@ -109,7 +143,11 @@ A apresentação deverá priorizar:
 
 A interface deverá comunicar tanto os aspectos técnicos quanto o impacto de negócio da análise.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="demonstracao"></a>
 
 ## 🧪 Comportamento de demonstração
 
@@ -127,7 +165,11 @@ Exemplos planejados:
 
 Esses cenários deverão utilizar contratos válidos e permanecer reproduzíveis.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="contingencia"></a>
 
 ## 🛟 Alternativa de contingência
 
@@ -141,7 +183,11 @@ A abordagem principal continua sendo:
 Node.js + Express + EJS + Vanilla JavaScript
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="limites"></a>
 
 ## 🚧 Limites de escopo
 
@@ -159,7 +205,11 @@ Antes da entrega do Challenge, a interface não precisa incluir:
 
 O foco é demonstrar claramente o valor funcional do agente.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
+
 ---
+
+<a id="principio"></a>
 
 ## 🧭 Princípio
 
@@ -178,3 +228,5 @@ A interface deve permanecer desacoplada das regras centrais de negócio.
 ---
 
 > 🖥️ A camada web do **AI Data Governance Agent** será uma interface de demonstração orientada à clareza, rastreabilidade e comunicação do valor técnico e de negócio da solução.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)

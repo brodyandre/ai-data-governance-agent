@@ -11,6 +11,8 @@ Essas regras deverão ser convertidas posteriormente em **lógica determinístic
 
 ---
 
+<a id="sumario"></a>
+
 ## 📑 Sumário
 
 - [Objetivo](#objetivo)
@@ -79,6 +81,8 @@ por motivos como:
 
 Da mesma forma, alta confiança não elimina a necessidade de revisão humana em situações críticas.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="niveis-severidade"></a>
@@ -114,6 +118,8 @@ CRITICAL
 ```
 
 A classificação deve considerar impacto técnico, impacto de negócio, governança, incerteza e contexto operacional.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -160,6 +166,8 @@ Se nenhuma outra regra obrigatória for ativada, uma severidade `low` pode resul
 human_review_required = false
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="medium"></a>
@@ -205,6 +213,8 @@ Exemplos que podem tornar a revisão obrigatória:
 - evidências conflitantes;
 - recomendação destrutiva;
 - possível problema de governança.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -255,6 +265,8 @@ e:
 business impact = material
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="critical"></a>
@@ -301,6 +313,8 @@ continua resultando em:
 human_review_required = true
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="avaliacao"></a>
@@ -340,6 +354,8 @@ Evidência
 ```
 
 A severidade não deve ser confundida com confidence.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -415,6 +431,8 @@ human_review_required = true
 
 mesmo antes de uma classificação definitiva.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="revisao-humana"></a>
@@ -451,6 +469,8 @@ false
 A revisão humana funciona como um **controle de governança**.
 
 Ela não deve depender exclusivamente de comportamento arbitrário de um modelo.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -583,6 +603,8 @@ human_review_required = true
 
 Uma única regra obrigatória é suficiente.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="confidence-threshold"></a>
@@ -621,6 +643,8 @@ Importante: outras regras ainda poderão exigir revisão humana.
 O valor `0.70` é **provisório**.
 
 Ele deverá ser validado durante a fase de avaliação.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -662,6 +686,8 @@ Resultado:
 ```text
 human_review_required = true
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -711,6 +737,8 @@ Revisão humana
 
 O sistema não deve fabricar evidências ausentes.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="evidencia-conflitante"></a>
@@ -756,6 +784,8 @@ Confidence diminui
 human_review_required = true
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="impacto-material"></a>
@@ -792,6 +822,8 @@ Processo operacional crítico afetado
 Os critérios exatos de materialidade poderão evoluir durante a fase de avaliação.
 
 O sistema deverá evitar classificar materialidade com excesso de assertividade quando as evidências forem insuficientes.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -833,6 +865,8 @@ Quando materialmente relevante:
 ```text
 human_review_required = true
 ```
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -888,6 +922,8 @@ Execução por processo autorizado
 
 O agente não realiza a execução.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="principio-conservador"></a>
@@ -935,6 +971,8 @@ Dúvida material?
  true regra normal
 ```
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="governanca-deterministica"></a>
@@ -968,6 +1006,8 @@ Regras determinísticas
 ```
 
 Um modelo pode contribuir com a análise, mas controles críticos de governança não devem depender exclusivamente de sua decisão.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
@@ -1262,6 +1302,8 @@ NO MANDATORY REVIEW
 
 A implementação final poderá organizar as regras de maneira diferente, desde que o comportamento permaneça equivalente e testável.
 
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
+
 ---
 
 <a id="implementacao"></a>
@@ -1405,3 +1447,5 @@ prefira revisão humana.
 ---
 
 > 🛡️ As regras de severidade e revisão humana do **AI Data Governance Agent** foram concebidas para manter decisões críticas auditáveis, reproduzíveis e subordinadas à supervisão humana responsável.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
