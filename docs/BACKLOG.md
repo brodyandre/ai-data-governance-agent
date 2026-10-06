@@ -771,7 +771,7 @@ Objetivo: disponibilizar o fluxo por meio de um contrato HTTP estável.
 
 **Prioridade:** P0
 **Complexidade:** BAIXA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Critérios de aceite
 
