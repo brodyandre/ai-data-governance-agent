@@ -6,10 +6,16 @@ from ai_data_governance_agent.api.app import (
     app,
     create_app,
 )
+from ai_data_governance_agent.api.errors import (
+    ErrorDetail,
+    ErrorResponse,
+)
 
 __all__ = [
-    "HealthResponse",
     "SERVICE_NAME",
+    "ErrorDetail",
+    "ErrorResponse",
+    "HealthResponse",
     "app",
     "create_app",
 ]
