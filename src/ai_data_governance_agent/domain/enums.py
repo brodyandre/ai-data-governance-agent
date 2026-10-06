@@ -65,11 +65,21 @@ class ActionPriority(StrEnum):
     URGENT = "urgent"
 
 
+class HypothesisStatus(StrEnum):
+    """Normalized root-cause hypothesis status."""
+
+    SUSPECTED = "suspected"
+    PROBABLE = "probable"
+    CONFIRMED = "confirmed"
+    REJECTED = "rejected"
+
+
 __all__ = [
     "ActionPriority",
     "BusinessImpactStatus",
     "EvidenceReliability",
     "EvidenceType",
+    "HypothesisStatus",
     "IncidentClassification",
     "Severity",
 ]

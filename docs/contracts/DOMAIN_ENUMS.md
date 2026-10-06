@@ -23,7 +23,7 @@ Os enums funcionam como contratos estáveis entre as diferentes camadas da solu�
 - [Local de implementação](#implementacao)
 - [Testes obrigatórios](#testes)
 - [Critérios de aceite](#criterios-aceite)
-- [Valores de domínio adiados](#valores-adiados)
+- [HypothesisStatus](#hypothesis-status)
 
 ---
 
@@ -1036,36 +1036,44 @@ pytest
 
 ---
 
-<a id="valores-adiados"></a>
+<a id="hypothesis-status"></a>
 
-## ⏳ Valores de domínio adiados
+## 🧠 HypothesisStatus
 
-O contrato de resposta do agente também prevê estados relacionados às hipóteses.
-
-Os valores planejados são:
+### Classe Python
 
 ```text
-suspected
-probable
-confirmed
-rejected
+HypothesisStatus
 ```
 
-Esses valores **não fazem parte da DG-101**.
+### Objetivo
 
-Eles permanecem deliberadamente adiados para:
+Representar o estado explícito de uma hipótese de causa raiz.
 
-```text
-DG-104 — Modelos AgentResponse
-```
+Esse enum é formalizado na `DG-104 — Modelos AgentResponse`.
 
-Essa separação evita ampliar desnecessariamente o escopo da implementação inicial.
+### Valores
+
+| Membro Python | Valor serializado |
+|---|---|
+| `SUSPECTED` | `suspected` |
+| `PROBABLE` | `probable` |
+| `CONFIRMED` | `confirmed` |
+| `REJECTED` | `rejected` |
+
+### Princípios
+
+Os valores são case-sensitive, aliases não documentados são rejeitados e não existe normalização silenciosa.
+
+Uma hipótese permanece semanticamente distinta de um fato confirmado.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../README.md)
 
 ---
 
 ## 🧭 Visão consolidada
 
-Os seis enums definidos neste contrato são:
+O contrato atualmente reúne sete enums normalizados. Os seis primeiros foram implementados na `DG-101`, e `HypothesisStatus` foi acrescentado na `DG-104`:
 
 | Enum | Quantidade de valores |
 |---|---:|
@@ -1075,11 +1083,12 @@ Os seis enums definidos neste contrato são:
 | `EvidenceReliability` | 3 |
 | `BusinessImpactStatus` | 3 |
 | `ActionPriority` | 4 |
+| `HypothesisStatus` | 4 |
 
 Total:
 
 ```text
-32 valores normalizados
+36 valores normalizados
 ```
 
 ---
@@ -1104,8 +1113,11 @@ DOMAIN_ENUMS
      ├── BusinessImpactStatus
      │      └── BusinessImpact
      │
-     └── ActionPriority
-            └── RecommendedAction
+     ├── ActionPriority
+     │      └── RecommendedAction
+     │
+     └── HypothesisStatus
+            └── RootCauseHypothesis
 ```
 
 Os enums constituem uma das camadas mais básicas do domínio e devem permanecer independentes das regras de negócio que os utilizam.
