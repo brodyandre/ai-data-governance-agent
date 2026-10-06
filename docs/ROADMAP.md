@@ -34,7 +34,7 @@ Deliverables:
 
 Status:
 
-IN PROGRESS
+COMPLETED
 
 ---
 

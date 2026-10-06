@@ -159,7 +159,7 @@ Priority: P0
 
 Codex classification: LIGHT
 
-Status: TODO
+Status: DONE
 
 Scope:
 
@@ -187,7 +187,7 @@ Priority: P0
 
 Codex: NOT REQUIRED
 
-Status: TODO
+Status: DONE
 
 Scope:
 

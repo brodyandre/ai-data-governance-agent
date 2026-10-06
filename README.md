@@ -8,7 +8,9 @@ Alura/ONE "Imersão de Agentes de IA para Negócios".
 
 ## Project Status
 
-Current phase: Phase 0 — Planning and Bootstrap.
+Phase 0 — Planning and Bootstrap: COMPLETED.
+
+Next phase: Phase 1 — Domain Contracts and Incident Model.
 
 Official Challenge deadline: 2026-11-08.
 
