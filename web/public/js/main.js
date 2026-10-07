@@ -2,6 +2,8 @@
 
 import {
   renderAnalysisResult,
+  renderErrorState,
+  renderLoadingState,
 } from "./result-renderer.mjs";
 
 const demoIncident = {
@@ -241,9 +243,57 @@ function setMessage(type, text) {
   message.textContent = text;
 }
 
+function resolveAnalysisError(responseBody) {
+  const messages = {
+    provider_not_configured:
+      "O provedor de modelo não está configurado.",
+    api_unavailable:
+      "A API de análise está indisponível.",
+  };
+
+  return (
+    messages[responseBody.code] ||
+    responseBody.message ||
+    "A análise não pôde ser concluída."
+  );
+}
+
 function clearResult() {
   resultContent.innerHTML = "";
   resultSection.hidden = true;
+  resultSection.removeAttribute("aria-busy");
+}
+
+function showLoadingState() {
+  resultContent.innerHTML =
+    renderLoadingState();
+
+  resultSection.hidden = false;
+  resultSection.setAttribute(
+    "aria-busy",
+    "true"
+  );
+
+  resultSection.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+function showErrorState(errorMessage) {
+  resultContent.innerHTML =
+    renderErrorState(errorMessage);
+
+  resultSection.hidden = false;
+  resultSection.setAttribute(
+    "aria-busy",
+    "false"
+  );
+
+  resultSection.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
 }
 
 function showResult(result) {
@@ -251,6 +301,10 @@ function showResult(result) {
     renderAnalysisResult(result);
 
   resultSection.hidden = false;
+  resultSection.setAttribute(
+    "aria-busy",
+    "false"
+  );
 
   resultSection.scrollIntoView({
     behavior: "smooth",
@@ -357,6 +411,8 @@ async function submitIncident(event) {
     "Incidente enviado. Aguardando resposta do agente..."
   );
 
+  showLoadingState();
+
   try {
     const response = await fetch(
       "/api/analyze",
@@ -388,8 +444,7 @@ async function submitIncident(event) {
 
     if (!response.ok) {
       throw new Error(
-        responseBody.message ||
-          "A análise não pôde ser concluída."
+        resolveAnalysisError(responseBody)
       );
     }
 
@@ -400,11 +455,16 @@ async function submitIncident(event) {
       `Incidente ${payload.incident_id} analisado com sucesso.`
     );
   } catch (error) {
+    const errorMessage =
+      error.message ||
+      "Não foi possível comunicar com a API de análise.";
+
     setMessage(
       "error",
-      error.message ||
-        "Não foi possível comunicar com a API de análise."
+      "Falha na análise. Consulte os detalhes abaixo."
     );
+
+    showErrorState(errorMessage);
   } finally {
     submitButton.disabled = false;
     submitButton.textContent =

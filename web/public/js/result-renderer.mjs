@@ -97,7 +97,7 @@ function renderStringList(
   `;
 }
 
-function renderEvidências(evidence) {
+function renderEvidence(evidence) {
   if (!Array.isArray(evidence) || evidence.length === 0) {
     return `
       <p class="empty-state">
@@ -310,7 +310,7 @@ function renderRecommendations(actions) {
     .join("");
 }
 
-function renderGovernançaControls(controls) {
+function renderGovernanceControls(controls) {
   if (
     !Array.isArray(controls) ||
     controls.length === 0
@@ -347,7 +347,7 @@ function renderGovernançaControls(controls) {
           <dl class="detail-list">
             <div>
               <dt>Fonte</dt>
-              <dd>${displayValue(control.source)}</dd>
+              <dd>${displayValue(translateValue(control.source))}</dd>
             </div>
 
             <div>
@@ -411,10 +411,70 @@ function renderHumanReview(result) {
   `;
 }
 
+function renderLoadingState() {
+  return `
+    <article
+      class="state-card loading-state"
+      role="status"
+    >
+      <span
+        class="loading-spinner"
+        aria-hidden="true"
+      ></span>
+
+      <div>
+        <p class="section-label">
+          Análise em andamento
+        </p>
+
+        <h3>Processando incidente</h3>
+
+        <p>
+          O agente está avaliando evidências,
+          impacto, hipóteses e controles de
+          governança.
+        </p>
+      </div>
+    </article>
+  `;
+}
+
+function renderErrorState(message) {
+  const detail =
+    message ||
+    "A análise não pôde ser concluída.";
+
+  return `
+    <article
+      class="state-card error-state"
+      role="alert"
+    >
+      <div>
+        <p class="section-label">
+          Falha na análise
+        </p>
+
+        <h3>
+          Não foi possível concluir a análise
+        </h3>
+
+        <p>
+          ${escapeHtml(detail)}
+        </p>
+
+        <p class="state-hint">
+          Revise os dados do incidente e tente
+          novamente.
+        </p>
+      </div>
+    </article>
+  `;
+}
+
 function renderAnalysisResult(result) {
   if (!result || typeof result !== "object") {
     throw new TypeError(
-      "Resultado da análise must be an object."
+      "O resultado da análise deve ser um objeto."
     );
   }
 
@@ -473,7 +533,7 @@ function renderAnalysisResult(result) {
       <h3>Evidências</h3>
 
       <div class="result-grid">
-        ${renderEvidências(result.evidence)}
+        ${renderEvidence(result.evidence)}
       </div>
     </section>
 
@@ -521,7 +581,7 @@ function renderAnalysisResult(result) {
       <h3>Controles de governança</h3>
 
       <div class="result-grid">
-        ${renderGovernançaControls(
+        ${renderGovernanceControls(
           result.governance_controls
         )}
       </div>
@@ -533,4 +593,6 @@ export {
   escapeHtml,
   formatPercentage,
   renderAnalysisResult,
+  renderErrorState,
+  renderLoadingState,
 };

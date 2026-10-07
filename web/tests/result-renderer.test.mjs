@@ -5,6 +5,8 @@ import {
   escapeHtml,
   formatPercentage,
   renderAnalysisResult,
+  renderErrorState,
+  renderLoadingState,
 } from "../public/js/result-renderer.mjs";
 
 function makeAgentResponse() {
@@ -148,6 +150,11 @@ test(
       html,
       /Revisão humana necessária/
     );
+
+    assert.match(
+      html,
+      /Política de governança/
+    );
   }
 );
 
@@ -244,6 +251,58 @@ test(
     assert.match(
       html,
       /Nenhum controle de governança/
+    );
+  }
+);
+
+
+test(
+  "renderer exposes a dedicated loading state",
+  () => {
+    const html = renderLoadingState();
+
+    assert.match(
+      html,
+      /Análise em andamento/
+    );
+
+    assert.match(
+      html,
+      /Processando incidente/
+    );
+
+    assert.match(
+      html,
+      /role="status"/
+    );
+  }
+);
+
+test(
+  "renderer exposes a safe error state",
+  () => {
+    const html = renderErrorState(
+      '<script>alert("xss")</script>'
+    );
+
+    assert.match(
+      html,
+      /Não foi possível concluir a análise/
+    );
+
+    assert.match(
+      html,
+      /role="alert"/
+    );
+
+    assert.doesNotMatch(
+      html,
+      /<script>/
+    );
+
+    assert.match(
+      html,
+      /&lt;script&gt;/
     );
   }
 );
