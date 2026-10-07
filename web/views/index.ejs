@@ -21,7 +21,7 @@
       <header class="page-header">
         <div>
           <p class="eyebrow">
-            Data Governance + AI
+            Governança de Dados + IA
           </p>
 
           <h1>AI Data Governance Agent</h1>
@@ -34,7 +34,7 @@
         </div>
 
         <div class="backend-status">
-          <span>Backend</span>
+          <span>API de análise</span>
           <code><%= apiBaseUrl %></code>
         </div>
       </header>
@@ -43,7 +43,7 @@
         <div class="panel-header">
           <div>
             <p class="section-label">
-              Incident intake
+              Registro de incidente
             </p>
 
             <h2>Novo incidente</h2>
@@ -124,16 +124,16 @@
                   Não informada
                 </option>
                 <option value="low">
-                  Low
+                  Baixa
                 </option>
                 <option value="medium">
-                  Medium
+                  Média
                 </option>
                 <option value="high">
-                  High
+                  Alta
                 </option>
                 <option value="critical">
-                  Critical
+                  Crítica
                 </option>
               </select>
             </label>
@@ -216,13 +216,26 @@
         </form>
 
         <p class="scope-note">
-          Nesta etapa o envio é realizado de forma
-          funcional. A visualização detalhada do
-          resultado será implementada na DG-803.
+          O incidente é enviado para análise e o resultado estruturado é apresentado abaixo.
         </p>
       </section>
+      <section
+        id="analysis-result"
+        class="result-section"
+        hidden
+      >
+        <div class="result-section-header">
+          <div>
+            <p class="section-label">Resultado da análise</p>
+            <h2>Resultado da análise</h2>
+          </div>
+        </div>
+
+        <div id="analysis-result-content"></div>
+      </section>
+
     </main>
 
-    <script src="/js/main.js"></script>
+    <script type="module" src="/js/main.js"></script>
   </body>
 </html>

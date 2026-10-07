@@ -270,3 +270,29 @@ test(
     );
   }
 );
+
+test(
+  "GET / includes analysis result container",
+  async () => {
+    const app = createApp();
+
+    const response = await request(app)
+      .get("/")
+      .expect(200);
+
+    assert.match(
+      response.text,
+      /id="analysis-result"/
+    );
+
+    assert.match(
+      response.text,
+      /id="analysis-result-content"/
+    );
+
+    assert.match(
+      response.text,
+      /type="module"/
+    );
+  }
+);
