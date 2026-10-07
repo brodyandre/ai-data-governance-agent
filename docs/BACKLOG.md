@@ -1008,7 +1008,7 @@ O repositório original permanecerá inalterado.
 
 **Prioridade:** P1
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Objetivo
 

@@ -305,7 +305,7 @@ _DATASET: tuple[EvaluationScenario, ...] = (
         scenario_id="de_102_revenue_semantics",
         title="DE-102 revenue semantic ambiguity",
         description=(
-            "Scenario inspired by DE-102 where Gold and Analytics "
+            "Scenario grounded in DE-102 where Gold and Analytics "
             "reconcile mathematically but the business definition "
             "of revenue eligibility is not explicit."
         ),
@@ -325,6 +325,9 @@ _DATASET: tuple[EvaluationScenario, ...] = (
             affected_datasets=[
                 "gold.fct_sales",
                 "analytics.revenue_by_month",
+                "analytics.revenue_by_category",
+                "analytics.top_customers",
+                "analytics.campaign_performance",
             ],
             business_context=(
                 "Financial reporting requires an explicit semantic "
@@ -351,6 +354,7 @@ _DATASET: tuple[EvaluationScenario, ...] = (
                         "gold_revenue": 1416127.23,
                         "paid_shipped_revenue": 548323.22,
                         "investigative_difference": 867804.01,
+                        "investigative_difference_percentage": 61.28,
                     },
                     "reliability": "high",
                 },
@@ -363,6 +367,9 @@ _DATASET: tuple[EvaluationScenario, ...] = (
                         "order statuses are eligible for revenue."
                     ),
                     "value": {
+                        "semantic_contract_defined": False,
+                        "technical_defect_confirmed": False,
+                        "gold_analytics_reconciled": True,
                         "business_impact": {
                             "status": "potential",
                             "description": (
@@ -373,7 +380,7 @@ _DATASET: tuple[EvaluationScenario, ...] = (
                             "affected_processes": ["financial analytics"],
                             "affected_consumers": ["business stakeholders"],
                             "materiality": "high",
-                        }
+                        },
                     },
                     "reliability": "high",
                 },
@@ -390,15 +397,17 @@ _DATASET: tuple[EvaluationScenario, ...] = (
             hypotheses=[
                 {
                     "description": (
-                        "The incident is driven by an undefined "
-                        "business definition of revenue eligibility."
+                        "The confirmed governance gap is the absence "
+                        "of a formal business definition of revenue eligibility; "
+                        "the investigation does not establish a technical defect "
+                        "or confirmed financial overstatement."
                     ),
                     "supporting_evidence": [
                         "EV-DE102-METRIC",
                         "EV-DE102-RULE",
                     ],
-                    "confidence": 0.87,
-                    "status": "probable",
+                    "confidence": 0.96,
+                    "status": "confirmed",
                 }
             ],
         ),
@@ -426,7 +435,7 @@ _DATASET: tuple[EvaluationScenario, ...] = (
             classification="governance",
             severity="high",
             human_review_required=True,
-            final_hypothesis_statuses=["probable"],
+            final_hypothesis_statuses=["confirmed"],
         ),
         tags=[
             "de-102",
