@@ -5,7 +5,7 @@ from ai_data_governance_agent.evaluation import (
 )
 
 EXPECTED_SCENARIO_IDS = {
-    "de_101_raw_silver_divergence",
+    "de_101_silver_gold_eligibility",
     "de_102_revenue_semantics",
     "insufficient_evidence",
     "conflicting_evidence",
@@ -46,16 +46,32 @@ def test_expected_labels_match_provider_classification_and_severity() -> None:
         assert scenario.hypothesis_response.severity == scenario.expected.severity
 
 
-def test_de_101_preserves_known_quality_divergence() -> None:
-    scenario = scenario_by_id("de_101_raw_silver_divergence")
+def test_de_101_preserves_canonical_silver_gold_facts() -> None:
+    scenario = scenario_by_id("de_101_silver_gold_eligibility")
 
     evidence = {item.evidence_id: item for item in scenario.incident.evidence}
 
-    assert evidence["EV-DE101-QUALITY"].value["invalid_rows"] == 30
+    layers = evidence["EV-DE101-LAYERS"].value
+    quality = evidence["EV-DE101-QUALITY"].value
+    reconciliation = evidence["EV-DE101-RECON"].value
 
-    assert evidence["EV-DE101-RECON"].value["raw_count"] == 1000
+    assert layers["raw_count"] == 1000
+    assert layers["silver_count"] == 1000
 
-    assert evidence["EV-DE101-RECON"].value["silver_count"] == 970
+    assert quality["invalid_rows"] == 30
+    assert quality["invalid_orders"] == 12
+    assert quality["impacted_order_items"] == 33
+    assert "missing_relationships" not in quality
+
+    assert reconciliation["source_count"] == 1000
+    assert reconciliation["target_count"] == 937
+    assert reconciliation["rejected_invalid_quantity"] == 30
+    assert reconciliation["rejected_invalid_order_status"] == 33
+
+    assert scenario.expected.classification == "reconciliation"
+    assert scenario.expected.severity == "medium"
+    assert scenario.expected.human_review_required is True
+    assert scenario.expected.final_hypothesis_statuses == ["confirmed"]
 
 
 def test_de_102_preserves_semantic_uncertainty() -> None:

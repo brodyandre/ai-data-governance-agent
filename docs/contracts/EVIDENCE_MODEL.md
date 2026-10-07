@@ -510,7 +510,7 @@ O valor pode conter dados compatíveis com JSON:
 ### String
 
 ```json
-"orders RAW=400 SILVER=388"
+"orders SOURCE=400 TARGET=388"
 ```
 
 ### Inteiro
@@ -1021,7 +1021,7 @@ Em modo JSON:
   "evidence_type": "reconciliation_result",
   "source": "pipeline-report",
   "description": "Raw and silver record counts differ.",
-  "value": "orders RAW=400 SILVER=388",
+  "value": "orders SOURCE=400 TARGET=388",
   "collected_at": "2026-10-05T20:00:00Z",
   "reliability": "high",
   "metadata": {}

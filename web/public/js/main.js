@@ -9,9 +9,9 @@ import {
 const demoIncident = {
   incident_id: "EVAL-DE-101",
   title:
-    "Divergência entre as camadas raw e silver no pipeline de vendas",
+    "Divergência de elegibilidade entre Silver e Gold no pipeline de vendas",
   description:
-    "Pedidos e itens de pedidos apresentam perdas de qualidade de dados entre as etapas de processamento raw, silver e gold.",
+    "A camada Silver preserva 1000 itens de pedido, enquanto 937 registros elegíveis compõem a fct_sales após aplicação das regras de qualidade e elegibilidade.",
   source_system:
     "aws-lakehouse-engineering-lab",
   detected_at:
@@ -22,26 +22,43 @@ const demoIncident = {
     "fct_sales",
   ],
   business_context:
-    "As análises de vendas dependem de registros que atendam às validações de qualidade e integridade dos relacionamentos.",
-  initial_severity: "high",
+    "As análises de vendas consomem a fct_sales e precisam distinguir rejeições esperadas por regra de negócio de perdas inesperadas de dados.",
+  initial_severity: "medium",
   tags: [
     "de-101",
     "data-quality",
     "reconciliation",
+    "silver-gold",
   ],
   evidence: [
+    {
+      evidence_id:
+        "EV-DE101-LAYERS",
+      evidence_type:
+        "reconciliation_result",
+      source:
+        "layer-reconciliation",
+      description:
+        "As contagens de order_items entre Raw e Silver permanecem em 1000 registros, sem perda nessa transição.",
+      value: {
+        raw_count: 1000,
+        silver_count: 1000,
+      },
+      reliability: "high",
+    },
     {
       evidence_id:
         "EV-DE101-QUALITY",
       evidence_type:
         "data_quality_check",
       source:
-        "bronze-to-silver-analysis",
+        "silver-quality-analysis",
       description:
-        "Foram identificadas quantidades inválidas e relacionamentos ausentes nos itens de pedidos.",
+        "A Silver preserva os registros inválidos: 30 itens apresentam quantidade inválida e 12 pedidos possuem status inválido, impactando 33 itens.",
       value: {
         invalid_rows: 30,
-        missing_relationships: 33,
+        invalid_orders: 12,
+        impacted_order_items: 33,
       },
       reliability: "high",
     },
@@ -51,12 +68,14 @@ const demoIncident = {
       evidence_type:
         "reconciliation_result",
       source:
-        "pipeline-reconciliation",
+        "silver-to-gold-reconciliation",
       description:
-        "A quantidade de itens de pedidos diverge entre as camadas raw e silver.",
+        "A fct_sales contém 937 registros elegíveis após aplicação das regras de publicação da camada Gold.",
       value: {
-        raw_count: 1000,
-        silver_count: 970,
+        source_count: 1000,
+        target_count: 937,
+        rejected_invalid_quantity: 30,
+        rejected_invalid_order_status: 33,
       },
       reliability: "high",
     },
@@ -68,19 +87,19 @@ const demoIncident = {
       source:
         "incident-analysis",
       description:
-        "O problema de qualidade afeta registros utilizados na construção da tabela fato de vendas.",
+        "As exclusões esperadas na Gold podem ser interpretadas como perda de dados quando as regras de elegibilidade não estão explícitas para os consumidores analíticos.",
       value: {
         business_impact: {
-          status: "confirmed",
+          status: "potential",
           description:
-            "Sales fact-table completeness is affected.",
+            "Consumidores analíticos podem interpretar exclusões esperadas da Gold como perda inesperada de dados.",
           affected_processes: [
-            "sales analytics",
+            "análises de vendas",
           ],
           affected_consumers: [
-            "analytics users",
+            "usuários de analytics",
           ],
-          materiality: "high",
+          materiality: "medium",
         },
       },
       reliability: "high",

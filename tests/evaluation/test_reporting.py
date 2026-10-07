@@ -30,7 +30,7 @@ def test_summary_lists_all_evaluation_scenarios() -> None:
     summary = render_summary(report)
 
     expected_scenarios = {
-        "de_101_raw_silver_divergence",
+        "de_101_silver_gold_eligibility",
         "de_102_revenue_semantics",
         "insufficient_evidence",
         "conflicting_evidence",
