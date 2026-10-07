@@ -1,11 +1,15 @@
 "use strict";
 
+import {
+  renderAnalysisResult,
+} from "./result-renderer.mjs";
+
 const demoIncident = {
   incident_id: "EVAL-DE-101",
   title:
-    "Raw-to-silver divergence in sales pipeline",
+    "Divergência entre as camadas raw e silver no pipeline de vendas",
   description:
-    "Orders and order items show data-quality losses between raw, silver and gold processing stages.",
+    "Pedidos e itens de pedidos apresentam perdas de qualidade de dados entre as etapas de processamento raw, silver e gold.",
   source_system:
     "aws-lakehouse-engineering-lab",
   detected_at:
@@ -16,7 +20,7 @@ const demoIncident = {
     "fct_sales",
   ],
   business_context:
-    "Sales analytics depend on records surviving quality and relationship validation.",
+    "As análises de vendas dependem de registros que atendam às validações de qualidade e integridade dos relacionamentos.",
   initial_severity: "high",
   tags: [
     "de-101",
@@ -32,7 +36,7 @@ const demoIncident = {
       source:
         "bronze-to-silver-analysis",
       description:
-        "Invalid quantities and missing relationships were identified in order items.",
+        "Foram identificadas quantidades inválidas e relacionamentos ausentes nos itens de pedidos.",
       value: {
         invalid_rows: 30,
         missing_relationships: 33,
@@ -47,7 +51,7 @@ const demoIncident = {
       source:
         "pipeline-reconciliation",
       description:
-        "Order-item counts diverge between raw and silver.",
+        "A quantidade de itens de pedidos diverge entre as camadas raw e silver.",
       value: {
         raw_count: 1000,
         silver_count: 970,
@@ -62,7 +66,7 @@ const demoIncident = {
       source:
         "incident-analysis",
       description:
-        "The quality issue affects records used to construct the sales fact table.",
+        "O problema de qualidade afeta registros utilizados na construção da tabela fato de vendas.",
       value: {
         business_impact: {
           status: "confirmed",
@@ -105,6 +109,16 @@ const message =
 const evidenceInput =
   document.querySelector(
     "#incident-evidence"
+  );
+
+const resultSection =
+  document.querySelector(
+    "#analysis-result"
+  );
+
+const resultContent =
+  document.querySelector(
+    "#analysis-result-content"
   );
 
 function byId(id) {
@@ -227,6 +241,23 @@ function setMessage(type, text) {
   message.textContent = text;
 }
 
+function clearResult() {
+  resultContent.innerHTML = "";
+  resultSection.hidden = true;
+}
+
+function showResult(result) {
+  resultContent.innerHTML =
+    renderAnalysisResult(result);
+
+  resultSection.hidden = false;
+
+  resultSection.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
 function loadDemoIncident() {
   byId("incident-id").value =
     demoIncident.incident_id;
@@ -276,6 +307,8 @@ function loadDemoIncident() {
 
   evidenceInput.setCustomValidity("");
 
+  clearResult();
+
   setMessage(
     "info",
     "Cenário DE-101 carregado. Revise os dados e envie para análise."
@@ -286,6 +319,7 @@ async function submitIncident(event) {
   event.preventDefault();
 
   setMessage("", "");
+  clearResult();
 
   evidenceInput.setCustomValidity("");
 
@@ -359,9 +393,11 @@ async function submitIncident(event) {
       );
     }
 
+    showResult(responseBody);
+
     setMessage(
       "success",
-      `Incidente ${payload.incident_id} analisado com sucesso. A visualização detalhada será apresentada na próxima etapa.`
+      `Incidente ${payload.incident_id} analisado com sucesso.`
     );
   } catch (error) {
     setMessage(
@@ -395,6 +431,7 @@ form.addEventListener(
 
     setTimeout(() => {
       setMessage("", "");
+      clearResult();
     }, 0);
   }
 );
