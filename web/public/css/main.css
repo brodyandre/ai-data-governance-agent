@@ -614,3 +614,24 @@ small {
     animation: none;
   }
 }
+
+/* DG-902 scenario selectors */
+
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .demo-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

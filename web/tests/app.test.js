@@ -351,5 +351,87 @@ test(
       response.text,
       /silver_count:\s*970/
     );
+
+    assert.doesNotMatch(
+      response.text,
+      /\bdemoIncident\b/
+    );
+  }
+);
+
+test(
+  "GET / exposes DE-102 demo loader",
+  async () => {
+    const app = createApp();
+
+    const response = await request(app)
+      .get("/")
+      .expect(200);
+
+    assert.match(
+      response.text,
+      /id="load-demo-de102"/
+    );
+
+    assert.match(
+      response.text,
+      /Carregar cenário DE-102/
+    );
+  }
+);
+
+test(
+  "GET /js/main.js preserves canonical DE-102 facts",
+  async () => {
+    const app = createApp();
+
+    const response = await request(app)
+      .get("/js/main.js")
+      .expect(200);
+
+    assert.match(
+      response.text,
+      /incident_id:\s*"EVAL-DE-102"/
+    );
+
+    assert.match(
+      response.text,
+      /analytics_revenue:\s*1416127\.23/
+    );
+
+    assert.match(
+      response.text,
+      /gold_revenue:\s*1416127\.23/
+    );
+
+    assert.match(
+      response.text,
+      /paid_shipped_revenue:\s*548323\.22/
+    );
+
+    assert.match(
+      response.text,
+      /investigative_difference:\s*867804\.01/
+    );
+
+    assert.match(
+      response.text,
+      /61\.28/
+    );
+
+    assert.match(
+      response.text,
+      /semantic_contract_defined:\s*false/
+    );
+
+    assert.match(
+      response.text,
+      /technical_defect_confirmed:\s*false/
+    );
+
+    assert.match(
+      response.text,
+      /gold_analytics_reconciled:\s*true/
+    );
   }
 );

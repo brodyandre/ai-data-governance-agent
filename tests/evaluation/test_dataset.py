@@ -74,18 +74,28 @@ def test_de_101_preserves_canonical_silver_gold_facts() -> None:
     assert scenario.expected.final_hypothesis_statuses == ["confirmed"]
 
 
-def test_de_102_preserves_semantic_uncertainty() -> None:
+def test_de_102_preserves_canonical_revenue_semantics() -> None:
     scenario = scenario_by_id("de_102_revenue_semantics")
 
     evidence = {item.evidence_id: item for item in scenario.incident.evidence}
 
     metric = evidence["EV-DE102-METRIC"].value
+    rule = evidence["EV-DE102-RULE"].value
 
     assert metric["analytics_revenue"] == 1416127.23
     assert metric["gold_revenue"] == 1416127.23
+    assert metric["paid_shipped_revenue"] == 548323.22
     assert metric["investigative_difference"] == 867804.01
+    assert metric["investigative_difference_percentage"] == 61.28
+
+    assert rule["semantic_contract_defined"] is False
+    assert rule["technical_defect_confirmed"] is False
+    assert rule["gold_analytics_reconciled"] is True
 
     assert scenario.expected.classification == "governance"
+    assert scenario.expected.severity == "high"
+    assert scenario.expected.human_review_required is True
+    assert scenario.expected.final_hypothesis_statuses == ["confirmed"]
 
 
 def test_insufficient_evidence_scenario_contains_no_evidence() -> None:
