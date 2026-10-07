@@ -91,7 +91,7 @@ Identificador único do incidente.
 Exemplo:
 
 ```text
-DE-101
+EX-001
 ```
 
 O identificador deve permitir que o incidente seja referenciado de forma estável ao longo de todo o fluxo de análise.
@@ -482,11 +482,15 @@ Revisão humana quando aplicável
 
 ## 🧪 Exemplo
 
+> Este é um exemplo sintético do contrato e não representa o cenário
+> canônico DG-901 / DE-101. Para esse cenário, consulte
+> `../scenarios/DE-101.md`.
+
 Exemplo de incidente válido:
 
 ```json
 {
-  "incident_id": "DE-101",
+  "incident_id": "EX-001",
   "title": "Silver layer record divergence",
   "description": "Record counts between raw and silver layers do not reconcile.",
   "source_system": "lakehouse-pipeline",
@@ -504,7 +508,7 @@ Exemplo de incidente válido:
       "evidence_type": "reconciliation_result",
       "source": "pipeline-report",
       "description": "Raw and silver record counts differ.",
-      "value": "orders RAW=400 SILVER=388",
+      "value": "orders SOURCE=400 TARGET=388",
       "reliability": "high"
     }
   ]
@@ -515,7 +519,7 @@ Exemplo de incidente válido:
 
 O exemplo informa que:
 
-- o incidente possui ID `DE-101`;
+- o incidente possui ID `EX-001`;
 - existe divergência entre camadas;
 - os datasets `orders` e `order_items` podem estar envolvidos;
 - existe evidência de reconciliação;

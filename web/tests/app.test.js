@@ -296,3 +296,60 @@ test(
     );
   }
 );
+
+
+test(
+  "GET /js/main.js preserves canonical DE-101 facts",
+  async () => {
+    const app = createApp();
+
+    const response = await request(app)
+      .get("/js/main.js")
+      .expect(200);
+
+    assert.match(
+      response.text,
+      /initial_severity:\s*"medium"/
+    );
+
+    assert.match(
+      response.text,
+      /raw_count:\s*1000/
+    );
+
+    assert.match(
+      response.text,
+      /silver_count:\s*1000/
+    );
+
+    assert.match(
+      response.text,
+      /source_count:\s*1000/
+    );
+
+    assert.match(
+      response.text,
+      /target_count:\s*937/
+    );
+
+    assert.match(
+      response.text,
+      /invalid_orders:\s*12/
+    );
+
+    assert.match(
+      response.text,
+      /impacted_order_items:\s*33/
+    );
+
+    assert.doesNotMatch(
+      response.text,
+      /missing_relationships/
+    );
+
+    assert.doesNotMatch(
+      response.text,
+      /silver_count:\s*970/
+    );
+  }
+);

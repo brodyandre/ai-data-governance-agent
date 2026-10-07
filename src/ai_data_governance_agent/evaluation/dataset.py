@@ -128,19 +128,24 @@ def _recommendation_response(
 
 _DATASET: tuple[EvaluationScenario, ...] = (
     EvaluationScenario(
-        scenario_id="de_101_raw_silver_divergence",
-        title="DE-101 raw-to-silver data-quality divergence",
+        scenario_id="de_101_silver_gold_eligibility",
+        title="DE-101 silver-to-gold eligibility reconciliation",
         description=(
-            "Scenario inspired by the DE-101 investigation involving "
-            "invalid items, missing relationships and record-count divergence."
+            "Scenario grounded in the DE-101 investigation where Silver "
+            "preserves source rows and Gold applies eligibility rules that "
+            "reduce order_items from 1000 to 937."
         ),
-        source_reference=("brodyandre/aws-lakehouse-engineering-lab:DE-101"),
+        source_reference=(
+            "brodyandre/aws-lakehouse-engineering-lab:"
+            "docs/incidents/de-101-raw-silver-divergence.md"
+        ),
         incident=_incident(
             incident_id="EVAL-DE-101",
-            title="Raw-to-silver divergence in sales pipeline",
+            title="Silver-to-Gold eligibility divergence in sales pipeline",
             description=(
-                "Orders and order items show data-quality losses "
-                "between raw, silver and gold processing stages."
+                "Silver preserves 1000 order items while Gold fct_sales "
+                "contains 937 eligible rows after quality and order-status "
+                "rules are applied."
             ),
             source_system="aws-lakehouse-engineering-lab",
             affected_datasets=[
@@ -149,37 +154,60 @@ _DATASET: tuple[EvaluationScenario, ...] = (
                 "fct_sales",
             ],
             business_context=(
-                "Sales analytics depend on records surviving quality and relationship validation."
+                "Sales analytics consume fct_sales and need transparent "
+                "eligibility rules to distinguish expected rejection from "
+                "unexpected data loss."
             ),
-            initial_severity="high",
+            initial_severity="medium",
             tags=[
                 "de-101",
                 "data-quality",
                 "reconciliation",
+                "silver-gold",
             ],
             evidence=[
                 {
+                    "evidence_id": "EV-DE101-LAYERS",
+                    "evidence_type": "reconciliation_result",
+                    "source": "layer-reconciliation",
+                    "description": (
+                        "Raw and Silver order-item counts reconcile without record loss."
+                    ),
+                    "value": {
+                        "raw_count": 1000,
+                        "silver_count": 1000,
+                    },
+                    "reliability": "high",
+                },
+                {
                     "evidence_id": "EV-DE101-QUALITY",
                     "evidence_type": "data_quality_check",
-                    "source": "bronze-to-silver-analysis",
+                    "source": "silver-quality-analysis",
                     "description": (
-                        "Invalid quantities and missing relationships "
-                        "were identified in order items."
+                        "Silver preserves invalid records while quality flags "
+                        "identify 30 invalid-quantity items and 12 invalid-status "
+                        "orders affecting 33 order items."
                     ),
                     "value": {
                         "invalid_rows": 30,
-                        "missing_relationships": 33,
+                        "invalid_orders": 12,
+                        "impacted_order_items": 33,
                     },
                     "reliability": "high",
                 },
                 {
                     "evidence_id": "EV-DE101-RECON",
                     "evidence_type": "reconciliation_result",
-                    "source": "pipeline-reconciliation",
-                    "description": ("Order-item counts diverge between raw and silver."),
+                    "source": "silver-to-gold-reconciliation",
+                    "description": (
+                        "Gold fct_sales contains 937 eligible rows after "
+                        "Silver-to-Gold eligibility rules are applied."
+                    ),
                     "value": {
-                        "raw_count": 1000,
-                        "silver_count": 970,
+                        "source_count": 1000,
+                        "target_count": 937,
+                        "rejected_invalid_quantity": 30,
+                        "rejected_invalid_order_status": 33,
                     },
                     "reliability": "high",
                 },
@@ -188,15 +216,24 @@ _DATASET: tuple[EvaluationScenario, ...] = (
                     "evidence_type": "analyst_observation",
                     "source": "incident-analysis",
                     "description": (
-                        "The quality issue affects records used to construct the sales fact table."
+                        "Gold eligibility can create an expectation mismatch "
+                        "when rejection rules are not explicit to analytics "
+                        "consumers."
                     ),
                     "value": {
                         "business_impact": {
-                            "status": "confirmed",
-                            "description": ("Sales fact-table completeness is affected."),
-                            "affected_processes": ["sales analytics"],
-                            "affected_consumers": ["analytics users"],
-                            "materiality": "high",
+                            "status": "potential",
+                            "description": (
+                                "Analytics consumers may misinterpret expected "
+                                "Gold exclusions as unexpected data loss."
+                            ),
+                            "affected_processes": [
+                                "sales analytics",
+                            ],
+                            "affected_consumers": [
+                                "analytics users",
+                            ],
+                            "materiality": "medium",
                         }
                     },
                     "reliability": "high",
@@ -204,25 +241,27 @@ _DATASET: tuple[EvaluationScenario, ...] = (
             ],
         ),
         hypothesis_response=_hypothesis_response(
-            classification="data_quality",
-            severity="high",
+            classification="reconciliation",
+            severity="medium",
             executive_summary=(
-                "Data-quality validation is removing invalid "
-                "and relationally inconsistent order-item records."
+                "The 1000-to-937 Silver-to-Gold difference is explained by "
+                "documented eligibility rules rather than unexpected record "
+                "loss."
             ),
-            confidence=0.92,
+            confidence=0.98,
             hypotheses=[
                 {
                     "description": (
-                        "Invalid quantities and relationship failures "
-                        "explain the observed raw-to-silver divergence."
+                        "Gold eligibility rules exclude 30 invalid-quantity "
+                        "items and 33 items linked to 12 orders with invalid "
+                        "status."
                     ),
                     "supporting_evidence": [
                         "EV-DE101-QUALITY",
                         "EV-DE101-RECON",
                     ],
-                    "confidence": 0.90,
-                    "status": "probable",
+                    "confidence": 0.98,
+                    "status": "confirmed",
                 }
             ],
         ),
@@ -230,29 +269,36 @@ _DATASET: tuple[EvaluationScenario, ...] = (
             [
                 {
                     "description": (
-                        "Review rejected order items and reconcile "
-                        "relationship and quantity validation failures."
+                        "Expose Silver-to-Gold rejection metrics, document "
+                        "fct_sales eligibility rules and validate them with "
+                        "business owners before changing transformation logic."
                     ),
-                    "priority": "high",
-                    "rationale": ("The evidence identifies invalid rows and count divergence."),
-                    "requires_human_approval": False,
+                    "priority": "medium",
+                    "rationale": (
+                        "The evidence explains the current reduction, while "
+                        "explicit observability and business validation reduce "
+                        "the risk of confusing expected rejection with data loss."
+                    ),
+                    "requires_human_approval": True,
                     "supporting_evidence": [
                         "EV-DE101-QUALITY",
                         "EV-DE101-RECON",
+                        "EV-DE101-IMPACT",
                     ],
                 }
             ]
         ),
         expected=EvaluationExpectedOutcome(
-            classification="data_quality",
-            severity="high",
+            classification="reconciliation",
+            severity="medium",
             human_review_required=True,
-            final_hypothesis_statuses=["probable"],
+            final_hypothesis_statuses=["confirmed"],
         ),
         tags=[
             "de-101",
             "data-quality",
             "reconciliation",
+            "silver-gold",
         ],
     ),
     EvaluationScenario(

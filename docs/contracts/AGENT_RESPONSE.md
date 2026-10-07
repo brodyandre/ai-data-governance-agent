@@ -110,7 +110,7 @@ O valor deve corresponder ao mesmo identificador recebido no `IncidentInput`.
 Exemplo:
 
 ```text
-DE-101
+EX-001
 ```
 
 ### Regra
@@ -921,9 +921,13 @@ Decisão
 
 ## 🧪 Exemplo completo
 
+> Este é um exemplo sintético do contrato e não representa o cenário
+> canônico DG-901 / DE-101. Para esse cenário, consulte
+> `../scenarios/DE-101.md`.
+
 ```json
 {
-  "incident_id": "DE-101",
+  "incident_id": "EX-001",
   "classification": "data_quality",
   "severity": "high",
   "executive_summary": "Data Quality validation removed records from the silver layer and may affect downstream sales analytics.",
@@ -982,7 +986,7 @@ Decisão
 
 O exemplo indica que:
 
-- o incidente analisado é `DE-101`;
+- o incidente analisado é `EX-001`;
 - a classificação é `data_quality`;
 - a severidade é `high`;
 - existe evidência identificada como `EV-001`;

@@ -231,7 +231,7 @@ def test_blank_description_is_rejected(description: str) -> None:
 @pytest.mark.parametrize(
     "value",
     [
-        "orders RAW=400 SILVER=388",
+        "orders SOURCE=400 TARGET=388",
         30,
         0.075,
         True,
