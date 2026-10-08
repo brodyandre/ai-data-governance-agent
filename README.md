@@ -59,8 +59,8 @@ O projeto combina conceitos de:
 |---|---|
 | Fase 0 — Planejamento e Bootstrap | ✅ Concluída |
 | Fases 0 a 9 — MVP e demonstração | ✅ Concluídas |
-| Fase 10 — Hardening Final | 🚧 Em andamento |
-| Fase 11 — Preparação da Entrega | ⏳ Pendente |
+| Fase 10 — Hardening Final | ✅ Concluída |
+| Fase 11 — Preparação da Entrega | 🚧 Em andamento |
 | Workflow com LangGraph | ✅ Implementado |
 | API FastAPI | ✅ Implementada |
 | Interface web Node.js | ✅ Implementada |
@@ -653,8 +653,10 @@ O projeto prioriza uma solução **confiável, demonstrável e bem documentada**
 
 | Marco | Data |
 |---|---|
-| Code freeze interno | **06/11/2026** |
+| Code freeze efetivo | **08/10/2026** |
 | Entrega oficial | **08/11/2026** |
+
+> O code freeze foi antecipado em relação à meta interna original de 06/11/2026.
 
 O período após o code freeze será reservado para:
 

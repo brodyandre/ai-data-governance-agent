@@ -435,7 +435,8 @@ docs/
 ├── hardening/
 │   ├── DG-1001-QUALITY-GATE.md
 │   ├── DG-1002-SECURITY-REVIEW.md
-│   └── DG-1003-DOCUMENTATION-REVIEW.md
+│   ├── DG-1003-DOCUMENTATION-REVIEW.md
+│   └── DG-1004-CODE-FREEZE.md
 └── policies/
     └── LOCAL_CONTROLS.md
 ```
@@ -484,6 +485,7 @@ docs/
 - [`DG-1001-QUALITY-GATE.md`](hardening/DG-1001-QUALITY-GATE.md)
 - [`DG-1002-SECURITY-REVIEW.md`](hardening/DG-1002-SECURITY-REVIEW.md)
 - [`DG-1003-DOCUMENTATION-REVIEW.md`](hardening/DG-1003-DOCUMENTATION-REVIEW.md)
+- [`DG-1004-CODE-FREEZE.md`](hardening/DG-1004-CODE-FREEZE.md)
 
 ---
 
