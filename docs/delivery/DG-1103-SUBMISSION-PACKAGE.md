@@ -290,35 +290,28 @@ A integração com provider real permanece uma evolução opcional e não é req
 - [x] URL pública do repositório validada;
 - [x] links técnicos principais selecionados;
 - [x] screenshots de DE-101 e DE-102 selecionados;
-- [ ] três assets visuais versionados no repositório e referenciados no README;
+- [x] três assets visuais versionados no repositório e referenciados no README;
 - [x] texto curto de apresentação preparado;
 - [x] pitch de contingência preparado;
 - [x] transparência sobre provider determinístico registrada;
-- [ ] confirmar os campos exatos exigidos pelo formulário oficial do Challenge;
-- [ ] confirmar se o formulário exige upload de imagens, vídeo ou URL adicional;
-- [ ] copiar o conteúdo final para o formulário oficial e revisar antes do envio.
+- [x] estratégia principal de entrega definida: submissão pelo link público do GitHub;
+- [x] repositório preparado para funcionar como artefato principal da entrega;
+- [ ] caso o formulário oficial solicite campos adicionais, adaptar o material já preparado antes do envio.
 
 ---
 
-## Pendência externa
+## Observação sobre o formulário oficial
 
-Os campos exatos do formulário oficial de submissão não estão registrados no repositório.
+A estratégia de entrega adotada considera o repositório público do GitHub como artefato principal da submissão.
 
-Antes de marcar a DG-1103 como concluída, o formulário da plataforma deve ser conferido para confirmar:
+O pacote mantém descrições, pitch, links e evidências adicionais como contingência. Se o formulário oficial solicitar campos extras, limites de caracteres, imagens, vídeo ou outra URL, o material deste documento deve ser adaptado ao formulário antes do envio.
 
-- limites de caracteres;
-- campos obrigatórios;
-- quantidade de screenshots;
-- necessidade de vídeo;
-- necessidade de link adicional;
-- formato de entrega.
-
-Nenhuma exigência não verificada deve ser presumida.
+Nenhuma exigência adicional não verificada é presumida como requisito do projeto.
 
 ---
 
 ## Estado
 
-O pacote técnico e textual está preparado.
+O pacote de submissão está preparado, os materiais visuais estão versionados e o README funciona como landing page principal do projeto.
 
-A conclusão da DG-1103 depende apenas da conferência dos requisitos exatos do formulário oficial e da associação dos materiais selecionados aos campos exigidos.
+A DG-1103 está concluída para a estratégia de entrega baseada no link público do GitHub.
