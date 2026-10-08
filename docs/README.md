@@ -438,7 +438,8 @@ docs/
 │   ├── DG-1003-DOCUMENTATION-REVIEW.md
 │   └── DG-1004-CODE-FREEZE.md
 ├── delivery/
-│   └── DG-1101-FINAL-DELIVERY-REVIEW.md
+│   ├── DG-1101-FINAL-DELIVERY-REVIEW.md
+│   └── DG-1102-DEMO-EVIDENCE-VALIDATION.md
 └── policies/
     └── LOCAL_CONTROLS.md
 ```
@@ -492,6 +493,7 @@ docs/
 ### Entrega
 
 - [`DG-1101-FINAL-DELIVERY-REVIEW.md`](delivery/DG-1101-FINAL-DELIVERY-REVIEW.md)
+- [`DG-1102-DEMO-EVIDENCE-VALIDATION.md`](delivery/DG-1102-DEMO-EVIDENCE-VALIDATION.md)
 
 ---
 

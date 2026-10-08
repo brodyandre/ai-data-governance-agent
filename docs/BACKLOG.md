@@ -1164,7 +1164,7 @@ Objetivo: preparar a entrega final sem introduzir novas funcionalidades após o 
 
 **Prioridade:** P0
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Critérios de aceite
 

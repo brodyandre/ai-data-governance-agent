@@ -36,6 +36,36 @@ const translations = {
   analyst_observation: "Observação do analista",
   metric: "Métrica",
   dataset_sample: "Amostra de dataset",
+
+  "the 1000-to-937 silver-to-gold difference is explained by documented eligibility rules rather than unexpected record loss.":
+    "A diferença de 1000 para 937 registros entre Silver e Gold é explicada pelas regras documentadas de elegibilidade, e não por uma perda inesperada de registros.",
+
+  "gold eligibility rules exclude 30 invalid-quantity items and 33 items linked to 12 orders with invalid status.":
+    "As regras de elegibilidade da Gold excluem 30 itens com quantidade inválida e 33 itens associados a 12 pedidos com status inválido.",
+
+  "expose silver-to-gold rejection metrics, document fct_sales eligibility rules and validate them with business owners before changing transformation logic.":
+    "Expor métricas de rejeição entre Silver e Gold, documentar as regras de elegibilidade da fct_sales e validá-las com os responsáveis pelo negócio antes de alterar a lógica de transformação.",
+
+  "the evidence explains the current reduction, while explicit observability and business validation reduce the risk of confusing expected rejection with data loss.":
+    "As evidências explicam a redução atual. Observabilidade explícita e validação com o negócio reduzem o risco de confundir rejeições esperadas com perda de dados.",
+
+  "no technical reconciliation defect is established; the risk is an undefined semantic contract for revenue.":
+    "Não foi identificado defeito técnico de reconciliação; o risco está na ausência de um contrato semântico definido para a métrica de receita.",
+
+  "the confirmed governance gap is the absence of a formal business definition of revenue eligibility; the investigation does not establish a technical defect or confirmed financial overstatement.":
+    "A lacuna de governança confirmada é a ausência de uma definição formal de negócio para a elegibilidade da receita; a investigação não comprova defeito técnico nem superestimação financeira.",
+
+  "obtain formal business approval for revenue eligibility rules before changing analytics sql.":
+    "Obter aprovação formal do negócio para as regras de elegibilidade da receita antes de alterar o SQL da camada Analytics.",
+
+  "the current implementation reconciles correctly, but the semantic contract is undefined.":
+    "A implementação atual reconcilia corretamente, mas o contrato semântico da métrica ainda não está definido.",
+
+  "high severity with material business impact":
+    "Severidade alta com impacto material no negócio",
+
+  "recommended action requires human approval":
+    "A ação recomendada exige aprovação humana",
 };
 
 function translateValue(value) {
@@ -241,7 +271,7 @@ function renderHypotheses(hypotheses) {
 
           <p>
             ${displayValue(
-              hypothesis.description
+              translateValue(hypothesis.description)
             )}
           </p>
 
@@ -290,12 +320,16 @@ function renderRecommendations(actions) {
 
           <p>
             <strong>
-              ${displayValue(action.description)}
+              ${displayValue(
+                translateValue(action.description)
+              )}
             </strong>
           </p>
 
           <p class="muted">
-            ${displayValue(action.rationale)}
+            ${displayValue(
+              translateValue(action.rationale)
+            )}
           </p>
 
           <div class="nested-section">
@@ -397,7 +431,9 @@ function renderHumanReview(result) {
       ${
         required
           ? renderStringList(
-              result.human_review_reasons,
+              result.human_review_reasons.map(
+                (reason) => translateValue(reason)
+              ),
               "Motivo não informado."
             )
           : `
@@ -522,7 +558,9 @@ function renderAnalysisResult(result) {
       <h3>Resumo executivo</h3>
 
       <p class="executive-summary">
-        ${displayValue(result.executive_summary)}
+        ${displayValue(
+          translateValue(result.executive_summary)
+        )}
       </p>
     </section>
 

@@ -306,3 +306,85 @@ test(
     );
   }
 );
+
+test(
+  "renderer localizes deterministic demo output to PT-BR",
+  () => {
+    const response =
+      makeAgentResponse();
+
+    response.executive_summary =
+      "No technical reconciliation defect is established; the risk is an undefined semantic contract for revenue.";
+
+    response.root_cause_hypotheses = [
+      {
+        description:
+          "The confirmed governance gap is the absence of a formal business definition of revenue eligibility; the investigation does not establish a technical defect or confirmed financial overstatement.",
+        supporting_evidence: [
+          "EV-DE102-METRIC",
+          "EV-DE102-RULE",
+        ],
+        confidence: 0.96,
+        status: "confirmed",
+      },
+    ];
+
+    response.recommended_actions = [
+      {
+        description:
+          "Obtain formal business approval for revenue eligibility rules before changing Analytics SQL.",
+        priority: "high",
+        rationale:
+          "The current implementation reconciles correctly, but the semantic contract is undefined.",
+        requires_human_approval: true,
+        supporting_evidence: [
+          "EV-DE102-METRIC",
+          "EV-DE102-RULE",
+        ],
+      },
+    ];
+
+    response.human_review_reasons = [
+      "high severity with material business impact",
+      "recommended action requires human approval",
+    ];
+
+    const html =
+      renderAnalysisResult(response);
+
+    assert.match(
+      html,
+      /Não foi identificado defeito técnico de reconciliação/
+    );
+
+    assert.match(
+      html,
+      /A lacuna de governança confirmada/
+    );
+
+    assert.match(
+      html,
+      /Obter aprovação formal do negócio/
+    );
+
+    assert.match(
+      html,
+      /A implementação atual reconcilia corretamente/
+    );
+
+    assert.match(
+      html,
+      /Severidade alta com impacto material no negócio/
+    );
+
+    assert.match(
+      html,
+      /A ação recomendada exige aprovação humana/
+    );
+
+    assert.doesNotMatch(
+      html,
+      /No technical reconciliation defect is established/
+    );
+  }
+);
