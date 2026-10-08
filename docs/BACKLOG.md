@@ -1181,7 +1181,7 @@ Objetivo: preparar a entrega final sem introduzir novas funcionalidades após o 
 
 **Prioridade:** P0
 **Complexidade:** BAIXA
-**Status:** 🚧 EM ANDAMENTO
+**Status:** ✅ CONCLUÍDO
 
 ### Critérios de aceite
 
