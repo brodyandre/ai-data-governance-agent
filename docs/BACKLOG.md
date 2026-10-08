@@ -24,6 +24,7 @@ O backlog complementa o [`ROADMAP.md`](ROADMAP.md), transformando cada fase do p
 - [Fase 8 — Interface Web](#fase-8)
 - [Fase 9 — Demonstração do Challenge](#fase-9)
 - [Fase 10 — Hardening Final](#fase-10)
+- [Fase 11 — Preparação da Entrega](#fase-11)
 - [Itens adiados](#itens-adiados)
 - [Regra de controle do backlog](#regra-backlog)
 
@@ -35,8 +36,10 @@ O backlog complementa o [`ROADMAP.md`](ROADMAP.md), transformando cada fase do p
 
 | Marco | Data |
 |---|---|
-| Code freeze interno | **06/11/2026** |
+| Code freeze efetivo | **08/10/2026** |
 | Entrega oficial do Challenge | **08/11/2026** |
+
+> O code freeze foi antecipado em relação à meta interna original de 06/11/2026.
 
 O período posterior ao code freeze deve ser reservado para:
 
@@ -616,7 +619,9 @@ Fornecer comportamento previsível para:
 
 **Prioridade:** P1
 **Complexidade:** MÉDIA
-**Status:** ⏳ PENDENTE
+**Status:** 🧊 ADIADO / PÓS-CHALLENGE
+
+O MVP permanece determinístico e reproduzível sem dependência obrigatória de um provider real. A integração poderá ser retomada após o Challenge.
 
 ### Critérios de aceite
 
@@ -1124,6 +1129,86 @@ Após o code freeze:
 - validação final;
 - ensaio da demonstração;
 - preparação da submissão.
+
+[⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
+
+---
+
+<a id="fase-11"></a>
+
+# 🏁 Fase 11 — Preparação da Entrega
+
+Objetivo: preparar a entrega final sem introduzir novas funcionalidades após o code freeze.
+
+---
+
+## DG-1101 — Auditoria final do repositório público
+
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ✅ CONCLUÍDO
+
+### Critérios de aceite
+
+- apresentação pública coerente;
+- documentação sem resíduos editoriais;
+- links locais válidos;
+- CI saudável;
+- backlog coerente com o code freeze;
+- itens adiados explicitamente identificados;
+- cenários DE-101 e DE-102 facilmente localizáveis.
+
+---
+
+## DG-1102 — Validação final da demonstração e evidências
+
+**Prioridade:** P0
+**Complexidade:** MÉDIA
+**Status:** ⏳ PENDENTE
+
+### Critérios de aceite
+
+- DE-101 validado end-to-end;
+- DE-102 validado end-to-end;
+- execução reproduzível pelo runbook;
+- transparência sobre provider determinístico;
+- screenshots ou evidências de apresentação validadas;
+- narrativa compatível com o comportamento observado.
+
+---
+
+## DG-1103 — Pacote de submissão
+
+**Prioridade:** P0
+**Complexidade:** BAIXA
+**Status:** ⏳ PENDENTE
+
+### Critérios de aceite
+
+- descrição final do projeto preparada;
+- URL pública do repositório validada;
+- materiais exigidos pelo Challenge organizados;
+- screenshots e evidências selecionados;
+- texto de submissão revisado;
+- links finais validados.
+
+---
+
+## DG-1104 — Final gate da entrega
+
+**Prioridade:** P0
+**Complexidade:** NÃO APLICÁVEL
+**Status:** ⏳ PENDENTE
+
+### Critérios de aceite
+
+- quality gates finais aprovados;
+- CI verde na `main`;
+- nenhum pull request aberto;
+- working tree limpa;
+- documentação final coerente;
+- pacote de submissão pronto;
+- Fase 11 concluída.
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
