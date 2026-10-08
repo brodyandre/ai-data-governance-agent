@@ -1020,7 +1020,7 @@ Criar um segundo cenário representativo para demonstrar capacidade de generaliz
 
 **Prioridade:** P0
 **Complexidade:** NÃO APLICÁVEL
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Narrativa esperada
 

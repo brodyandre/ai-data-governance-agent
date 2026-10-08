@@ -513,6 +513,9 @@ Principais documentos:
 | [`PROJECT_CHARTER.md`](docs/PROJECT_CHARTER.md) | Visão, objetivos, escopo e critérios de sucesso |
 | [`ROADMAP.md`](docs/ROADMAP.md) | Fases e estratégia de desenvolvimento |
 | [`BACKLOG.md`](docs/BACKLOG.md) | Itens de implementação e critérios de aceite |
+| [`DEMO_NARRATIVE.md`](docs/demo/DEMO_NARRATIVE.md) | Narrativa oficial da demonstração do Challenge |
+| [`LIVE_DEMO_RUNBOOK.md`](docs/demo/LIVE_DEMO_RUNBOOK.md) | Execução reproduzível da demonstração ao vivo |
+| [`PRESENTATION_SCRIPT.md`](docs/demo/PRESENTATION_SCRIPT.md) | Roteiro de apresentação e fala curta |
 | [`ADR-001`](docs/adrs/ADR-001-project-scope-and-stack.md) | Decisão inicial de arquitetura |
 | [`INCIDENT_INPUT.md`](docs/contracts/INCIDENT_INPUT.md) | Contrato conceitual de entrada |
 | [`AGENT_RESPONSE.md`](docs/contracts/AGENT_RESPONSE.md) | Contrato conceitual da resposta |
