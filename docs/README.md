@@ -437,6 +437,8 @@ docs/
 │   ├── DG-1002-SECURITY-REVIEW.md
 │   ├── DG-1003-DOCUMENTATION-REVIEW.md
 │   └── DG-1004-CODE-FREEZE.md
+├── delivery/
+│   └── DG-1101-FINAL-DELIVERY-REVIEW.md
 └── policies/
     └── LOCAL_CONTROLS.md
 ```
@@ -486,6 +488,10 @@ docs/
 - [`DG-1002-SECURITY-REVIEW.md`](hardening/DG-1002-SECURITY-REVIEW.md)
 - [`DG-1003-DOCUMENTATION-REVIEW.md`](hardening/DG-1003-DOCUMENTATION-REVIEW.md)
 - [`DG-1004-CODE-FREEZE.md`](hardening/DG-1004-CODE-FREEZE.md)
+
+### Entrega
+
+- [`DG-1101-FINAL-DELIVERY-REVIEW.md`](delivery/DG-1101-FINAL-DELIVERY-REVIEW.md)
 
 ---
 

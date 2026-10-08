@@ -563,6 +563,8 @@ Principais documentos:
 | [`DEMO_NARRATIVE.md`](docs/demo/DEMO_NARRATIVE.md) | Narrativa oficial da demonstração do Challenge |
 | [`LIVE_DEMO_RUNBOOK.md`](docs/demo/LIVE_DEMO_RUNBOOK.md) | Execução reproduzível da demonstração ao vivo |
 | [`PRESENTATION_SCRIPT.md`](docs/demo/PRESENTATION_SCRIPT.md) | Roteiro de apresentação e fala curta |
+| [`DE-101.md`](docs/scenarios/DE-101.md) | Cenário canônico de elegibilidade Silver → Gold |
+| [`DE-102.md`](docs/scenarios/DE-102.md) | Cenário canônico de governança da semântica de revenue |
 | [`ADR-001`](docs/adrs/ADR-001-project-scope-and-stack.md) | Decisão inicial de arquitetura |
 | [`INCIDENT_INPUT.md`](docs/contracts/INCIDENT_INPUT.md) | Contrato conceitual de entrada |
 | [`AGENT_RESPONSE.md`](docs/contracts/AGENT_RESPONSE.md) | Contrato conceitual da resposta |
