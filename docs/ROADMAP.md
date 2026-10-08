@@ -34,7 +34,7 @@ O objetivo do roadmap é preservar foco, reduzir risco de implementação e gara
 
 | Marco | Data |
 |---|---|
-| Code freeze interno | **06/11/2026** |
+| Code freeze efetivo | **08/10/2026** |
 | Entrega oficial do Challenge | **08/11/2026** |
 
 O período após o code freeze será reservado para:
@@ -541,9 +541,11 @@ ruff format --check .
 pytest
 ```
 
-## Data-alvo
+## Data efetiva
 
-**06/11/2026**
+**08/10/2026**
+
+O code freeze foi antecipado em relação à meta interna original de **06/11/2026**.
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](README.md)
 
@@ -555,7 +557,9 @@ pytest
 
 ## Período
 
-**07/11/2026 a 08/11/2026**
+**08/10/2026 a 08/11/2026**
+
+A preparação da entrega foi antecipada após o code freeze efetivo em **08/10/2026**.
 
 ## Objetivo
 
@@ -636,8 +640,8 @@ FASE 6   ✅ FastAPI
 FASE 7   ✅ Avaliação
 FASE 8   ✅ Interface Web
 FASE 9   ✅ Cenários
-FASE 10  🚧 Hardening
-FASE 11  ⏳ Entrega
+FASE 10  ✅ Hardening
+FASE 11  🚧 Entrega
 ```
 
 ---
