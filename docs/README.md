@@ -15,6 +15,7 @@ O objetivo desta página é funcionar como um **índice remissivo central**, per
 - [Contratos de domínio](#contratos)
 - [Governança e supervisão humana](#governanca)
 - [Avaliação](#avaliacao)
+- [Demonstração do Challenge](#demonstracao)
 - [Fluxo recomendado de leitura](#fluxo-leitura)
 - [Convenções da documentação](#convencoes)
 - [Manutenção da documentação](#manutencao)
@@ -225,6 +226,32 @@ As definições matemáticas e critérios de cálculo serão registrados quando 
 
 ---
 
+<a id="demonstracao"></a>
+
+## 🎬 Demonstração do Challenge
+
+A demonstração oficial do projeto utiliza cenários representativos e uma
+narrativa explícita sobre evidências, limites da IA, governança e supervisão
+humana.
+
+| Documento | Finalidade |
+|---|---|
+| [`demo/DEMO_NARRATIVE.md`](demo/DEMO_NARRATIVE.md) | Narrativa canônica da demonstração e seus nove elementos |
+| [`demo/LIVE_DEMO_RUNBOOK.md`](demo/LIVE_DEMO_RUNBOOK.md) | Procedimento reproduzível para execução da demonstração ao vivo |
+| [`demo/PRESENTATION_SCRIPT.md`](demo/PRESENTATION_SCRIPT.md) | Roteiro de fala principal e versão curta para apresentação |
+| [`scenarios/DE-101.md`](scenarios/DE-101.md) | Cenário canônico de elegibilidade Silver → Gold |
+| [`scenarios/DE-102.md`](scenarios/DE-102.md) | Cenário canônico de governança da métrica de receita |
+
+A demonstração controlada mantém transparência sobre o uso de provider
+determinístico nas etapas dependentes de geração estruturada.
+
+Ela não deve ser apresentada como avaliação de qualidade de um LLM real em
+produção.
+
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
+
+---
+
 <a id="fluxo-leitura"></a>
 
 ## 📖 Fluxo recomendado de leitura
@@ -401,6 +428,13 @@ docs/
 │   ├── DOMAIN_ENUMS.md
 │   ├── EVIDENCE_MODEL.md
 │   └── SEVERITY_AND_HUMAN_REVIEW.md
+├── demo/
+│   ├── DEMO_NARRATIVE.md
+│   ├── LIVE_DEMO_RUNBOOK.md
+│   └── PRESENTATION_SCRIPT.md
+├── scenarios/
+│   ├── DE-101.md
+│   └── DE-102.md
 └── evaluation/
 ```
 
@@ -425,6 +459,14 @@ docs/
 - [`DOMAIN_ENUMS.md`](contracts/DOMAIN_ENUMS.md)
 - [`AGENT_RESPONSE.md`](contracts/AGENT_RESPONSE.md)
 - [`SEVERITY_AND_HUMAN_REVIEW.md`](contracts/SEVERITY_AND_HUMAN_REVIEW.md)
+
+### Demonstração
+
+- [`DEMO_NARRATIVE.md`](demo/DEMO_NARRATIVE.md)
+- [`LIVE_DEMO_RUNBOOK.md`](demo/LIVE_DEMO_RUNBOOK.md)
+- [`PRESENTATION_SCRIPT.md`](demo/PRESENTATION_SCRIPT.md)
+- [`DE-101.md`](scenarios/DE-101.md)
+- [`DE-102.md`](scenarios/DE-102.md)
 
 ---
 
