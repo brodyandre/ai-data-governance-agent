@@ -1,694 +1,524 @@
-# 🤖 AI Data Governance Agent
+# AI Data Governance Agent
 
 [![CI](https://github.com/brodyandre/ai-data-governance-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/brodyandre/ai-data-governance-agent/actions/workflows/ci.yml)
 
-Agente de IA para análise estruturada de incidentes de dados, com foco em **Data Quality, impacto de negócio, governança, rastreabilidade de evidências e supervisão humana**.
+Agente de IA para investigação estruturada de incidentes de dados, com foco em **Data Quality, impacto de negócio, governança, rastreabilidade de evidências e supervisão humana**.
 
-Este repositório está sendo desenvolvido como projeto individual do Challenge da **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**.
+O projeto organiza evidências técnicas e de negócio, executa análises determinísticas, produz hipóteses e recomendações rastreáveis e identifica situações que exigem revisão humana.
+
+Projeto de portfólio desenvolvido no contexto da **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**.
 
 ---
 
 <a id="sumario"></a>
 
-## 📚 Sumário
+## Sumário
 
-- [Visão geral](#visao-geral)
-- [Problema](#problema)
-- [Objetivos](#objetivos)
-- [Como a solução funciona](#como-funciona)
-- [Ferramentas do agente](#ferramentas)
-- [Resposta estruturada](#resposta-estruturada)
-- [Supervisão humana](#supervisao-humana)
-- [Princípios de evidência](#principios-evidencia)
-- [Arquitetura e tecnologias](#arquitetura)
-- [Estrutura do projeto](#estrutura)
-- [Desenvolvimento local](#desenvolvimento-local)
-- [Qualidade e testes](#qualidade)
+- [Visão Geral](#visao-geral)
+- [Problema de Negócio](#problema-negocio)
+- [Solução Proposta](#solucao-proposta)
+- [Capacidades Implementadas](#capacidades)
+- [Arquitetura](#arquitetura)
+- [Ferramentas do Agente](#ferramentas)
+- [Human-in-the-loop e Guardrails](#human-in-the-loop)
+- [Rastreabilidade de Evidências](#rastreabilidade)
+- [Cenários de Demonstração](#cenarios)
+- [Stack Tecnológica](#stack)
+- [Como Executar Localmente](#execucao)
+- [Qualidade e Testes](#qualidade)
 - [Avaliação](#avaliacao)
-- [Roadmap](#roadmap)
+- [Limitações](#limitacoes)
 - [Documentação](#documentacao)
-- [Projetos de referência](#projetos-referencia)
-- [Princípios de desenvolvimento](#principios-desenvolvimento)
-- [Prazo do Challenge](#prazo)
+- [Projetos Relacionados](#projetos-relacionados)
+- [Próximos Passos](#proximos-passos)
 - [Autor](#autor)
 
 ---
 
 <a id="visao-geral"></a>
 
-## 🎯 Visão geral
+## Visão Geral
 
-O **AI Data Governance Agent** tem como objetivo auxiliar profissionais de dados na investigação de incidentes por meio da organização de evidências técnicas e de negócio.
+O **AI Data Governance Agent** auxilia profissionais de dados na investigação de incidentes a partir de evidências técnicas, regras de negócio e controles de governança.
 
-A solução deverá produzir análises estruturadas, rastreáveis e explícitas quanto ao nível de confiança, sem substituir a decisão humana em situações críticas.
+A solução combina componentes determinísticos com uma camada de abstração para providers, mantendo decisões críticas sob supervisão humana.
 
-O projeto combina conceitos de:
+O agente foi projetado para responder perguntas como:
 
-- Engenharia de Dados;
-- Inteligência Artificial aplicada a negócios;
-- Data Quality;
-- Data Governance;
-- DataOps;
-- observabilidade;
-- segurança aplicada à IA;
-- human-in-the-loop.
+- quais evidências sustentam a análise;
+- qual é a severidade do incidente;
+- quais consumidores ou processos podem ser afetados;
+- quais hipóteses de causa raiz são compatíveis com as evidências;
+- quais controles de governança são aplicáveis;
+- quais próximos passos são recomendados;
+- quando a decisão precisa ser revisada por uma pessoa.
 
-### 📌 Status atual
+O foco é produzir análises **estruturadas, explicáveis, auditáveis e reproduzíveis**.
 
-| Item | Status |
-|---|---|
-| Fase 0 — Planejamento e Bootstrap | ✅ Concluída |
-| Fases 0 a 9 — MVP e demonstração | ✅ Concluídas |
-| Fase 10 — Hardening Final | ✅ Concluída |
-| Fase 11 — Preparação da Entrega | 🚧 Em andamento |
-| Workflow com LangGraph | ✅ Implementado |
-| API FastAPI | ✅ Implementada |
-| Interface web Node.js | ✅ Implementada |
-| Avaliação determinística | ✅ Operacional |
-| CI com GitHub Actions | ✅ Operacional |
-
-> O projeto está sendo construído de forma incremental, com contratos de domínio, testes e critérios de aceite definidos antes da implementação das camadas de maior complexidade.
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
-<a id="problema"></a>
+<a id="problema-negocio"></a>
 
-## 🔎 Problema
+## Problema de Negócio
 
-Incidentes de dados normalmente são investigados a partir de informações fragmentadas, como:
+Incidentes de dados normalmente são investigados a partir de informações distribuídas entre relatórios de pipelines, resultados de validações, divergências de reconciliação, logs, regras de negócio, políticas de governança e observações de analistas.
 
-- relatórios de pipelines;
-- resultados de validações;
-- diferenças de reconciliação;
-- logs;
-- verificações de Data Quality;
-- regras de negócio;
-- políticas de governança;
-- observações de analistas.
+Essa fragmentação pode aumentar o tempo de investigação e gerar interpretações inconsistentes sobre severidade, causa raiz, impacto de negócio e prioridade de remediação.
 
-Essa fragmentação pode tornar a investigação mais lenta e produzir avaliações inconsistentes sobre:
+O projeto transforma essas evidências fragmentadas em uma análise única, estruturada e rastreável.
 
-- severidade;
-- impacto no negócio;
-- causa raiz;
-- consumidores afetados;
-- controles de governança;
-- prioridade de remediação.
-
-O projeto busca organizar essas informações e transformá-las em uma análise **estruturada, explicável e auditável**.
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
-<a id="objetivos"></a>
+<a id="solucao-proposta"></a>
 
-## 🚀 Objetivos
+## Solução Proposta
 
-O fluxo implementado é capaz de:
+O fluxo implementado:
 
-1. receber um incidente estruturado;
-2. organizar as evidências disponíveis;
-3. analisar sinais de Data Quality;
-4. avaliar possíveis impactos de negócio;
-5. consultar controles e políticas de governança;
-6. produzir hipóteses de causa raiz;
-7. recomendar próximos passos;
-8. estimar o nível de confiança da análise;
-9. identificar situações que exigem revisão humana;
-10. retornar uma resposta estruturada e rastreável.
+1. recebe um incidente estruturado;
+2. valida o contrato de entrada;
+3. coleta e organiza as evidências disponíveis;
+4. analisa sinais de Data Quality;
+5. avalia possíveis impactos de negócio;
+6. consulta controles e políticas de governança;
+7. produz hipóteses de causa raiz;
+8. recomenda próximos passos;
+9. calcula o nível de confiança;
+10. determina se revisão humana é necessária;
+11. retorna uma resposta estruturada e rastreável.
 
-[⬆️ Voltar ao índice](#sumario)
+A solução possui caráter **consultivo** e não executa automaticamente ações críticas de remediação.
 
----
-
-<a id="como-funciona"></a>
-
-## 🔄 Como a solução funciona
-
-Fluxo conceitual do MVP:
-
-```text
-Incidente
-   │
-   ▼
-Validação do contrato
-   │
-   ▼
-Coleta e organização de evidências
-   │
-   ▼
-Análise de Data Quality
-   │
-   ▼
-Avaliação de impacto de negócio
-   │
-   ▼
-Consulta a controles de governança
-   │
-   ▼
-Hipóteses e recomendações
-   │
-   ▼
-Regras de supervisão humana
-   │
-   ▼
-Resposta estruturada e rastreável
-```
-
-O fluxo é orquestrado com **LangGraph** e permanece com arquitetura de agente único no escopo do MVP.
-
-A proposta é combinar componentes determinísticos com capacidades de IA sem transferir decisões críticas exclusivamente para o modelo.
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
-<a id="ferramentas"></a>
+<a id="capacidades"></a>
 
-## 🛠️ Ferramentas do agente
+## Capacidades Implementadas
 
-O MVP utiliza quatro ferramentas determinísticas principais:
+| Capacidade | Estado |
+| --- | --- |
+| Contratos estruturados de incidente e resposta | Implementado |
+| Workflow de investigação com LangGraph | Implementado |
+| API HTTP com FastAPI | Implementada |
+| Interface web com Node.js e Express | Implementada |
+| Análise de Data Quality | Implementada |
+| Avaliação de impacto de negócio | Implementada |
+| Recuperação de controles de governança | Implementada |
+| Organização e rastreabilidade de evidências | Implementada |
+| Hipóteses e recomendações estruturadas | Implementadas |
+| Human-in-the-loop | Implementado |
+| Guardrails para evidência insuficiente e claims sem suporte | Implementados |
+| Framework de avaliação determinística | Implementado |
+| CI com GitHub Actions | Implementado |
+| Cenários de demonstração reproduzíveis | Implementados |
 
-| Ferramenta | Responsabilidade |
-|---|---|
-| `quality_analyzer` | Avaliar sinais e problemas relacionados à qualidade dos dados |
-| `business_impact_analyzer` | Relacionar problemas técnicos a possíveis impactos de negócio |
-| `policy_retriever` | Recuperar políticas e controles de governança aplicáveis |
-| `evidence_collector` | Organizar e preservar a rastreabilidade das evidências |
-
-A separação dessas responsabilidades permite testar cada capacidade de forma independente e manter o fluxo mais previsível.
-
-[⬆️ Voltar ao índice](#sumario)
-
----
-
-<a id="resposta-estruturada"></a>
-
-## 📦 Resposta estruturada
-
-A resposta do agente é representada por um contrato estruturado contendo campos como:
-
-```text
-incident_id
-classification
-severity
-executive_summary
-evidence
-business_impact
-root_cause_hypotheses
-recommended_actions
-governance_controls
-confidence
-human_review_required
-human_review_reasons
-```
-
-Os contratos de entrada e saída são definidos antes da implementação para reduzir ambiguidades e manter estabilidade entre as diferentes camadas da aplicação.
-
-[⬆️ Voltar ao índice](#sumario)
-
----
-
-<a id="supervisao-humana"></a>
-
-## 👤 Supervisão humana
-
-O agente possui caráter **consultivo**.
-
-Situações de maior risco deverão exigir revisão humana, incluindo casos de:
-
-- severidade crítica;
-- impacto material de negócio;
-- baixa confiança;
-- evidências insuficientes;
-- evidências conflitantes;
-- possível exposição regulatória;
-- possível violação de governança;
-- impacto de privacidade;
-- recomendações destrutivas ou irreversíveis.
-
-O agente não executa automaticamente ações críticas de remediação.
-
-A decisão final permanece sob responsabilidade de uma pessoa ou equipe devidamente autorizada.
-
-[⬆️ Voltar ao índice](#sumario)
-
----
-
-<a id="principios-evidencia"></a>
-
-## 🧾 Princípios de evidência
-
-A solução diferencia explicitamente:
-
-```text
-Evidência observada
-        ↓
-Resultado determinístico
-        ↓
-Hipótese
-        ↓
-Recomendação
-```
-
-Uma hipótese não deve ser apresentada como fato confirmado sem evidência que a sustente.
-
-Quando as informações forem insuficientes, o sistema deverá declarar essa limitação em vez de produzir evidências inexistentes.
-
-A rastreabilidade é um requisito central do projeto.
-
-O objetivo é permitir perguntas como:
-
-- qual evidência sustenta esta conclusão?
-- de onde essa evidência veio?
-- a conclusão foi observada, calculada ou inferida?
-- qual é o nível de confiança?
-- por que uma revisão humana foi exigida?
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
 <a id="arquitetura"></a>
 
-## 🏗️ Arquitetura e tecnologias
+## Arquitetura
 
-### Backend
+Fluxo principal da solução:
 
-| Tecnologia | Uso |
-|---|---|
-| Python 3.12 | Linguagem principal |
-| FastAPI | API HTTP |
-| Pydantic | Contratos e validação |
-| LangGraph | Orquestração do fluxo do agente |
+~~~text
+Interface Web
+     |
+     v
+Express /api/analyze
+     |
+     v
+FastAPI
+     |
+     v
+Validação do incidente
+     |
+     v
+Workflow LangGraph
+     |
+     +-------------------------------+
+     |                               |
+     v                               v
+Evidence Collector            Quality Analyzer
+     |                               |
+     +---------------+---------------+
+                     |
+                     v
+          Business Impact Analyzer
+                     |
+                     v
+             Policy Retriever
+                     |
+                     v
+       Hipóteses e Recomendações
+                     |
+                     v
+          Guardrails e Confiança
+                     |
+                     v
+             Human Review
+                     |
+                     v
+              AgentResponse
+~~~
 
-### Qualidade e testes
+A arquitetura mantém separadas as responsabilidades de contratos, ferramentas determinísticas, orquestração, provider, guardrails, API e interface.
 
-| Tecnologia | Uso |
-|---|---|
-| pytest | Testes automatizados |
-| pytest-cov | Cobertura de testes |
-| Ruff | Lint e formatação |
-| GitHub Actions | Integração contínua |
+Essa separação permite testar o comportamento do sistema sem depender obrigatoriamente de um modelo externo.
 
-### Inteligência Artificial
-
-A arquitetura utiliza uma camada de abstração para provedores de modelos.
-
-Os testes automatizados, a avaliação e a integração contínua funcionam de forma determinística e sem dependência obrigatória de um modelo externo.
-
-O MVP atual utiliza provider determinístico nos testes e na avaliação. A integração com um modelo real permanece opcional e não faz parte do caminho obrigatório de execução ou do CI.
-
-### Interface web
-
-Stack implementada:
-
-```text
-Node.js
-Express
-EJS
-Vanilla JavaScript
-```
-
-O objetivo é produzir uma interface limpa e profissional sem introduzir complexidade desnecessária no frontend.
-
-[⬆️ Voltar ao índice](#sumario)
-
----
-
-<a id="estrutura"></a>
-
-## 📁 Estrutura do projeto
-
-```text
-ai-data-governance-agent/
-├── .env.example
-├── .github/
-│   └── workflows/
-├── docs/
-│   ├── adrs/
-│   ├── contracts/
-│   ├── demo/
-│   ├── hardening/
-│   ├── policies/
-│   ├── scenarios/
-│   ├── BACKLOG.md
-│   ├── EVALUATION.md
-│   ├── PROJECT_CHARTER.md
-│   ├── README.md
-│   └── ROADMAP.md
-├── src/
-│   └── ai_data_governance_agent/
-├── tests/
-├── web/
-├── pyproject.toml
-└── README.md
-```
-
-As principais responsabilidades estão separadas entre código, testes, documentação, contratos e interface de demonstração.
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
-<a id="desenvolvimento-local"></a>
+<a id="ferramentas"></a>
 
-## 💻 Desenvolvimento local
+## Ferramentas do Agente
+
+| Ferramenta | Responsabilidade |
+| --- | --- |
+| evidence_collector | Organizar evidências e preservar sua origem |
+| quality_analyzer | Avaliar sinais relacionados à qualidade dos dados |
+| business_impact_analyzer | Relacionar problemas técnicos a possíveis impactos de negócio |
+| policy_retriever | Recuperar políticas e controles de governança aplicáveis |
+
+As ferramentas são independentes da geração textual e possuem testes próprios. Isso reduz o risco de delegar ao modelo tarefas que podem ser executadas de forma determinística e verificável.
+
+[Voltar ao índice](#sumario)
+
+---
+
+<a id="human-in-the-loop"></a>
+
+## Human-in-the-loop e Guardrails
+
+O agente não substitui a decisão humana em situações críticas.
+
+A revisão humana pode ser exigida por condições como severidade crítica, impacto material de negócio, baixa confiança, evidências insuficientes ou conflitantes, risco regulatório, risco de privacidade, violação de governança e recomendações que exigem autorização.
+
+Os guardrails evitam apresentar conclusões como fatos quando não existem evidências suficientes para sustentá-las.
+
+O comportamento esperado é conservador: quando a informação não é suficiente, a solução explicita a limitação em vez de inventar evidências ou controles.
+
+[Voltar ao índice](#sumario)
+
+---
+
+<a id="rastreabilidade"></a>
+
+## Rastreabilidade de Evidências
+
+Um dos princípios centrais do projeto é manter separadas as diferentes camadas de interpretação:
+
+~~~text
+Evidência observada
+        |
+        v
+Resultado determinístico
+        |
+        v
+Hipótese
+        |
+        v
+Recomendação
+~~~
+
+Cada conclusão relevante pode ser relacionada às evidências que a sustentam.
+
+Isso permite responder de onde a evidência foi obtida, se a informação foi observada, calculada ou inferida, qual é o nível de confiança e por que uma revisão humana foi solicitada.
+
+A rastreabilidade é tratada como requisito funcional, não apenas como documentação.
+
+[Voltar ao índice](#sumario)
+
+---
+
+<a id="cenarios"></a>
+
+## Cenários de Demonstração
+
+### DE-101 — Elegibilidade Silver → Gold
+
+O cenário investiga uma diferença entre a quantidade de itens disponível na camada Silver e os registros publicados em fct_sales.
+
+~~~text
+Silver order_items
+1000 registros
+      |
+      | - 30 itens com quantity inválida
+      v
+970 registros elegíveis
+      |
+      | - 33 itens associados a 12 pedidos inválidos
+      v
+Gold fct_sales
+937 registros
+~~~
+
+A redução é explicada pelas regras documentadas de elegibilidade.
+
+O cenário demonstra Data Quality, reconciliação, rastreabilidade, hipótese baseada em evidências, controles de governança, recomendação consultiva e revisão humana.
+
+Documentação: [docs/scenarios/DE-101.md](docs/scenarios/DE-101.md)
+
+### DE-102 — Governança da Semântica de Receita
+
+O cenário investiga uma possível divergência na definição de receita.
+
+As camadas Gold e Analytics reconciliam tecnicamente o mesmo valor. A investigação identifica que o risco não está em uma divergência técnica comprovada, mas na ausência de um contrato semântico formal para definir quais status devem compor a métrica de receita.
+
+O cenário demonstra distinção entre reconciliação técnica e semântica de negócio, governança de métricas, prevenção de conclusões financeiras sem evidência e necessidade de aprovação humana antes da alteração da regra.
+
+Documentação: [docs/scenarios/DE-102.md](docs/scenarios/DE-102.md)
+
+[Voltar ao índice](#sumario)
+
+---
+
+<a id="stack"></a>
+
+## Stack Tecnológica
+
+| Categoria | Tecnologia | Papel |
+| --- | --- | --- |
+| Linguagem | Python 3.12 | Backend e regras de negócio |
+| API | FastAPI | Exposição HTTP |
+| Contratos | Pydantic | Validação e modelos estruturados |
+| Orquestração | LangGraph | Workflow do agente |
+| Frontend | Node.js | Runtime da interface |
+| Web | Express | Servidor e integração com a API |
+| Templates | EJS | Renderização da interface |
+| Browser | Vanilla JavaScript | Interação e apresentação |
+| Testes | pytest | Testes automatizados Python |
+| Testes web | Node Test Runner | Testes da interface |
+| Qualidade | Ruff | Lint e formatação |
+| CI | GitHub Actions | Quality gates automáticos |
+
+### Provider de modelo
+
+A aplicação utiliza uma abstração de provider.
+
+Testes, avaliação e demonstração podem operar de forma determinística, sem dependência obrigatória de um serviço externo de IA.
+
+Essa abordagem mantém o projeto reproduzível e permite integrar outros providers futuramente sem alterar os contratos centrais da aplicação.
+
+[Voltar ao índice](#sumario)
+
+---
+
+<a id="execucao"></a>
+
+## Como Executar Localmente
 
 ### Pré-requisitos
 
-- Python 3.12;
-- Node.js 20 ou superior;
-- npm;
-- Git;
-- Linux, WSL2 ou ambiente equivalente.
+- Python 3.12
+- Node.js 20+
+- npm
+- Git
+- Linux, WSL2 ou ambiente equivalente
 
-### 1. Clonar o repositório
+### Clonar o repositório
 
-```bash
+~~~bash
 git clone https://github.com/brodyandre/ai-data-governance-agent.git
 cd ai-data-governance-agent
-```
+~~~
 
-### 2. Criar o ambiente virtual
+### Criar o ambiente virtual
 
-```bash
+~~~bash
 python3.12 -m venv .venv
-```
-
-### 3. Ativar o ambiente virtual
-
-```bash
 source .venv/bin/activate
-```
+~~~
 
-### 4. Instalar o projeto
+### Instalar o projeto
 
-```bash
+~~~bash
 python -m pip install -e ".[dev]"
-```
+~~~
 
-### 5. Validar as dependências
+### Validar dependências
 
-```bash
+~~~bash
 python -m pip check
-```
+~~~
 
-### 6. Interface web
+### Executar os testes Python
 
-A instalação, os testes e a execução da interface estão documentados em:
+~~~bash
+pytest
+~~~
 
-➡️ [`web/README.md`](web/README.md)
+### Interface web
 
-### 7. Demonstração end-to-end
+A instalação e a execução do frontend estão documentadas em [web/README.md](web/README.md).
 
-O procedimento reproduzível utilizado na demonstração oficial está em:
+### Demonstração end-to-end
 
-➡️ [`docs/demo/LIVE_DEMO_RUNBOOK.md`](docs/demo/LIVE_DEMO_RUNBOOK.md)
+O procedimento completo e reproduzível está disponível em [docs/demo/LIVE_DEMO_RUNBOOK.md](docs/demo/LIVE_DEMO_RUNBOOK.md).
 
-A API padrão não configura automaticamente um provider. Sem provider, o endpoint de análise retorna uma resposta controlada `503 provider_not_configured`.
+A configuração padrão da API não injeta automaticamente um provider externo. Quando nenhum provider está configurado, o endpoint de análise retorna o erro controlado provider_not_configured.
 
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
 <a id="qualidade"></a>
 
-## ✅ Qualidade e testes
+## Qualidade e Testes
 
-O projeto utiliza quality gates locais e automáticos.
+Os principais quality gates podem ser executados com:
 
-### Validar dependências
-
-```bash
+~~~bash
 python -m pip check
-```
-
-### Executar lint
-
-```bash
 ruff check .
-```
-
-### Validar formatação
-
-```bash
 ruff format --check .
-```
-
-### Executar testes Python
-
-```bash
 pytest
-```
+cd web && npm test
+~~~
 
-### Executar testes da interface web
+A avaliação determinística é executada com:
 
-```bash
-cd web
-npm test
-cd ..
-```
-
-### Executar a avaliação determinística
-
-```bash
+~~~bash
 python -m ai_data_governance_agent.evaluation
-```
+~~~
 
-A integração contínua executa os principais quality gates automaticamente por meio do **GitHub Actions**.
+O GitHub Actions executa automaticamente os principais quality gates do repositório.
 
-No quality gate da DG-1001 foram aprovados 576 testes Python, 18 testes web e 7 de 7 cenários determinísticos de avaliação.
+A suíte cobre contratos de domínio, API, ferramentas, providers, guardrails, workflow, avaliação e interface web.
 
-### Estado atual
-
-```text
-pip check             ✅
-Ruff lint             ✅
-Ruff format           ✅
-pytest                ✅
-npm test              ✅
-evaluation runner     ✅
-GitHub Actions CI     ✅
-```
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
 <a id="avaliacao"></a>
 
-## 📊 Avaliação
+## Avaliação
 
 O projeto possui um framework de avaliação determinística e reproduzível.
 
-As métricas implementadas são:
-
 | Métrica | Objetivo |
-|---|---|
-| `schema_valid_rate` | Validar conformidade das respostas |
-| `severity_accuracy` | Avaliar classificação de severidade |
-| `evidence_traceability_rate` | Medir rastreabilidade das conclusões |
-| `unsupported_rejection_rate` | Medir rejeição de conclusões sem suporte |
-| `human_review_accuracy` | Avaliar decisões de revisão humana |
-| `tool_execution_success_rate` | Medir execução das ferramentas |
-| `response_latency` | Avaliar latência |
-| `test_pass_rate` | Acompanhar estabilidade dos testes |
+| --- | --- |
+| schema_valid_rate | Validar conformidade das respostas |
+| severity_accuracy | Avaliar classificação de severidade |
+| evidence_traceability_rate | Medir rastreabilidade das conclusões |
+| unsupported_rejection_rate | Medir rejeição de conclusões sem suporte |
+| human_review_accuracy | Avaliar decisões de revisão humana |
+| tool_execution_success_rate | Medir execução das ferramentas |
+| response_latency | Registrar latência |
+| test_pass_rate | Acompanhar estabilidade do workflow |
 
-A execução completa utiliza:
+A avaliação utiliza cenários versionados e um provider determinístico.
 
-```bash
-python -m ai_data_governance_agent.evaluation
-```
+Os resultados medem o comportamento do workflow, das ferramentas e dos guardrails para esse conjunto controlado de cenários. Eles não devem ser interpretados como benchmark de qualidade de um LLM real em produção.
 
-No gate da DG-1001, os 7 cenários versionados foram aprovados. As taxas funcionais ficaram em 100% para o dataset determinístico utilizado.
+Metodologia completa: [docs/EVALUATION.md](docs/EVALUATION.md)
 
-Esses resultados medem o comportamento do workflow, das ferramentas e dos guardrails com provider determinístico. Eles não representam uma avaliação de qualidade de um LLM real em produção.
-
-A metodologia, as fórmulas e as limitações estão documentadas em:
-
-➡️ [`docs/EVALUATION.md`](docs/EVALUATION.md)
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
-<a id="roadmap"></a>
+<a id="limitacoes"></a>
 
-## 🗺️ Roadmap
+## Limitações
 
-O desenvolvimento foi dividido em fases progressivas:
+A implementação atual foi deliberadamente mantida com escopo controlado:
 
-```text
-0   Planejamento e Bootstrap
-1   Modelos e Contratos de Domínio
-2   Ferramentas Determinísticas
-3   Abstração de Provedores
-4   Workflow LangGraph
-5   Guardrails e Governança
-6   API FastAPI
-7   Framework de Avaliação
-8   Interface Web
-9   Cenários Representativos
-10  Hardening Final
-11  Preparação da Entrega
-```
+- o caminho padrão não depende de um LLM externo;
+- o provider utilizado na demonstração é determinístico;
+- o catálogo local de políticas possui escopo limitado aos controles versionados no projeto;
+- o agente não executa remediações críticas automaticamente;
+- a avaliação utiliza cenários controlados e não representa tráfego produtivo;
+- persistência distribuída, observabilidade externa e infraestrutura cloud não são requisitos obrigatórios da solução atual.
 
-A visão completa está disponível em:
+Essas decisões priorizam reprodutibilidade, segurança, testabilidade e transparência.
 
-➡️ [`docs/ROADMAP.md`](docs/ROADMAP.md)
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
 <a id="documentacao"></a>
 
-## 📚 Documentação
+## Documentação
 
-A documentação técnica e de projeto possui um índice central em:
-
-### ➡️ [`docs/README.md`](docs/README.md)
-
-Principais documentos:
+O índice completo está em [docs/README.md](docs/README.md).
 
 | Documento | Conteúdo |
-|---|---|
-| [`PROJECT_CHARTER.md`](docs/PROJECT_CHARTER.md) | Visão, objetivos, escopo e critérios de sucesso |
-| [`ROADMAP.md`](docs/ROADMAP.md) | Fases e estratégia de desenvolvimento |
-| [`BACKLOG.md`](docs/BACKLOG.md) | Itens de implementação e critérios de aceite |
-| [`DEMO_NARRATIVE.md`](docs/demo/DEMO_NARRATIVE.md) | Narrativa oficial da demonstração do Challenge |
-| [`LIVE_DEMO_RUNBOOK.md`](docs/demo/LIVE_DEMO_RUNBOOK.md) | Execução reproduzível da demonstração ao vivo |
-| [`PRESENTATION_SCRIPT.md`](docs/demo/PRESENTATION_SCRIPT.md) | Roteiro de apresentação e fala curta |
-| [`DE-101.md`](docs/scenarios/DE-101.md) | Cenário canônico de elegibilidade Silver → Gold |
-| [`DE-102.md`](docs/scenarios/DE-102.md) | Cenário canônico de governança da semântica de revenue |
-| [`ADR-001`](docs/adrs/ADR-001-project-scope-and-stack.md) | Decisão inicial de arquitetura |
-| [`INCIDENT_INPUT.md`](docs/contracts/INCIDENT_INPUT.md) | Contrato conceitual de entrada |
-| [`AGENT_RESPONSE.md`](docs/contracts/AGENT_RESPONSE.md) | Contrato conceitual da resposta |
-| [`DOMAIN_ENUMS.md`](docs/contracts/DOMAIN_ENUMS.md) | Valores normalizados de domínio |
-| [`EVIDENCE_MODEL.md`](docs/contracts/EVIDENCE_MODEL.md) | Contrato do modelo de evidência |
-| [`SEVERITY_AND_HUMAN_REVIEW.md`](docs/contracts/SEVERITY_AND_HUMAN_REVIEW.md) | Regras de severidade e supervisão humana |
+| --- | --- |
+| [PROJECT_CHARTER.md](docs/PROJECT_CHARTER.md) | Visão, objetivos e escopo |
+| [EVALUATION.md](docs/EVALUATION.md) | Framework e métricas de avaliação |
+| [LIVE_DEMO_RUNBOOK.md](docs/demo/LIVE_DEMO_RUNBOOK.md) | Execução reproduzível da demonstração |
+| [DEMO_NARRATIVE.md](docs/demo/DEMO_NARRATIVE.md) | Narrativa técnica da demonstração |
+| [DE-101.md](docs/scenarios/DE-101.md) | Cenário de elegibilidade Silver → Gold |
+| [DE-102.md](docs/scenarios/DE-102.md) | Cenário de governança da métrica de receita |
+| [AGENT_RESPONSE.md](docs/contracts/AGENT_RESPONSE.md) | Contrato conceitual da resposta |
+| [SEVERITY_AND_HUMAN_REVIEW.md](docs/contracts/SEVERITY_AND_HUMAN_REVIEW.md) | Regras de severidade e revisão humana |
+| [ROADMAP.md](docs/ROADMAP.md) | Evolução técnica do projeto |
+| [BACKLOG.md](docs/BACKLOG.md) | Histórico detalhado das entregas |
 
-A documentação do projeto utiliza **português brasileiro** como idioma principal.
+A documentação utiliza português brasileiro como idioma principal. Identificadores técnicos, classes, campos, métricas e nomes de componentes permanecem em inglês quando fazem parte dos contratos de software.
 
-Nomes de classes, campos, funções, métricas e componentes técnicos permanecem em inglês quando fazem parte dos contratos de software.
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
-<a id="projetos-referencia"></a>
+<a id="projetos-relacionados"></a>
 
-## 🔗 Projetos de referência
+## Projetos Relacionados
 
-Alguns padrões técnicos e cenários utilizados neste projeto têm origem em experimentos independentes presentes em outros repositórios do portfólio:
+Outros projetos do portfólio complementam os conceitos demonstrados neste repositório:
 
-- `aws-lakehouse-engineering-lab`;
-- `databricks-lakehouse-data-engineering-lab`;
-- `agente-ia-manuais-rh-rag`;
-- `edudocs-ai-agent-oci`;
-- `growth_equestre_hackathon_2026`.
+- [AWS Lakehouse Engineering Lab](https://github.com/brodyandre/aws-lakehouse-engineering-lab) — Lakehouse, PySpark, Airflow, Data Quality, observabilidade e FinOps;
+- [Databricks Lakehouse Data Engineering Lab](https://github.com/brodyandre/databricks-lakehouse-data-engineering-lab) — Databricks, Spark, Delta Lake e arquitetura Medallion.
 
-Esses projetos permanecem independentes.
+Os projetos são independentes, mas compartilham princípios de Engenharia de Dados, qualidade, governança, automação e reprodutibilidade.
 
-Os repositórios de referência podem contribuir com:
-
-- padrões de Engenharia de Dados;
-- cenários de Data Quality;
-- arquitetura lakehouse;
-- RAG;
-- guardrails;
-- avaliação;
-- FastAPI;
-- LangGraph;
-- experiência de demonstração.
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
-<a id="principios-desenvolvimento"></a>
+<a id="proximos-passos"></a>
 
-## 🧭 Princípios de desenvolvimento
+## Próximos Passos
 
-O projeto segue um fluxo incremental:
+Evoluções possíveis, sem alterar os contratos centrais:
 
-```text
-Planejamento
-   ↓
-Critérios de aceite
-   ↓
-Implementação com escopo controlado
-   ↓
-Testes e validação
-   ↓
-Revisão
-   ↓
-Versionamento
-   ↓
-Próxima entrega
-```
+- integração opcional com providers reais de modelos;
+- expansão do catálogo de políticas e controles;
+- persistência de incidentes e resultados;
+- observabilidade operacional externa;
+- autenticação e autorização;
+- integração com catálogos corporativos;
+- execução em ambiente cloud;
+- ampliação do dataset de avaliação.
 
-As decisões priorizam:
+Essas extensões são tratadas como evolução da solução, e não como requisitos para demonstrar o comportamento atual.
 
-- simplicidade;
-- rastreabilidade;
-- testabilidade;
-- segurança;
-- explicabilidade;
-- baixo acoplamento;
-- comportamento determinístico sempre que aplicável;
-- controle de escopo.
-
-O projeto prioriza uma solução **confiável, demonstrável e bem documentada** em vez de complexidade arquitetural sem benefício concreto.
-
-[⬆️ Voltar ao índice](#sumario)
-
----
-
-<a id="prazo"></a>
-
-## 📅 Prazo do Challenge
-
-| Marco | Data |
-|---|---|
-| Code freeze efetivo | **08/10/2026** |
-| Entrega oficial | **08/11/2026** |
-
-> O code freeze foi antecipado em relação à meta interna original de 06/11/2026.
-
-O período após o code freeze será reservado para:
-
-- validação final;
-- revisão da documentação;
-- limpeza do repositório;
-- preparação da demonstração;
-- revisão da apresentação;
-- validação dos links;
-- preparação da submissão final.
-
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
 
 ---
 
 <a id="autor"></a>
 
-## 👨‍💻 Autor
+## Autor
 
 **Luiz André de Souza**
 
-Projeto desenvolvido como parte do portfólio profissional em:
+Data Engineering | Software Engineering | Cloud Computing | Data Quality | Data Governance | AI Agents
 
-- Engenharia de Dados;
-- Inteligência Artificial aplicada a negócios;
-- Data Quality;
-- Governança de Dados.
+GitHub: [brodyandre](https://github.com/brodyandre)
+
+LinkedIn: [Luiz André de Souza](https://www.linkedin.com/in/luiz-andre-souza-data-engineer/)
 
 ---
 
-> 🤖 **AI Data Governance Agent** — transformando evidências fragmentadas de incidentes de dados em análises estruturadas, rastreáveis e orientadas à governança.
+**AI Data Governance Agent** — transformando evidências fragmentadas de incidentes de dados em análises estruturadas, rastreáveis e orientadas à governança.
 
-[⬆️ Voltar ao índice](#sumario)
+[Voltar ao índice](#sumario)
