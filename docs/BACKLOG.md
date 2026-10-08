@@ -1050,7 +1050,7 @@ Objetivo: preparar o repositório para o code freeze.
 
 **Prioridade:** P0
 **Complexidade:** BAIXA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Validações obrigatórias
 

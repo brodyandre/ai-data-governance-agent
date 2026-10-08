@@ -435,6 +435,8 @@ docs/
 ├── scenarios/
 │   ├── DE-101.md
 │   └── DE-102.md
+├── hardening/
+│   └── DG-1001-QUALITY-GATE.md
 └── evaluation/
 ```
 
@@ -467,6 +469,10 @@ docs/
 - [`PRESENTATION_SCRIPT.md`](demo/PRESENTATION_SCRIPT.md)
 - [`DE-101.md`](scenarios/DE-101.md)
 - [`DE-102.md`](scenarios/DE-102.md)
+
+### Hardening
+
+- [`DG-1001-QUALITY-GATE.md`](hardening/DG-1001-QUALITY-GATE.md)
 
 ---
 
