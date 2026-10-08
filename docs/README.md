@@ -436,7 +436,8 @@ docs/
 │   ├── DE-101.md
 │   └── DE-102.md
 ├── hardening/
-│   └── DG-1001-QUALITY-GATE.md
+│   ├── DG-1001-QUALITY-GATE.md
+│   └── DG-1002-SECURITY-REVIEW.md
 └── evaluation/
 ```
 
@@ -473,6 +474,7 @@ docs/
 ### Hardening
 
 - [`DG-1001-QUALITY-GATE.md`](hardening/DG-1001-QUALITY-GATE.md)
+- [`DG-1002-SECURITY-REVIEW.md`](hardening/DG-1002-SECURITY-REVIEW.md)
 
 ---
 

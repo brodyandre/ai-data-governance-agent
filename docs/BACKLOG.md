@@ -1074,7 +1074,7 @@ Também validar:
 
 **Prioridade:** P0
 **Complexidade:** BAIXA
-**Status:** ⏳ PENDENTE
+**Status:** ✅ CONCLUÍDO
 
 ### Critérios de aceite
 
