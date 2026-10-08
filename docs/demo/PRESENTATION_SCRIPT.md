@@ -180,7 +180,7 @@ As métricas de validade de schema, severidade, rastreabilidade de evidências,
 rejeição de claims sem suporte, revisão humana, execução das ferramentas e
 aprovação dos cenários ficaram em 100% dentro desse dataset controlado.
 
-A suíte de engenharia também possui 576 testes Python e 18 testes da interface
+A suíte de engenharia também possui 576 testes Python e 19 testes da interface
 web aprovados, além dos quality gates de lint, formatação e integração contínua.
 
 É importante deixar claro que esses 100% não representam uma taxa universal de
@@ -246,7 +246,7 @@ O workflow combina LangGraph, ferramentas determinísticas, FastAPI, Pydantic,
 guardrails e regras de revisão humana.
 
 A avaliação versionada possui sete cenários aprovados, com 576 testes Python e
-18 testes web no gate atual.
+19 testes web no gate atual.
 
 O objetivo não é deixar a IA tomar a decisão final. É organizar evidências,
 explicitar incertezas e indicar quando uma decisão precisa permanecer sob
