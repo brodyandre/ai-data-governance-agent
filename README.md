@@ -267,6 +267,16 @@ O cenário demonstra Data Quality, reconciliação, rastreabilidade, hipótese b
 
 Documentação: [docs/scenarios/DE-101.md](docs/scenarios/DE-101.md)
 
+<p align="center">
+  <img src="assets/screenshots/readme/demo/01-de101-overview.png" alt="Resultado do cenário DE-101 com classificação, severidade, confiança e revisão humana" width="100%">
+</p>
+<p align="center"><em>DE-101 — visão geral da análise com classificação de reconciliação, confiança e supervisão humana.</em></p>
+
+<p align="center">
+  <img src="assets/screenshots/readme/demo/02-de101-hypothesis-recommendation.png" alt="Hipótese, recomendação, evidências e controles de governança do cenário DE-101" width="100%">
+</p>
+<p align="center"><em>DE-101 — hipótese confirmada, recomendação consultiva, evidências de suporte e controles DQ-001 e DQ-002.</em></p>
+
 ### DE-102 — Governança da Semântica de Receita
 
 O cenário investiga uma possível divergência na definição de receita.
@@ -276,6 +286,11 @@ As camadas Gold e Analytics reconciliam tecnicamente o mesmo valor. A investiga�
 O cenário demonstra distinção entre reconciliação técnica e semântica de negócio, governança de métricas, prevenção de conclusões financeiras sem evidência e necessidade de aprovação humana antes da alteração da regra.
 
 Documentação: [docs/scenarios/DE-102.md](docs/scenarios/DE-102.md)
+
+<p align="center">
+  <img src="assets/screenshots/readme/demo/03-de102-hypothesis-recommendation.png" alt="Hipótese e recomendação do cenário DE-102 com evidências e aprovação humana" width="100%">
+</p>
+<p align="center"><em>DE-102 — hipótese de governança, recomendação de alta prioridade, evidências rastreáveis e aprovação humana obrigatória.</em></p>
 
 [Voltar ao índice](#sumario)
 
