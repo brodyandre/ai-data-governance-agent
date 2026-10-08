@@ -58,12 +58,14 @@ O projeto combina conceitos de:
 | Item | Status |
 |---|---|
 | Fase 0 — Planejamento e Bootstrap | ✅ Concluída |
-| Fase 1 — Modelos e Contratos de Domínio | 🚧 Em andamento |
-| Infraestrutura inicial | ✅ Concluída |
+| Fases 0 a 9 — MVP e demonstração | ✅ Concluídas |
+| Fase 10 — Hardening Final | 🚧 Em andamento |
+| Fase 11 — Preparação da Entrega | ⏳ Pendente |
+| Workflow com LangGraph | ✅ Implementado |
+| API FastAPI | ✅ Implementada |
+| Interface web Node.js | ✅ Implementada |
+| Avaliação determinística | ✅ Operacional |
 | CI com GitHub Actions | ✅ Operacional |
-| Contratos conceituais | ✅ Definidos |
-| Implementação do agente | ⏳ Planejada |
-| Interface web | ⏳ Planejada |
 
 > O projeto está sendo construído de forma incremental, com contratos de domínio, testes e critérios de aceite definidos antes da implementação das camadas de maior complexidade.
 
@@ -105,7 +107,7 @@ O projeto busca organizar essas informações e transformá-las em uma análise 
 
 ## 🚀 Objetivos
 
-O fluxo planejado deverá ser capaz de:
+O fluxo implementado é capaz de:
 
 1. receber um incidente estruturado;
 2. organizar as evidências disponíveis;
@@ -156,7 +158,7 @@ Regras de supervisão humana
 Resposta estruturada e rastreável
 ```
 
-O fluxo será orquestrado com **LangGraph**, mantendo inicialmente uma arquitetura de agente único.
+O fluxo é orquestrado com **LangGraph** e permanece com arquitetura de agente único no escopo do MVP.
 
 A proposta é combinar componentes determinísticos com capacidades de IA sem transferir decisões críticas exclusivamente para o modelo.
 
@@ -168,7 +170,7 @@ A proposta é combinar componentes determinísticos com capacidades de IA sem tr
 
 ## 🛠️ Ferramentas do agente
 
-O MVP prevê quatro ferramentas determinísticas principais:
+O MVP utiliza quatro ferramentas determinísticas principais:
 
 | Ferramenta | Responsabilidade |
 |---|---|
@@ -187,7 +189,7 @@ A separação dessas responsabilidades permite testar cada capacidade de forma i
 
 ## 📦 Resposta estruturada
 
-A resposta do agente será representada por um contrato estruturado contendo campos como:
+A resposta do agente é representada por um contrato estruturado contendo campos como:
 
 ```text
 incident_id
@@ -228,7 +230,7 @@ Situações de maior risco deverão exigir revisão humana, incluindo casos de:
 - impacto de privacidade;
 - recomendações destrutivas ou irreversíveis.
 
-O agente não executará automaticamente ações críticas de remediação.
+O agente não executa automaticamente ações críticas de remediação.
 
 A decisão final permanece sob responsabilidade de uma pessoa ou equipe devidamente autorizada.
 
@@ -294,15 +296,15 @@ O objetivo é permitir perguntas como:
 
 ### Inteligência Artificial
 
-A arquitetura prevê uma camada de abstração para provedores de modelos.
+A arquitetura utiliza uma camada de abstração para provedores de modelos.
 
-Os testes automatizados e a integração contínua deverão funcionar de forma determinística e sem dependência obrigatória de um modelo externo.
+Os testes automatizados, a avaliação e a integração contínua funcionam de forma determinística e sem dependência obrigatória de um modelo externo.
 
-A integração com um modelo real será utilizada apenas nos cenários em que essa capacidade seja necessária.
+O MVP atual utiliza provider determinístico nos testes e na avaliação. A integração com um modelo real permanece opcional e não faz parte do caminho obrigatório de execução ou do CI.
 
 ### Interface web
 
-Stack planejada:
+Stack implementada:
 
 ```text
 Node.js
@@ -323,13 +325,18 @@ O objetivo é produzir uma interface limpa e profissional sem introduzir complex
 
 ```text
 ai-data-governance-agent/
+├── .env.example
 ├── .github/
 │   └── workflows/
 ├── docs/
 │   ├── adrs/
 │   ├── contracts/
-│   ├── evaluation/
+│   ├── demo/
+│   ├── hardening/
+│   ├── policies/
+│   ├── scenarios/
 │   ├── BACKLOG.md
+│   ├── EVALUATION.md
 │   ├── PROJECT_CHARTER.md
 │   ├── README.md
 │   └── ROADMAP.md
@@ -354,6 +361,8 @@ As principais responsabilidades estão separadas entre código, testes, document
 ### Pré-requisitos
 
 - Python 3.12;
+- Node.js 20 ou superior;
+- npm;
 - Git;
 - Linux, WSL2 ou ambiente equivalente.
 
@@ -388,6 +397,20 @@ python -m pip install -e ".[dev]"
 python -m pip check
 ```
 
+### 6. Interface web
+
+A instalação, os testes e a execução da interface estão documentados em:
+
+➡️ [`web/README.md`](web/README.md)
+
+### 7. Demonstração end-to-end
+
+O procedimento reproduzível utilizado na demonstração oficial está em:
+
+➡️ [`docs/demo/LIVE_DEMO_RUNBOOK.md`](docs/demo/LIVE_DEMO_RUNBOOK.md)
+
+A API padrão não configura automaticamente um provider. Sem provider, o endpoint de análise retorna uma resposta controlada `503 provider_not_configured`.
+
 [⬆️ Voltar ao índice](#sumario)
 
 ---
@@ -416,13 +439,29 @@ ruff check .
 ruff format --check .
 ```
 
-### Executar testes
+### Executar testes Python
 
 ```bash
 pytest
 ```
 
+### Executar testes da interface web
+
+```bash
+cd web
+npm test
+cd ..
+```
+
+### Executar a avaliação determinística
+
+```bash
+python -m ai_data_governance_agent.evaluation
+```
+
 A integração contínua executa os principais quality gates automaticamente por meio do **GitHub Actions**.
+
+No quality gate da DG-1001 foram aprovados 576 testes Python, 18 testes web e 7 de 7 cenários determinísticos de avaliação.
 
 ### Estado atual
 
@@ -431,6 +470,8 @@ pip check             ✅
 Ruff lint             ✅
 Ruff format           ✅
 pytest                ✅
+npm test              ✅
+evaluation runner     ✅
 GitHub Actions CI     ✅
 ```
 
@@ -442,9 +483,9 @@ GitHub Actions CI     ✅
 
 ## 📊 Avaliação
 
-O projeto prevê avaliação objetiva do comportamento da solução.
+O projeto possui um framework de avaliação determinística e reproduzível.
 
-As métricas planejadas incluem:
+As métricas implementadas são:
 
 | Métrica | Objetivo |
 |---|---|
@@ -457,13 +498,19 @@ As métricas planejadas incluem:
 | `response_latency` | Avaliar latência |
 | `test_pass_rate` | Acompanhar estabilidade dos testes |
 
-As definições detalhadas serão mantidas em:
+A execução completa utiliza:
 
-```text
-docs/evaluation/
+```bash
+python -m ai_data_governance_agent.evaluation
 ```
 
-A avaliação deverá permanecer reproduzível e, sempre que possível, independente de serviços externos.
+No gate da DG-1001, os 7 cenários versionados foram aprovados. As taxas funcionais ficaram em 100% para o dataset determinístico utilizado.
+
+Esses resultados medem o comportamento do workflow, das ferramentas e dos guardrails com provider determinístico. Eles não representam uma avaliação de qualidade de um LLM real em produção.
+
+A metodologia, as fórmulas e as limitações estão documentadas em:
+
+➡️ [`docs/EVALUATION.md`](docs/EVALUATION.md)
 
 [⬆️ Voltar ao índice](#sumario)
 
