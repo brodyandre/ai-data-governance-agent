@@ -175,11 +175,11 @@ Os resultados de 100% são restritos ao dataset determinístico controlado e nã
 
 ## Screenshots selecionados
 
-Manter um conjunto pequeno e objetivo de evidências.
+Manter um conjunto pequeno e objetivo de três evidências visuais já aprovadas.
 
 ### 1. DE-101 — Visão geral
 
-Deve mostrar:
+Mostra:
 
 - `EVAL-DE-101`;
 - classificação Reconciliação;
@@ -188,13 +188,13 @@ Deve mostrar:
 - revisão humana necessária;
 - resumo executivo.
 
-Nome sugerido:
+Arquivo final:
 
-`01-de101-overview.png`
+`assets/screenshots/readme/demo/01-de101-overview.png`
 
 ### 2. DE-101 — Hipótese, recomendação e controles
 
-Deve mostrar:
+Mostra:
 
 - hipótese confirmada;
 - confiança da hipótese;
@@ -203,28 +203,13 @@ Deve mostrar:
 - evidências de suporte;
 - controles DQ-001 e DQ-002.
 
-Nome sugerido:
+Arquivo final:
 
-`02-de101-hypothesis-recommendation.png`
+`assets/screenshots/readme/demo/02-de101-hypothesis-recommendation.png`
 
-### 3. DE-102 — Visão geral
+### 3. DE-102 — Hipótese e recomendação
 
-Deve mostrar:
-
-- `EVAL-DE-102`;
-- classificação Governança;
-- severidade Alta;
-- confiança 88%;
-- revisão humana necessária;
-- resumo executivo.
-
-Nome sugerido:
-
-`03-de102-overview.png`
-
-### 4. DE-102 — Hipótese e recomendação
-
-Deve mostrar:
+Mostra:
 
 - hipótese confirmada;
 - confiança 96%;
@@ -233,11 +218,11 @@ Deve mostrar:
 - evidências `EV-DE102-METRIC` e `EV-DE102-RULE`;
 - ausência de controle inventado.
 
-Nome sugerido:
+Arquivo final:
 
-`04-de102-hypothesis-recommendation.png`
+`assets/screenshots/readme/demo/03-de102-hypothesis-recommendation.png`
 
-Para uma submissão que aceite poucas imagens, priorizar as imagens 2 e 4 porque concentram hipótese, recomendação, evidência e human-in-the-loop.
+Esse conjunto é suficiente para o README porque cobre visão executiva, rastreabilidade, recomendação, governança e human-in-the-loop sem transformar a landing page em uma galeria extensa.
 
 ---
 
@@ -305,6 +290,7 @@ A integração com provider real permanece uma evolução opcional e não é req
 - [x] URL pública do repositório validada;
 - [x] links técnicos principais selecionados;
 - [x] screenshots de DE-101 e DE-102 selecionados;
+- [ ] três assets visuais versionados no repositório e referenciados no README;
 - [x] texto curto de apresentação preparado;
 - [x] pitch de contingência preparado;
 - [x] transparência sobre provider determinístico registrada;
