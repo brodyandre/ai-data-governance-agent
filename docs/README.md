@@ -188,15 +188,9 @@ A decisão humana permanece obrigatória em cenários como:
 
 ## 📊 Avaliação
 
-A área:
+O framework de avaliação determinística está implementado e documentado em [`EVALUATION.md`](EVALUATION.md).
 
-```text
-docs/evaluation/
-```
-
-será utilizada para documentar o framework de avaliação do projeto.
-
-Essa área deverá concentrar:
+A documentação de avaliação cobre:
 
 - dataset de avaliação;
 - cenários de teste;
@@ -207,7 +201,7 @@ Essa área deverá concentrar:
 - limitações conhecidas;
 - relatórios.
 
-### Métricas planejadas
+### Métricas implementadas
 
 | Métrica | Objetivo |
 |---|---|
@@ -220,7 +214,9 @@ Essa área deverá concentrar:
 | `response_latency` | Avaliar tempo de resposta |
 | `test_pass_rate` | Acompanhar estabilidade da suíte de testes |
 
-As definições matemáticas e critérios de cálculo serão registrados quando o framework de avaliação for implementado.
+As definições matemáticas, critérios de cálculo, comandos de execução e limitações estão registrados em [`EVALUATION.md`](EVALUATION.md).
+
+No quality gate da DG-1001, os 7 cenários versionados foram aprovados e as taxas funcionais ficaram em 100% para o dataset determinístico utilizado. Esses resultados não representam avaliação de qualidade de um LLM real em produção.
 
 [⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
 
@@ -420,6 +416,7 @@ docs/
 ├── PROJECT_CHARTER.md
 ├── ROADMAP.md
 ├── BACKLOG.md
+├── EVALUATION.md
 ├── adrs/
 │   └── ADR-001-project-scope-and-stack.md
 ├── contracts/
@@ -437,8 +434,10 @@ docs/
 │   └── DE-102.md
 ├── hardening/
 │   ├── DG-1001-QUALITY-GATE.md
-│   └── DG-1002-SECURITY-REVIEW.md
-└── evaluation/
+│   ├── DG-1002-SECURITY-REVIEW.md
+│   └── DG-1003-DOCUMENTATION-REVIEW.md
+└── policies/
+    └── LOCAL_CONTROLS.md
 ```
 
 ---
@@ -461,7 +460,16 @@ docs/
 - [`EVIDENCE_MODEL.md`](contracts/EVIDENCE_MODEL.md)
 - [`DOMAIN_ENUMS.md`](contracts/DOMAIN_ENUMS.md)
 - [`AGENT_RESPONSE.md`](contracts/AGENT_RESPONSE.md)
+- [`PROVIDER_INTERFACE.md`](contracts/PROVIDER_INTERFACE.md)
 - [`SEVERITY_AND_HUMAN_REVIEW.md`](contracts/SEVERITY_AND_HUMAN_REVIEW.md)
+
+### Avaliação
+
+- [`EVALUATION.md`](EVALUATION.md)
+
+### Políticas
+
+- [`LOCAL_CONTROLS.md`](policies/LOCAL_CONTROLS.md)
 
 ### Demonstração
 
@@ -475,6 +483,7 @@ docs/
 
 - [`DG-1001-QUALITY-GATE.md`](hardening/DG-1001-QUALITY-GATE.md)
 - [`DG-1002-SECURITY-REVIEW.md`](hardening/DG-1002-SECURITY-REVIEW.md)
+- [`DG-1003-DOCUMENTATION-REVIEW.md`](hardening/DG-1003-DOCUMENTATION-REVIEW.md)
 
 ---
 

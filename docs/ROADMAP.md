@@ -131,7 +131,7 @@ Criar uma fundação reproduzível e definir o escopo inicial antes da implement
 
 <a id="fase-1"></a>
 
-# 🚧 Fase 1 — Modelos e Contratos de Domínio
+# 📦 Fase 1 — Modelos e Contratos de Domínio
 
 ## Objetivo
 
@@ -627,16 +627,16 @@ Esses itens poderão ser revisitados após o Challenge caso exista benefício co
 
 ```text
 FASE 0   ✅ Planejamento e Bootstrap
-FASE 1   🚧 Modelos e Contratos
-FASE 2   ⏳ Ferramentas Determinísticas
-FASE 3   ⏳ Providers
-FASE 4   ⏳ LangGraph
-FASE 5   ⏳ Guardrails
-FASE 6   ⏳ FastAPI
-FASE 7   ⏳ Avaliação
-FASE 8   ⏳ Interface Web
-FASE 9   ⏳ Cenários
-FASE 10  ⏳ Hardening
+FASE 1   ✅ Modelos e Contratos
+FASE 2   ✅ Ferramentas Determinísticas
+FASE 3   ✅ Providers
+FASE 4   ✅ LangGraph
+FASE 5   ✅ Guardrails
+FASE 6   ✅ FastAPI
+FASE 7   ✅ Avaliação
+FASE 8   ✅ Interface Web
+FASE 9   ✅ Cenários
+FASE 10  🚧 Hardening
 FASE 11  ⏳ Entrega
 ```
 

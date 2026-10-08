@@ -1,8 +1,8 @@
 # 🖥️ Interface Web — AI Data Governance Agent
 
-Este diretório está reservado para a interface web de demonstração do **AI Data Governance Agent**.
+Este diretório contém a interface web de demonstração do **AI Data Governance Agent**.
 
-A interface será implementada após a estabilização dos contratos do backend e da API.
+A interface está implementada em Node.js, Express, EJS e Vanilla JavaScript e consome a API FastAPI sem duplicar as regras centrais de negócio.
 
 ---
 
@@ -11,7 +11,7 @@ A interface será implementada após a estabilização dos contratos do backend 
 ## 📑 Sumário
 
 - [Objetivo](#objetivo)
-- [Stack planejada](#stack)
+- [Stack implementada](#stack)
 - [Arquitetura conceitual](#arquitetura)
 - [Dependência da API](#api)
 - [Diretrizes de experiência](#experiencia)
@@ -26,9 +26,9 @@ A interface será implementada após a estabilização dos contratos do backend 
 
 ## 🎯 Objetivo
 
-A camada web terá como principal função demonstrar, de forma clara e profissional, o fluxo de análise de incidentes realizado pelo sistema.
+A camada web tem como principal função demonstrar, de forma clara e profissional, o fluxo de análise de incidentes realizado pelo sistema.
 
-A interface deverá permitir:
+A interface permite:
 
 - informar ou carregar um incidente;
 - enviar o incidente para análise;
@@ -49,9 +49,9 @@ A interface deverá permitir:
 
 <a id="stack"></a>
 
-## 🧰 Stack planejada
+## 🧰 Stack implementada
 
-A implementação principal utilizará:
+A implementação utiliza:
 
 ```text
 Node.js
@@ -96,9 +96,9 @@ AgentResponse
 Interface Web
 ```
 
-A interface web não deverá duplicar regras de negócio já existentes no backend.
+A interface web não duplica regras de negócio existentes no backend.
 
-Seu papel principal será consumir e apresentar os contratos expostos pela API.
+Seu papel principal é consumir e apresentar os contratos expostos pela API.
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
 
@@ -108,19 +108,43 @@ Seu papel principal será consumir e apresentar os contratos expostos pela API.
 
 ## 🔌 Dependência da API
 
-A implementação da interface será iniciada somente depois que o contrato principal da API estiver definido e estável.
+A interface utiliza o endpoint estável exposto pela API FastAPI.
 
-Endpoint planejado:
+Endpoint:
 
 ```text
 POST /api/v1/incidents/analyze
 ```
 
-A interface deverá consumir a resposta estruturada definida em:
+A interface consome a resposta estruturada definida em:
 
 ```text
 docs/contracts/AGENT_RESPONSE.md
 ```
+
+O servidor Express recebe `POST /api/analyze` e encaminha o incidente ao backend FastAPI configurado por `API_BASE_URL`.
+
+O valor padrão é `http://127.0.0.1:8000`.
+
+### Execução local
+
+Instalar dependências:
+
+`npm ci`
+
+Executar testes:
+
+`npm test`
+
+Iniciar a interface:
+
+`npm start`
+
+Por padrão, a interface utiliza a porta `3000`. As variáveis operacionais suportadas são `API_BASE_URL` e `PORT`.
+
+O runtime não exige credenciais. A API padrão não configura automaticamente um provider; nesse caso, uma tentativa de análise recebe `503 provider_not_configured`.
+
+Para a demonstração controlada dos cenários DE-101 e DE-102, utilizar o [`LIVE_DEMO_RUNBOOK.md`](../docs/demo/LIVE_DEMO_RUNBOOK.md).
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
 
@@ -130,7 +154,7 @@ docs/contracts/AGENT_RESPONSE.md
 
 ## 🎨 Diretrizes de experiência
 
-A apresentação deverá priorizar:
+A apresentação prioriza:
 
 - hierarquia visual;
 - legibilidade;
@@ -141,7 +165,7 @@ A apresentação deverá priorizar:
 - destaque para revisão humana;
 - rastreabilidade das evidências.
 
-A interface deverá comunicar tanto os aspectos técnicos quanto o impacto de negócio da análise.
+A interface comunica tanto os aspectos técnicos quanto o impacto de negócio da análise.
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
 
@@ -151,19 +175,14 @@ A interface deverá comunicar tanto os aspectos técnicos quanto o impacto de ne
 
 ## 🧪 Comportamento de demonstração
 
-A aplicação poderá oferecer cenários predefinidos para facilitar a demonstração do projeto.
+A aplicação oferece dois cenários canônicos carregáveis diretamente pela interface:
 
-Exemplos planejados:
+- [`DE-101`](../docs/scenarios/DE-101.md) — elegibilidade e reconciliação Silver → Gold;
+- [`DE-102`](../docs/scenarios/DE-102.md) — governança da semântica de receita.
 
-- incidente de Data Quality;
-- divergência de reconciliação;
-- evidência insuficiente;
-- evidências conflitantes;
-- incidente de alta severidade;
-- incidente crítico;
-- situação que exige revisão humana.
+Cenários adversariais adicionais, como evidência insuficiente, evidência conflitante, severidade crítica e afirmação sem suporte, permanecem versionados no framework de avaliação determinística.
 
-Esses cenários deverão utilizar contratos válidos e permanecer reproduzíveis.
+Os cenários utilizam contratos válidos e permanecem reproduzíveis.
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
 
@@ -173,11 +192,11 @@ Esses cenários deverão utilizar contratos válidos e permanecer reproduzíveis
 
 ## 🛟 Alternativa de contingência
 
-Caso a interface Node.js não possa ser concluída dentro do prazo com qualidade adequada, **Streamlit** poderá ser utilizado como alternativa.
+A interface Node.js foi concluída e é a implementação oficial do MVP.
 
-Essa opção permanece apenas como contingência.
+A alternativa em Streamlit não foi necessária e permanece fora do caminho principal da demonstração.
 
-A abordagem principal continua sendo:
+A stack oficial é:
 
 ```text
 Node.js + Express + EJS + Vanilla JavaScript
@@ -227,6 +246,6 @@ A interface deve permanecer desacoplada das regras centrais de negócio.
 
 ---
 
-> 🖥️ A camada web do **AI Data Governance Agent** será uma interface de demonstração orientada à clareza, rastreabilidade e comunicação do valor técnico e de negócio da solução.
+> 🖥️ A camada web do **AI Data Governance Agent** é uma interface de demonstração orientada à clareza, rastreabilidade e comunicação do valor técnico e de negócio da solução.
 
 [⬆️ Voltar ao índice](#sumario) · [📚 Central de documentação](../docs/README.md)
