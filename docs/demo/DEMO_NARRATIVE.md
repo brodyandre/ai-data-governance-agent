@@ -205,7 +205,7 @@ No gate utilizado na preparação da demonstração:
 - `tool_execution_success_rate`: 100%;
 - `test_pass_rate`: 100%;
 - 576 testes Python foram aprovados;
-- 18 testes da interface web foram aprovados;
+- 19 testes da interface web foram aprovados;
 - lint, formatação e CI foram aprovados.
 
 Esses números medem o dataset determinístico versionado e a implementação
