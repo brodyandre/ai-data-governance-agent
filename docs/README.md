@@ -10,6 +10,7 @@ O objetivo desta página é funcionar como um **índice remissivo central**, per
 
 ## 📑 Sumário
 
+- [Conexão com o AWS Lakehouse](#conexao-lakehouse)
 - [Visão e planejamento](#visao-planejamento)
 - [Arquitetura](#arquitetura)
 - [Contratos de domínio](#contratos)
@@ -19,6 +20,21 @@ O objetivo desta página é funcionar como um **índice remissivo central**, per
 - [Fluxo recomendado de leitura](#fluxo-leitura)
 - [Convenções da documentação](#convencoes)
 - [Manutenção da documentação](#manutencao)
+
+---
+
+<a id="conexao-lakehouse"></a>
+
+## 🔗 Conexão com o AWS Lakehouse
+
+O [`CONEXAO_AWS_LAKEHOUSE.md`](CONEXAO_AWS_LAKEHOUSE.md) explica para visitantes não técnicos e avaliadores como os dois projetos de portfólio se complementam:
+
+- **AWS Lakehouse Engineering Lab:** pipeline de dados sintéticos e investigações técnicas documentadas;
+- **AI Data Governance Agent:** cenários de demonstração estruturados a partir dessas investigações e análise consultiva com rastreabilidade e revisão humana.
+
+A relação **não é uma integração automática entre sistemas**. O documento detalha a origem das evidências e distingue essa conexão documental da integração real **interface web → FastAPI → workflow LangGraph** dentro do agente.
+
+[⬆️ Voltar ao índice](#sumario) · [🏠 README principal](../README.md)
 
 ---
 
@@ -232,6 +248,7 @@ humana.
 
 | Documento | Finalidade |
 |---|---|
+| [`CONEXAO_AWS_LAKEHOUSE.md`](CONEXAO_AWS_LAKEHOUSE.md) | Conexão documental entre investigações originais e cenários do agente, com limites explícitos de integração |
 | [`demo/DEMO_NARRATIVE.md`](demo/DEMO_NARRATIVE.md) | Narrativa canônica da demonstração e seus nove elementos |
 | [`demo/LIVE_DEMO_RUNBOOK.md`](demo/LIVE_DEMO_RUNBOOK.md) | Procedimento reproduzível para execução da demonstração ao vivo |
 | [`demo/PRESENTATION_SCRIPT.md`](demo/PRESENTATION_SCRIPT.md) | Roteiro de fala principal e versão curta para apresentação |
