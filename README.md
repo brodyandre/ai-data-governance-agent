@@ -15,6 +15,7 @@ Projeto de portfólio desenvolvido no contexto da **Imersão de Agentes de IA pa
 ## Sumário
 
 - [Visão Geral](#visao-geral)
+- [Como este projeto se conecta ao Lakehouse](#contexto-lakehouse)
 - [Problema de Negócio](#problema-negocio)
 - [Solução Proposta](#solucao-proposta)
 - [Capacidades Implementadas](#capacidades)
@@ -54,6 +55,113 @@ O agente foi projetado para responder perguntas como:
 - quando a decisão precisa ser revisada por uma pessoa.
 
 O foco é produzir análises **estruturadas, explicáveis, auditáveis e reproduzíveis**.
+
+[Voltar ao índice](#sumario)
+
+---
+
+<a id="contexto-lakehouse"></a>
+
+## Como este projeto se conecta ao Lakehouse
+
+Este repositório representa a **camada de investigação e governança** de um ecossistema maior de Engenharia de Dados.
+
+Para entender a proposta sem precisar conhecer Databricks ou arquitetura de dados, pense em duas responsabilidades complementares:
+
+| Projeto | Em linguagem simples | Papel técnico |
+| --- | --- | --- |
+| [Databricks Lakehouse Data Engineering Lab](https://github.com/brodyandre/databricks-lakehouse-data-engineering-lab) | A **fábrica de dados**: recebe informações de clientes, produtos, pedidos, pagamentos e entregas e prepara esses dados para análise. | Plataforma de Engenharia de Dados com Databricks, Spark, Delta Lake e arquitetura Medallion. |
+| **AI Data Governance Agent** | O **investigador e controlador**: quando surge uma divergência ou dúvida, organiza as evidências, avalia o risco e indica o que precisa ser validado por uma pessoa. | Camada de investigação, Data Quality, impacto de negócio, governança, guardrails e human-in-the-loop. |
+
+### Visão do ecossistema
+
+~~~text
+Dados de negócio
+clientes, produtos, pedidos, pagamentos, entregas
+                         |
+                         v
+Databricks Lakehouse Data Engineering Lab
+ingestão -> organização -> validação -> camadas Bronze / Silver / Gold
+                         |
+                         v
+Evidências operacionais e de qualidade
+contagens, rejeições, regras, reconciliações, métricas
+                         |
+                         v
+AI Data Governance Agent
+investigação -> impacto -> governança -> hipótese -> recomendação
+                         |
+                         v
+Revisão humana
+decisão sobre regra de negócio ou remediação
+~~~
+
+### O que o Databricks Lakehouse Data Engineering Lab demonstra
+
+O [Databricks Lakehouse Data Engineering Lab](https://github.com/brodyandre/databricks-lakehouse-data-engineering-lab) simula uma plataforma de dados para um cenário de varejo/e-commerce.
+
+Em termos de negócio, ele trabalha com informações como:
+
+- clientes;
+- produtos;
+- pedidos;
+- itens de pedido;
+- pagamentos;
+- entregas.
+
+A proposta é mostrar como esses dados podem passar por uma arquitetura Lakehouse até se tornarem confiáveis e úteis para análises.
+
+No repositório já existem componentes para geração determinística de dados sintéticos e ingestão da camada Bronze no Databricks, gravando tabelas Delta e organizando a execução por jobs. A evolução do laboratório segue a arquitetura Medallion, na qual:
+
+- **Bronze** preserva os dados recebidos;
+- **Silver** aplica limpeza, validação e padronização;
+- **Gold** disponibiliza dados preparados para indicadores e decisões de negócio.
+
+Para um recrutador, esse projeto demonstra a construção da **infraestrutura e dos pipelines de dados**.
+
+### Onde o AI Data Governance Agent entra
+
+Mesmo quando um pipeline está funcionando, ainda surgem perguntas que exigem investigação:
+
+- uma redução de registros representa perda de dados ou uma regra válida de exclusão?
+- uma métrica está tecnicamente correta, mas seu significado de negócio está bem definido?
+- quais evidências sustentam uma conclusão?
+- existe impacto potencial para relatórios ou consumidores?
+- a correção pode ser automatizada ou exige aprovação humana?
+
+É nesse ponto que este repositório atua.
+
+O **AI Data Governance Agent não substitui o Lakehouse**. Ele fica conceitualmente acima da plataforma de dados, transformando evidências de pipelines e regras de negócio em uma análise estruturada, rastreável e sujeita a controles de governança.
+
+### Relação atual entre os repositórios
+
+A conexão com o Databricks Lakehouse é **arquitetural e de portfólio**, não uma integração runtime obrigatória.
+
+O agente foi desenhado para receber evidências estruturadas, portanto pode ser alimentado por incidentes provenientes de ambientes Databricks, AWS ou outras plataformas de dados sem ficar acoplado a um fornecedor específico.
+
+Os cenários canônicos **DE-101** e **DE-102** utilizados atualmente na demonstração preservam evidências validadas do repositório [AWS Lakehouse Engineering Lab](https://github.com/brodyandre/aws-lakehouse-engineering-lab). Eles foram mantidos dessa forma para garantir rastreabilidade e reprodutibilidade dos números apresentados.
+
+Essa separação é intencional:
+
+~~~text
+Plataforma de dados
+Databricks / AWS / outro ambiente
+          |
+          | produz evidências
+          v
+Contrato estruturado de incidente
+          |
+          v
+AI Data Governance Agent
+          |
+          v
+Análise independente do provedor
+~~~
+
+Em termos de portfólio, os projetos demonstram competências complementares:
+
+> **Databricks Lakehouse Data Engineering Lab:** construir e operar a plataforma de dados.  
+> **AI Data Governance Agent:** investigar, explicar e governar problemas que surgem sobre essa plataforma.
 
 [Voltar ao índice](#sumario)
 
@@ -488,12 +596,16 @@ A documentação utiliza português brasileiro como idioma principal. Identifica
 
 ## Projetos Relacionados
 
-Outros projetos do portfólio complementam os conceitos demonstrados neste repositório:
+Este projeto faz parte de um portfólio em que diferentes repositórios demonstram etapas complementares do ciclo de vida de dados:
 
-- [AWS Lakehouse Engineering Lab](https://github.com/brodyandre/aws-lakehouse-engineering-lab) — Lakehouse, PySpark, Airflow, Data Quality, observabilidade e FinOps;
-- [Databricks Lakehouse Data Engineering Lab](https://github.com/brodyandre/databricks-lakehouse-data-engineering-lab) — Databricks, Spark, Delta Lake e arquitetura Medallion.
+| Repositório | Foco | Relação com este agente |
+| --- | --- | --- |
+| [Databricks Lakehouse Data Engineering Lab](https://github.com/brodyandre/databricks-lakehouse-data-engineering-lab) | Construção de uma plataforma Lakehouse com Databricks, Spark e Delta Lake. | Representa o tipo de plataforma que gera dados, métricas e evidências que podem ser investigadas pelo agente. |
+| [AWS Lakehouse Engineering Lab](https://github.com/brodyandre/aws-lakehouse-engineering-lab) | Lakehouse, PySpark, Airflow, Data Quality, observabilidade e FinOps. | É a fonte das evidências validadas utilizadas nos cenários canônicos DE-101 e DE-102. |
 
-Os projetos são independentes, mas compartilham princípios de Engenharia de Dados, qualidade, governança, automação e reprodutibilidade.
+Os repositórios permanecem independentes. Não existe dependência de execução entre eles.
+
+A conexão está no **problema de Engenharia de Dados** que eles representam: primeiro construir pipelines confiáveis; depois conseguir investigar divergências, documentar evidências, avaliar impacto e governar decisões quando algo exige análise.
 
 [Voltar ao índice](#sumario)
 
