@@ -2,17 +2,172 @@
 
 [![CI](https://github.com/brodyandre/ai-data-governance-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/brodyandre/ai-data-governance-agent/actions/workflows/ci.yml)
 
-Agente de IA para investigação estruturada de incidentes de dados, com foco em **Data Quality, impacto de negócio, governança, rastreabilidade de evidências e supervisão humana**.
+**Investigação de incidentes de dados com evidências rastreáveis, análise de impacto e recomendações sob supervisão humana.**
 
-O projeto organiza evidências técnicas e de negócio, executa análises determinísticas, produz hipóteses e recomendações rastreáveis e identifica situações que exigem revisão humana.
+Em um pipeline de dados, uma diferença de registros nem sempre é uma falha; da mesma forma, números que fecham corretamente não garantem que uma métrica de negócio esteja bem definida. Este projeto demonstra **como transformar investigações técnicas em análises compreensíveis e decisões mais bem fundamentadas**.
 
-Projeto de portfólio desenvolvido no contexto da **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**.
+O projeto foi desenvolvido para a **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**. É um **laboratório com dados sintéticos**, interface web e testes automatizados — não uma implantação corporativa em produção.
+
+**Acesse rapidamente:** [Exemplo visual](#em-um-minuto) · [Evidências e testes](#evidencias) · [Conexão com o AWS Lakehouse](#conexao-aws) · [Casos DE-101 e DE-102](#cenarios) · [Arquitetura real](#integracao-real) · [Guia de demonstração](docs/demo/LIVE_DEMO_RUNBOOK.md)
+
+---
+
+<a id="em-um-minuto"></a>
+
+## Entenda a solução em um minuto
+
+| Pergunta | Resposta |
+| --- | --- |
+| **Qual problema aborda?** | Investigações de divergências de dados, interpretações incorretas de métricas e falta de rastreabilidade. |
+| **O que foi construído?** | Uma aplicação web e API que recebem incidentes estruturados e organizam evidências, avaliações de qualidade, hipóteses e recomendações. |
+| **Qual é a entrega?** | Uma análise com severidade, impacto potencial, confiança, referências às evidências recebidas e indicação justificada de revisão humana. |
+| **Qual é o papel da IA?** | A arquitetura prevê um provider de geração estruturada. Na demonstração reproduzível, as respostas dessa etapa são **determinísticas**, sem execução de um LLM externo. |
+| **O que não faz?** | Não consulta outros repositórios em tempo real, não modifica pipelines, não aprova mudanças e não executa remediações. |
+
+**Exemplo da interface — análise DE-101, em modo demonstrativo determinístico:**
+
+<p align="center">
+  <img src="assets/screenshots/readme/demo/01-de101-overview.png" alt="Resultado do cenário DE-101 com classificação, severidade, confiança e revisão humana" width="100%">
+</p>
+<p align="center"><em>DE-101 — visão geral da análise com classificação de reconciliação, confiança e sinalização de revisão humana.</em></p>
+
+**Leitura do resultado:** uma diferença entre Silver e Gold foi explicada por regras documentadas de elegibilidade, e a aplicação apresentou a classificação, a confiança do cenário e a necessidade de revisão humana. [Entenda o caso DE-101](#cenarios).
+
+<a id="evidencias"></a>
+
+## Evidências concretas de implementação
+
+| O que foi verificado | Resultado | Fonte |
+| --- | --- | --- |
+| **Testes do backend Python** | **576 aprovados** | [GitHub Actions — Python quality gates](https://github.com/brodyandre/ai-data-governance-agent/actions/runs/40573130140) |
+| **Testes da interface web** | **19 aprovados**, nenhuma falha | [GitHub Actions — Web quality gates](https://github.com/brodyandre/ai-data-governance-agent/actions/runs/40573130140) |
+| **Avaliação de cenários controlados** | **7 de 7 aprovados** na avaliação determinística documentada | [Registro da avaliação e seus limites](docs/delivery/DG-1104-FINAL-DELIVERY-GATE.md) |
+| **Demonstrações reproduzíveis** | DE-101 e DE-102, com evidências versionadas | [Runbook passo a passo](docs/demo/LIVE_DEMO_RUNBOOK.md) |
+
+Os números dos testes Python e web correspondem à execução do CI da **PR #42 em 27/10/2026**. Os 7/7 cenários referem-se à avaliação determinística documentada, **não** a uma medição da precisão de um LLM em incidentes reais.
+
+**Competências demonstradas no código:** engenharia de software aplicada a dados, Data Quality, rastreabilidade, governança, modelagem de contratos, APIs, orquestração de agentes, testes e CI/CD.
+
+| Implementação | Tecnologias e responsabilidade | Confira |
+| --- | --- | --- |
+| **API e contratos** | Python, FastAPI e Pydantic: validação e resposta estruturada | [API](src/ai_data_governance_agent/api/app.py) · [Contratos](docs/contracts/) |
+| **Orquestração e controles** | LangGraph, ferramentas determinísticas e guardrails; sinalização de revisão humana | [Workflow](src/ai_data_governance_agent/workflow/graph.py) · [Regras](src/ai_data_governance_agent/domain/human_review.py) |
+| **Interface e qualidade** | Node.js, Express, EJS, pytest, Node Test Runner e GitHub Actions | [Web](web/) · [CI](.github/workflows/ci.yml) |
+
+<a id="conexao-aws"></a>
+
+## Relação com o AWS Lakehouse Engineering Lab
+
+Os dois projetos demonstram **competências complementares**, mas não estão conectados por uma API ou por um pipeline em tempo real:
+
+1. **[AWS Lakehouse Engineering Lab](https://github.com/brodyandre/aws-lakehouse-engineering-lab):** constrói e executa pipelines com dados sintéticos, aplica regras de qualidade e publica tabelas analíticas.
+2. **Investigações do Lakehouse:** registram fatos observados sobre contagens de registros e definição de métricas, nos relatórios DE-101 e DE-102.
+3. **AI Data Governance Agent:** transforma esses fatos documentados em **cenários de teste versionados** e demonstra como investigar evidências, avaliar riscos e apresentar recomendações.
+
+```mermaid
+flowchart LR
+    A["AWS Lakehouse<br/>Dados sintéticos e pipelines"] --> B["Investigações documentadas<br/>DE-101 e DE-102"]
+    B -. "Adaptação manual<br/>cenários versionados" .-> C["AI Data Governance Agent<br/>Análise estruturada"]
+    C --> D["Hipóteses e recomendações<br/>com indicação de revisão humana"]
+```
+
+**Limite importante:** a seta entre as investigações e o agente representa **reutilização documental de evidências**. O agente não acessa automaticamente o Trino, o MinIO nem as bases do Lakehouse.
+
+| Caso | Fato investigado no Lakehouse | O que o agente demonstra | Fontes |
+| --- | --- | --- | --- |
+| **DE-101** | 1.000 itens na Silver e 937 na Gold: 63 registros excluídos por regras de elegibilidade. | Diferencia redução explicada de perda inesperada. | [Investigação original](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-101-raw-silver-divergence.md) · [Cenário](docs/scenarios/DE-101.md) |
+| **DE-102** | Gold e Analytics reconciliam a receita, mas a definição de quais status entram na métrica não foi formalizada. | Separa consistência técnica de definição de negócio e pede aprovação antes de alterar SQL. | [Investigação original](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-102-analytics-revenue-status.md) · [Cenário](docs/scenarios/DE-102.md) |
+
+[**Veja a rastreabilidade completa da conexão entre os projetos**](docs/CONEXAO_AWS_LAKEHOUSE.md).
+
+<a id="integracao-real"></a>
+
+## Arquitetura implementada e limites de integração
+
+A aplicação possui uma integração funcional **entre seus próprios componentes**:
+
+```text
+Interface web (Node.js/Express)
+    ↓ POST /api/analyze
+API FastAPI
+    ↓ POST /api/v1/incidents/analyze
+Workflow LangGraph → ferramentas, hipóteses, guardrails
+    ↓
+Resposta estruturada → interface, com sinalização de revisão humana
+```
+
+A API só executa uma análise quando recebe um provider configurado. Para a demonstração, o [runbook](docs/demo/LIVE_DEMO_RUNBOOK.md) prepara um provider **determinístico** com respostas controladas nas etapas de geração. As demais etapas executam o workflow real. Na configuração padrão sem provider, a API responde com `503 provider_not_configured`.
+
+**Supervisão humana:** o sistema registra quando a revisão é necessária e por quê; **não** implementa uma fila de aprovações ou um mecanismo de aprovação operacional. Não executa ações críticas automaticamente.
+
+**Para avaliadores técnicos:** [documentação de arquitetura](#arquitetura), [regras de governança](#human-in-the-loop), [código do workflow](src/ai_data_governance_agent/workflow/graph.py) e [avaliação reproduzível](docs/EVALUATION.md).
+
+---
+
+<a id="cenarios"></a>
+
+## Cenários de Demonstração
+
+### DE-101 — Elegibilidade Silver → Gold
+
+**Origem verificável:** [investigação DE-101 no AWS Lakehouse](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-101-raw-silver-divergence.md). Os números foram adaptados como cenário estruturado; não são dados consultados ao vivo pelo agente.
+
+O cenário investiga uma diferença entre a quantidade de itens disponível na camada Silver e os registros publicados em fct_sales.
+
+~~~text
+Silver order_items
+1000 registros
+      |
+      | - 30 itens com quantity inválida
+      v
+970 registros elegíveis
+      |
+      | - 33 itens associados a 12 pedidos inválidos
+      v
+Gold fct_sales
+937 registros
+~~~
+
+A redução é explicada pelas regras documentadas de elegibilidade.
+
+O cenário demonstra Data Quality, reconciliação, rastreabilidade, hipótese baseada em evidências, controles de governança, recomendação consultiva e revisão humana.
+
+Documentação: [docs/scenarios/DE-101.md](docs/scenarios/DE-101.md)
+
+
+
+<p align="center">
+  <img src="assets/screenshots/readme/demo/02-de101-hypothesis-recommendation.png" alt="Hipótese, recomendação, evidências e controles de governança do cenário DE-101" width="100%">
+</p>
+<p align="center"><em>DE-101 — hipótese confirmada, recomendação consultiva, evidências de suporte e controles DQ-001 e DQ-002.</em></p>
+
+### DE-102 — Governança da Semântica de Receita
+
+**Origem verificável:** [investigação DE-102 no AWS Lakehouse](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-102-analytics-revenue-status.md). A comparação alternativa de receitas é hipotética e não representa perda financeira comprovada.
+
+O cenário investiga uma possível divergência na definição de receita.
+
+As camadas Gold e Analytics reconciliam tecnicamente o mesmo valor. A investigação identifica que o risco não está em uma divergência técnica comprovada, mas na ausência de um contrato semântico formal para definir quais status devem compor a métrica de receita.
+
+O cenário demonstra distinção entre reconciliação técnica e semântica de negócio, governança de métricas, prevenção de conclusões financeiras sem evidência e necessidade de aprovação humana antes da alteração da regra.
+
+Documentação: [docs/scenarios/DE-102.md](docs/scenarios/DE-102.md)
+
+<p align="center">
+  <img src="assets/screenshots/readme/demo/03-de102-hypothesis-recommendation.png" alt="Hipótese e recomendação do cenário DE-102 com evidências e aprovação humana" width="100%">
+</p>
+<p align="center"><em>DE-102 — hipótese de governança, recomendação de alta prioridade, evidências rastreáveis e indicação de aprovação humana necessária.</em></p>
+
+[Voltar ao índice](#sumario)
 
 ---
 
 <a id="sumario"></a>
 
-## Sumário
+<details>
+<summary><strong>Índice da documentação técnica — abrir para navegar</strong></summary>
+
+
 
 - [Visão Geral](#visao-geral)
 - [Problema de Negócio](#problema-negocio)
@@ -32,6 +187,8 @@ Projeto de portfólio desenvolvido no contexto da **Imersão de Agentes de IA pa
 - [Projetos Relacionados](#projetos-relacionados)
 - [Próximos Passos](#proximos-passos)
 - [Autor](#autor)
+
+</details>
 
 ---
 
@@ -112,7 +269,7 @@ A solução possui caráter **consultivo** e não executa automaticamente açõe
 | Recuperação de controles de governança | Implementada |
 | Organização e rastreabilidade de evidências | Implementada |
 | Hipóteses e recomendações estruturadas | Implementadas |
-| Human-in-the-loop | Implementado |
+| Sinalização de revisão humana com motivos rastreáveis | Implementada; fluxo operacional de aprovação não implementado |
 | Guardrails para evidência insuficiente e claims sem suporte | Implementados |
 | Framework de avaliação determinística | Implementado |
 | CI com GitHub Actions | Implementado |
@@ -200,6 +357,8 @@ As ferramentas são independentes da geração textual e possuem testes próprio
 
 O agente não substitui a decisão humana em situações críticas.
 
+A implementação **identifica e justifica a necessidade de revisão humana** no resultado estruturado. Ela não inclui uma fila de aprovações, nem registra uma aprovação humana efetiva no sistema.
+
 A revisão humana pode ser exigida por condições como severidade crítica, impacto material de negócio, baixa confiança, evidências insuficientes ou conflitantes, risco regulatório, risco de privacidade, violação de governança e recomendações que exigem autorização.
 
 Os guardrails evitam apresentar conclusões como fatos quando não existem evidências suficientes para sustentá-las.
@@ -234,63 +393,6 @@ Cada conclusão relevante pode ser relacionada às evidências que a sustentam.
 Isso permite responder de onde a evidência foi obtida, se a informação foi observada, calculada ou inferida, qual é o nível de confiança e por que uma revisão humana foi solicitada.
 
 A rastreabilidade é tratada como requisito funcional, não apenas como documentação.
-
-[Voltar ao índice](#sumario)
-
----
-
-<a id="cenarios"></a>
-
-## Cenários de Demonstração
-
-### DE-101 — Elegibilidade Silver → Gold
-
-O cenário investiga uma diferença entre a quantidade de itens disponível na camada Silver e os registros publicados em fct_sales.
-
-~~~text
-Silver order_items
-1000 registros
-      |
-      | - 30 itens com quantity inválida
-      v
-970 registros elegíveis
-      |
-      | - 33 itens associados a 12 pedidos inválidos
-      v
-Gold fct_sales
-937 registros
-~~~
-
-A redução é explicada pelas regras documentadas de elegibilidade.
-
-O cenário demonstra Data Quality, reconciliação, rastreabilidade, hipótese baseada em evidências, controles de governança, recomendação consultiva e revisão humana.
-
-Documentação: [docs/scenarios/DE-101.md](docs/scenarios/DE-101.md)
-
-<p align="center">
-  <img src="assets/screenshots/readme/demo/01-de101-overview.png" alt="Resultado do cenário DE-101 com classificação, severidade, confiança e revisão humana" width="100%">
-</p>
-<p align="center"><em>DE-101 — visão geral da análise com classificação de reconciliação, confiança e supervisão humana.</em></p>
-
-<p align="center">
-  <img src="assets/screenshots/readme/demo/02-de101-hypothesis-recommendation.png" alt="Hipótese, recomendação, evidências e controles de governança do cenário DE-101" width="100%">
-</p>
-<p align="center"><em>DE-101 — hipótese confirmada, recomendação consultiva, evidências de suporte e controles DQ-001 e DQ-002.</em></p>
-
-### DE-102 — Governança da Semântica de Receita
-
-O cenário investiga uma possível divergência na definição de receita.
-
-As camadas Gold e Analytics reconciliam tecnicamente o mesmo valor. A investigação identifica que o risco não está em uma divergência técnica comprovada, mas na ausência de um contrato semântico formal para definir quais status devem compor a métrica de receita.
-
-O cenário demonstra distinção entre reconciliação técnica e semântica de negócio, governança de métricas, prevenção de conclusões financeiras sem evidência e necessidade de aprovação humana antes da alteração da regra.
-
-Documentação: [docs/scenarios/DE-102.md](docs/scenarios/DE-102.md)
-
-<p align="center">
-  <img src="assets/screenshots/readme/demo/03-de102-hypothesis-recommendation.png" alt="Hipótese e recomendação do cenário DE-102 com evidências e aprovação humana" width="100%">
-</p>
-<p align="center"><em>DE-102 — hipótese de governança, recomendação de alta prioridade, evidências rastreáveis e aprovação humana obrigatória.</em></p>
 
 [Voltar ao índice](#sumario)
 
@@ -487,6 +589,8 @@ A documentação utiliza português brasileiro como idioma principal. Identifica
 <a id="projetos-relacionados"></a>
 
 ## Projetos Relacionados
+
+**A relação com o AWS Lakehouse é baseada em investigações de dados sintéticos transformadas em cenários de análise versionados.** O [mapeamento detalhado](docs/CONEXAO_AWS_LAKEHOUSE.md) mostra o vínculo entre os relatórios de origem e a análise do agente, sem sugerir integração automática em runtime.
 
 Outros projetos do portfólio complementam os conceitos demonstrados neste repositório:
 
