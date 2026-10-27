@@ -2,18 +2,87 @@
 
 [![CI](https://github.com/brodyandre/ai-data-governance-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/brodyandre/ai-data-governance-agent/actions/workflows/ci.yml)
 
-Agente de IA para investigação estruturada de incidentes de dados, com foco em **Data Quality, impacto de negócio, governança, rastreabilidade de evidências e supervisão humana**.
+**Da Engenharia de Dados à governança: transformando evidências de incidentes em análises compreensíveis, rastreáveis e sujeitas à revisão humana.**
 
-O projeto organiza evidências técnicas e de negócio, executa análises determinísticas, produz hipóteses e recomendações rastreáveis e identifica situações que exigem revisão humana.
+> **Em poucas palavras:** quando um relatório mostra números diferentes ou uma métrica de negócio parece ambígua, não basta apontar o problema. É preciso entender os fatos, separar hipóteses de conclusões e decidir quem deve aprovar uma mudança. É isso que este projeto demonstra.
 
-Projeto de portfólio desenvolvido no contexto da **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**.
+Este é um **projeto de portfólio e laboratório com cenários controlados**, desenvolvido na **Imersão de Agentes de IA para Negócios — Alura + Oracle Next Education (ONE)**. As demonstrações usam um **provider determinístico**, sem depender de um LLM externo em produção.
+
+**Leitura rápida:** [O projeto em um minuto](#em-um-minuto) · [Conexão com o AWS Lakehouse](#conexao-aws) · [O que está integrado](#integracao-real) · [Cenários com imagens](#cenarios) · [Execução e avaliação](#execucao)
 
 ---
 
+<a id="em-um-minuto"></a>
+
+## O projeto em um minuto
+
+| Pergunta | Explicação sem jargão |
+| --- | --- |
+| **Que problema resolve?** | Ajuda a investigar por que números diferem entre etapas de processamento ou por que uma métrica pode ser interpretada de formas diferentes. |
+| **O que foi construído?** | Uma aplicação web e API que recebem evidências estruturadas, executam verificações e organizam uma análise de incidentes. |
+| **O que entrega?** | Classificação, severidade, hipóteses fundamentadas, possíveis impactos, recomendações e indicação de necessidade de revisão humana. |
+| **O que o torna verificável?** | Cada cenário possui fatos documentados, casos reproduzíveis, contratos de entrada e saída, testes e guardrails para conclusões sem suporte. |
+| **Qual é o limite?** | É uma ferramenta **consultiva**: não modifica automaticamente dados, não aprova mudanças no lugar de pessoas e não executa um LLM real no modo padrão. |
+
+<a id="conexao-aws"></a>
+
+## Como se conecta ao AWS Lakehouse Engineering Lab?
+
+Os dois repositórios demonstram **etapas complementares de um mesmo problema de negócio**:
+
+1. **[AWS Lakehouse Engineering Lab](https://github.com/brodyandre/aws-lakehouse-engineering-lab)** — cria e processa dados sintéticos de e-commerce, aplica regras de qualidade e publica tabelas analíticas usando PySpark, Airflow e SQL.
+2. **Investigações documentadas** — o laboratório registra o que foi observado quando surgem diferenças entre as camadas ou dúvidas sobre o significado de uma métrica.
+3. **AI Data Governance Agent (este repositório)** — reutiliza os fatos dessas investigações como **cenários estruturados e versionados** para demonstrar análise de evidências, governança e recomendações sob supervisão humana.
+
+```mermaid
+flowchart LR
+    subgraph AWS["Projeto 1 · AWS Lakehouse"]
+      A["Processar dados sintéticos<br/>Raw → Bronze → Silver → Gold"] --> B["Investigações documentadas<br/>DE-101 e DE-102"]
+    end
+    subgraph AI["Projeto 2 · AI Data Governance Agent"]
+      C["Cenários versionados<br/>e entradas estruturadas"] --> D["Investigar evidências<br/>qualidade, impacto e políticas"]
+      D --> E["Hipóteses e recomendações<br/>com revisão humana"]
+    end
+    B -. "Adaptação documental<br/>não automática" .-> C
+```
+
+**A distinção essencial:** existe **conexão por conhecimento e evidências rastreáveis**, não uma integração de execução em tempo real. O agente **não acessa automaticamente** o banco, o Trino, o MinIO ou os pipelines do Lakehouse; os dois projetos podem ser executados de forma independente.
+
+### Dois exemplos que conectam os projetos
+
+| Investigação no AWS Lakehouse | O que o agente demonstra | Confira as duas pontas |
+| --- | --- | --- |
+| **DE-101 — Diferença de registros:** a Silver contém 1.000 itens, mas a Gold publica 937 após regras de elegibilidade. | Identifica que a diferença de 63 registros pode ser explicada pelas regras de qualidade, sem afirmar perda inesperada ou defeito sem provas. | [Relatório original](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-101-raw-silver-divergence.md) · [Cenário do agente](docs/scenarios/DE-101.md) |
+| **DE-102 — Significado da receita:** os totais Gold e Analytics coincidem, mas falta formalizar quais status de pedido entram na métrica. | Distingue conciliação técnica de regra de negócio e recomenda definir a métrica com os responsáveis antes de alterar o SQL. | [Relatório original](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-102-analytics-revenue-status.md) · [Cenário do agente](docs/scenarios/DE-102.md) |
+
+As investigações aconteceram em um **laboratório com dados sintéticos**. As análises mostradas aqui são demonstrações controladas; não representam incidentes corporativos em produção.
+
+<a id="integracao-real"></a>
+
+## O que está integrado de verdade?
+
+A conexão **dentro desta aplicação** é funcional: a interface **Node.js/Express** encaminha o incidente à **API FastAPI**, que executa o **workflow LangGraph** quando um provider está configurado.
+
+| Integração ou capacidade | Situação atual |
+| --- | --- |
+| **Interface web → API FastAPI** | **Implementada**, por requisição HTTP. |
+| **API → workflow, ferramentas e guardrails** | **Implementada**, mediante configuração de um provider. |
+| **Casos do AWS Lakehouse → cenários do agente** | **Implementada como adaptação documental e dados de demonstração versionados**; não é ingestão automática. |
+| **Lakehouse → agente via API/eventos em tempo real** | **Não implementada**. |
+| **LLM externo e aprovação/remediação em produção** | **Não implementados no modo demonstrado**. A solução sinaliza quando uma decisão exige revisão humana, mas não executa remediações críticas. |
+
+Para reproduzir a demonstração DE-101/DE-102, é necessário preparar o provider determinístico conforme o [runbook](docs/demo/LIVE_DEMO_RUNBOOK.md). Sem provider, a API padrão devolve o erro controlado `503 provider_not_configured`. A classificação e as recomendações apresentadas nesse modo são resultados de um cenário controlado, **não provas de inferência de um LLM externo**.
+
+**Quer aprofundar a conexão?** O documento [**Da investigação no Lakehouse à resposta do agente**](docs/CONEXAO_AWS_LAKEHOUSE.md) mapeia as fontes, os artefatos e os limites de cada parte.
+
+---
 <a id="sumario"></a>
 
 ## Sumário
 
+- [O projeto em um minuto](#em-um-minuto)
+- [Como se conecta ao AWS Lakehouse](#conexao-aws)
+- [O que está integrado de verdade](#integracao-real)
 - [Visão Geral](#visao-geral)
 - [Problema de Negócio](#problema-negocio)
 - [Solução Proposta](#solucao-proposta)
@@ -245,6 +314,8 @@ A rastreabilidade é tratada como requisito funcional, não apenas como document
 
 ### DE-101 — Elegibilidade Silver → Gold
 
+**Origem verificável:** [investigação DE-101 no AWS Lakehouse](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-101-raw-silver-divergence.md). Os números foram adaptados como cenário estruturado; não são dados consultados ao vivo pelo agente.
+
 O cenário investiga uma diferença entre a quantidade de itens disponível na camada Silver e os registros publicados em fct_sales.
 
 ~~~text
@@ -278,6 +349,8 @@ Documentação: [docs/scenarios/DE-101.md](docs/scenarios/DE-101.md)
 <p align="center"><em>DE-101 — hipótese confirmada, recomendação consultiva, evidências de suporte e controles DQ-001 e DQ-002.</em></p>
 
 ### DE-102 — Governança da Semântica de Receita
+
+**Origem verificável:** [investigação DE-102 no AWS Lakehouse](https://github.com/brodyandre/aws-lakehouse-engineering-lab/blob/main/docs/incidents/de-102-analytics-revenue-status.md). A comparação alternativa de receitas é hipotética e não representa perda financeira comprovada.
 
 O cenário investiga uma possível divergência na definição de receita.
 
@@ -487,6 +560,8 @@ A documentação utiliza português brasileiro como idioma principal. Identifica
 <a id="projetos-relacionados"></a>
 
 ## Projetos Relacionados
+
+**A relação com o AWS Lakehouse é baseada em investigações de dados sintéticos transformadas em cenários de análise versionados.** O [mapeamento detalhado](docs/CONEXAO_AWS_LAKEHOUSE.md) mostra o vínculo entre os relatórios de origem e a análise do agente, sem sugerir integração automática em runtime.
 
 Outros projetos do portfólio complementam os conceitos demonstrados neste repositório:
 
