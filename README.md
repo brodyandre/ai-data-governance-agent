@@ -20,7 +20,7 @@ O projeto foi desenvolvido para a **Imersão de Agentes de IA para Negócios —
 | --- | --- |
 | **Qual problema aborda?** | Investigações de divergências de dados, interpretações incorretas de métricas e falta de rastreabilidade. |
 | **O que foi construído?** | Uma aplicação web e API que recebem incidentes estruturados e organizam evidências, avaliações de qualidade, hipóteses e recomendações. |
-| **Qual é a entrega?** | Uma análise com severidade, impacto potencial, confiança, fontes consultadas e indicação justificada de revisão humana. |
+| **Qual é a entrega?** | Uma análise com severidade, impacto potencial, confiança, referências às evidências recebidas e indicação justificada de revisão humana. |
 | **Qual é o papel da IA?** | A arquitetura prevê um provider de geração estruturada. Na demonstração reproduzível, as respostas dessa etapa são **determinísticas**, sem execução de um LLM externo. |
 | **O que não faz?** | Não consulta outros repositórios em tempo real, não modifica pipelines, não aprova mudanças e não executa remediações. |
 
@@ -29,7 +29,7 @@ O projeto foi desenvolvido para a **Imersão de Agentes de IA para Negócios —
 <p align="center">
   <img src="assets/screenshots/readme/demo/01-de101-overview.png" alt="Resultado do cenário DE-101 com classificação, severidade, confiança e revisão humana" width="100%">
 </p>
-<p align="center"><em>DE-101 — visão geral da análise com classificação de reconciliação, confiança e supervisão humana.</em></p>
+<p align="center"><em>DE-101 — visão geral da análise com classificação de reconciliação, confiança e sinalização de revisão humana.</em></p>
 
 **Leitura do resultado:** uma diferença entre Silver e Gold foi explicada por regras documentadas de elegibilidade, e a aplicação apresentou a classificação, a confiança do cenário e a necessidade de revisão humana. [Entenda o caso DE-101](#cenarios).
 
@@ -39,8 +39,8 @@ O projeto foi desenvolvido para a **Imersão de Agentes de IA para Negócios —
 
 | O que foi verificado | Resultado | Fonte |
 | --- | --- | --- |
-| **Testes do backend Python** | **576 aprovados** | [GitHub Actions — Python quality gates](https://github.com/brodyandre/ai-data-governance-agent/actions/runs/40571497900) |
-| **Testes da interface web** | **19 aprovados**, nenhuma falha | [GitHub Actions — Web quality gates](https://github.com/brodyandre/ai-data-governance-agent/actions/runs/40571497900) |
+| **Testes do backend Python** | **576 aprovados** | [GitHub Actions — Python quality gates](https://github.com/brodyandre/ai-data-governance-agent/actions/runs/40573130140) |
+| **Testes da interface web** | **19 aprovados**, nenhuma falha | [GitHub Actions — Web quality gates](https://github.com/brodyandre/ai-data-governance-agent/actions/runs/40573130140) |
 | **Avaliação de cenários controlados** | **7 de 7 aprovados** na avaliação determinística documentada | [Registro da avaliação e seus limites](docs/delivery/DG-1104-FINAL-DELIVERY-GATE.md) |
 | **Demonstrações reproduzíveis** | DE-101 e DE-102, com evidências versionadas | [Runbook passo a passo](docs/demo/LIVE_DEMO_RUNBOOK.md) |
 
@@ -56,7 +56,7 @@ Os números dos testes Python e web correspondem à execução do CI da **PR #42
 
 <a id="conexao-aws"></a>
 
-## Onde o AWS Lakehouse entra nessa história?
+## Relação com o AWS Lakehouse Engineering Lab
 
 Os dois projetos demonstram **competências complementares**, mas não estão conectados por uma API ou por um pipeline em tempo real:
 
@@ -82,7 +82,7 @@ flowchart LR
 
 <a id="integracao-real"></a>
 
-## O que funciona integrado dentro do agente?
+## Arquitetura implementada e limites de integração
 
 A aplicação possui uma integração funcional **entre seus próprios componentes**:
 
@@ -156,7 +156,7 @@ Documentação: [docs/scenarios/DE-102.md](docs/scenarios/DE-102.md)
 <p align="center">
   <img src="assets/screenshots/readme/demo/03-de102-hypothesis-recommendation.png" alt="Hipótese e recomendação do cenário DE-102 com evidências e aprovação humana" width="100%">
 </p>
-<p align="center"><em>DE-102 — hipótese de governança, recomendação de alta prioridade, evidências rastreáveis e aprovação humana obrigatória.</em></p>
+<p align="center"><em>DE-102 — hipótese de governança, recomendação de alta prioridade, evidências rastreáveis e indicação de aprovação humana necessária.</em></p>
 
 [Voltar ao índice](#sumario)
 
@@ -164,11 +164,11 @@ Documentação: [docs/scenarios/DE-102.md](docs/scenarios/DE-102.md)
 
 <a id="sumario"></a>
 
-## Sumário
+<details>
+<summary><strong>Índice da documentação técnica — abrir para navegar</strong></summary>
 
-- [O projeto em um minuto](#em-um-minuto)
-- [Como se conecta ao AWS Lakehouse](#conexao-aws)
-- [O que está integrado de verdade](#integracao-real)
+
+
 - [Visão Geral](#visao-geral)
 - [Problema de Negócio](#problema-negocio)
 - [Solução Proposta](#solucao-proposta)
@@ -187,6 +187,8 @@ Documentação: [docs/scenarios/DE-102.md](docs/scenarios/DE-102.md)
 - [Projetos Relacionados](#projetos-relacionados)
 - [Próximos Passos](#proximos-passos)
 - [Autor](#autor)
+
+</details>
 
 ---
 
